@@ -1,39 +1,40 @@
 # LeetCode - 题解
-[TOC]
-## 1.Two Sum
+## 前言
 
-Given an array of integers, return **indices** of the two numbers such that they add up to a specific target. You may assume that each input would have ***exactly*** one solution, and you may not use the *same* element twice.
+按照公众号文章[如何全方位的准备数据结构和算法？](https://mp.weixin.qq.com/s/6BuXwpEwCy85jYGKlRpOGA)介绍的策略进行[LeetCode](https://leetcode.com/problemset/algorithms/)的刷题。
 
-**Example:**
+## 1.数组
 
-Given nums = [2, 7, 11, 15], target = 9,
+### 1.[Two Sum](https://leetcode.com/problems/two-sum)
 
-Because nums[**0**] + nums[**1**] = 2 + 7 = 9,
- return [**0**, **1**].
+> Given an array of integers, return **indices** of the two numbers such that they add up to a specific target. You may assume that each input would have ***exactly*** one solution, and you may not use the *same* element twice.
 
-**解释**
+**Example：**
 
-输入一个数组 nums 和一个目标数 target ，返回一个结果数组，结果数组中的元素是输入数组的下标，这个两个下标处值和为目标数。
+> Given nums = [2, 7, 11, 15], target = 9,
+>
+> Because nums[**0**] + nums[**1**] = 2 + 7 = 9,
+> return [**0**, **1**].
 
 **理解和思路：**
 
 1. 如何确定两个数？
 
-   先确定第一个数，这个数必须小于目标数，假设第一个数是 num[i]，然后计算处剩下数的值 number = target - nums[i]，从数组中找到number；如果没有number，说明第一个数无效，再换下一个数，一共进行了两次嵌套循环，时间复杂度为：$O(n^2) $。
+   先确定第一个数，这个数必须小于目标数，假设第一个数是 num[i]，然后计算出剩下数的值 number = target - nums[i]，从数组中找到number；如果没有number，说明第一个数无效，再换下一个数，一共需要两次嵌套循环，时间复杂度为：$O(n^2) $。
 
 2. 使用HashMap进行查找
 
    上述过程使用了两次对数组的遍历，第二次遍历的目的是在数组中对某个特定值number进行搜索，问题变成了一个**查找问题**。使用更加高效的Hash查找，把数组先转换成Map，再进行搜索。
 
-   > 第一步，从位置i处 int number = target - nums[i]，求得目标值与某一个位置值的差；
+   > 第一步，从下标$i$处开始遍历数组，计算出它对应的组合值：number = target - nums[i]；
    >
    > 第二步，判断map中是否有number，如果有就返回两者的坐标；
    >
-   > 第三步，如果没有number，就把当前值nums[i]和坐标i添加进map中；
+   > 第三步，如果没有number，就把当前值nums[i]和下标$i$添加进map中；
 
-	只进行了一次遍历，时间复杂度：$O(n)$。
+   只进行了一次遍历，时间复杂度：$O(n)$。
 
-**代码：**
+**代码实现：**
 
 ```java
 public static int[] twoSum(int[] nums, int target) {
@@ -52,10 +53,66 @@ public static int[] twoSum(int[] nums, int target) {
     return null;
 }
 ```
+
+### 11.[Container With Most Water](https://leetcode.com/problems/container-with-most-water)
+
+> Given *n* non-negative integers *a1*, *a2*, ..., *an* , where each represents a point at coordinate (*i*, *ai*). *n* vertical lines are drawn such that the two endpoints of line *i* is at (*i*, *ai*) and (*i*, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
+>
+> **Note:** You may not slant the container and *n* is at least 2.
+
+<img src='./src/com/leetcode/resources/question_11.jpg' align='middle' width='600'>
+
+**Example：**
+
+> **Input**: [1,8,6,2,5,4,8,3,7]
+> **Output**: 49
+>
+> **Explanation:** 
+>
+> The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+
+**理解和思路：**
+
+1. 水的容积与3个变量有关：左边的高、右边的高、两者的下标距离，要求水的容积最大，也就是求两边的高度和X轴组成的矩形面积；
+2. 创建两个指针 left 和 right，分表表示左边的坐标和右边的坐标，计算出初始面积：从nums[left] 和 nums[right]中选择出较小值最为 height，面积为 area = height *      (right - left)；
+3. $left$从左向右遍历，$right$从右向左遍历，因为两者的距离 (right - left) 在变小，所以只有当遍历到的值大于height时才会停止，计算新的面积，更新最大面积，直到left == right
+4. 时间复杂度$O(n)$，空间复杂度$O(1)$。
+
+**代码实现：**
+
+```java
+public static int maxArea(int[] nums) {
+	int left = 0, right = nums.length - 1;
+  int height = Math.min(nums[left], nums[right]);
+  int area = (right - left) * height;
+  while (left < right) {
+  	while (nums[left] <= height && left < nums.length - 1) {
+  		left++;
+    }
+    while (nums[right] <= height && right > 0) {
+    	right--;
+    }
+    height = Math.min(nums[left], nums[right]);
+    area = Math.max(area, (right - left) * height);
+  }
+	return area;
+}
+```
+
+### 15.[3Sum](https://leetcode.com/problems/3sum)
+
+
+
+
+
+
 <p style="color: rgb(0, 204, 204); text-align: right;">
 <a href="#LeetCode - 题解">top⬆</a>
 </p>
----
+
+
+
+
 
 ## 2.Add Two Numbers
 
@@ -72,14 +129,12 @@ You may assume the two numbers do not contain any leading zero, except the numbe
 **理解和思路**
 
 1. 链表的第一位值都是个位上的数，所以同时遍历两个链表，把相同位上的值相加；
-
 2. 如果两个数相加有进位，该位置上保存的是和值对10的余数，进位的1则是加到下一个位置上；
-
 3. 创建一个链表，用来保存余值，最后返回该链表的头指针。
 
 **代码**
 
-  ```java
+```java
 public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
     if (l1 == null)
         return l2;
@@ -107,13 +162,13 @@ public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
     }
     return pointer;
 }
-  ```
+```
 
 <p style="color: rgb(0, 204, 204); text-align: right;">
     <a href="#LeetCode - 题解">top⬆</a>
 </p>
 
----
+------
 
 ## 3. Longest Substring Without Repeating Characters
 
@@ -128,9 +183,7 @@ Given a string, find the length of the **longest substring** without repeating c
 **理解和思路：**
 
 1. 如果字符串的最大无重复字串的下标是：$[i,...,j]$，那么字串的长度是：$j-i+1$，这说明，$[i,...,j]$中某个字符在$[0,...,i-1]$范围内出现过；
-
 2. 假设这个字符是$S_k$，那么该字符同时在两个范围内出现时，就选择下标比较大的那一个，作为无重复字串中的有效字符；
-
 3. 那是不是选择最大的那一个下标呢？不是，而是要选择小于$i$的最大的那一个下标，$i$是当前临时确定的子串的起始下标。
 
 **代码实现：**
@@ -152,12 +205,27 @@ public int lengthOfLongestSubstring(String s) {
 }
 ```
 
----
-
-# 4. 
+# 
 
  
 
+
+
+
+
+
+
+<p style="color: rgb(0, 204, 204); text-align: right;">
+    <a href="#LeetCode - 题解">top⬆</a>
+</p>
+
+
+
+
+
+<p style="color: rgb(0, 204, 204); text-align: right;">
+<a href="#LeetCode - 题解">top⬆</a>
+</p>
 
 
 

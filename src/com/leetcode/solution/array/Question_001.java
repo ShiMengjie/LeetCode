@@ -1,9 +1,9 @@
-package com.leetCode.solution;
+package com.leetcode.solution.array;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LeetCode_001 {
+public class Question_001 {
 
     public static int[] twoSum(int[] nums, int target) {
         if (nums == null || nums.length == 0) {

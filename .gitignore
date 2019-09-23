@@ -1,5 +1,5 @@
-/Project/LeetCode/.idea/
-/Project/LeetCode/target/
-/Project/LeetCode/*.xml
-/Project/LeetCode/*.iml
+/target/
+*.xml
+*.iml
+./idea/
 
