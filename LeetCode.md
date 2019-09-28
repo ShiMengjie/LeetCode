@@ -1,7 +1,12 @@
 # LeetCode - 题解
+
+<img src='https://img.shields.io/badge/language-Java-red.svg' align='left'><img src='https://img.shields.io/badge/license-MIT-blue.svg' align='left'>
+
+
+
 ## 前言
 
-按照公众号文章[如何全方位的准备数据结构和算法？](https://mp.weixin.qq.com/s/6BuXwpEwCy85jYGKlRpOGA)介绍的策略进行[LeetCode](https://leetcode.com/problemset/algorithms/)的刷题。
+按照公众号文章[如何全方位的准备数据结构和算法？](https://mp.weixin.qq.com/s/6BuXwpEwCy85jYGKlRpOGA)介绍的策略进行[LeetCode](https://leetcode.com/problemset/algorithms/)的刷题，题解和动图参考引用了[leetcode题解](https://github.com/azl397985856/leetcode)和[LeetCodeAnimation](https://github.com/MisterBooo/LeetCodeAnimation)。
 
 ## 1.数组
 
@@ -60,7 +65,7 @@ public static int[] twoSum(int[] nums, int target) {
 >
 > **Note:** You may not slant the container and *n* is at least 2.
 
-<img src='./src/com/leetcode/resources/question_11.jpg' align='middle' width='600'>
+<img src='./src/main/resources/pictures/question_11.jpg' align='middle' width='600'>
 
 **Example：**
 
@@ -100,6 +105,40 @@ public static int maxArea(int[] nums) {
 ```
 
 ### 15.[3Sum](https://leetcode.com/problems/3sum)
+
+> Given an array nums of *n* integers, are there elements *a*, *b*, *c* in nums such that *a* + *b* + *c* = 0? Find all unique triplets in the array which gives the sum of zero.
+>
+> **Note:**The solution set must not contain duplicate triplets.
+>
+> **Example:**
+>
+> Given array nums = [-1, 0, 1, 2, -1, -4],
+>
+> A solution set is:
+>  [
+>    [-1, 0, 1],
+>    [-1, -1, 2]
+>  ]
+
+**理解和思路：**
+
+1. 确定3个数满足：A+B+C=0，如果先确定了A，就变成了在剩下的集合中求解：B+C=-A，等价于[第一题](# 1.[Two Sum](https://leetcode.com/problems/two-sum))；
+2. 额外要求是，不能出现重复的结果集合，这就要求在确定第一个数A之后，不能出现重复，否则[B，C]的结果集一定会出现重复，为了实现这一目标，需要先把数组排序。
+
+**代码实现：**
+
+```java
+
+
+
+
+```
+
+
+
+
+
+
 
 
 
