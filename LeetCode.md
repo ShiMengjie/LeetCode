@@ -124,15 +124,122 @@ public static int maxArea(int[] nums) {
 
 1. 确定3个数满足：A+B+C=0，如果先确定了A，就变成了在剩下的集合中求解：B+C=-A，等价于[第一题](# 1.[Two Sum](https://leetcode.com/problems/two-sum))；
 2. 额外要求是，不能出现重复的结果集合，这就要求在确定第一个数A之后，不能出现重复，否则[B，C]的结果集一定会出现重复，为了实现这一目标，需要先把数组排序。
+3. 时间复杂度$O(n^2)$
 
 **代码实现：**
 
 ```java
+public List<List<Integer>> threeSum(int[] nums) {
+	List<List<Integer>> result = new ArrayList<>();
+	Arrays.sort(nums); // 升序排列
 
-
-
-
+	int target; // 第一个数A的相反数
+	int j; // 第二个数B的下标
+	int k; // 第三个数C的下标，k从后向前遍历，这样只需要一次遍历就可以完成对剩下所有数据的遍历
+	for (int i = 0; i < nums.length; i++) {
+		if (i > 0 && nums[i] == nums[i - 1]) {
+			continue;
+		}
+		target = -nums[i];
+		j = i + 1;
+		k = nums.length - 1;
+		while (j < k) {
+			if (nums[j] + nums[k] == target) {
+				List<Integer> list = new ArrayList<>(3);
+				list.add(nums[i]);
+				list.add(nums[j]);
+				list.add(nums[k]);
+				result.add(list);
+				j++;
+				k--;
+				// 为了避免B和C的重复
+				while (j < k && nums[j] == nums[j - 1]) {
+					j++;
+				}
+				while (j < k && nums[k] == nums[k + 1]) {
+					k--;
+				}
+			} else if (nums[j] + nums[k] < target) {
+				// 因为数组已经排好序了，如果两个数的和小于目标值，就增加j的值
+				j++;
+			} else {
+				// 如果两个数的和大于目标值，就减小K的值
+				k--;
+			}
+		}
+	}
+	return result;
+}
 ```
+
+**误区：**
+
+在求解这一题时，当时进入了一个误区：竟然数组是有序的，那么在求解第3个数的时候可以使用二分查找，应该比上面那种方法的遍历更加高效，代码如下：
+
+```JAVA
+public List<List<Integer>> threeSum(int[] nums) {
+	List<List<Integer>> result = new ArrayList<>();
+	if (nums == null || nums.length == 0) {
+		return result;
+	}
+	Arrays.sort(nums); // 升序排列
+
+	int target;
+	int i; // 第一个数的下标
+	int j; // 第二个数B的下标
+	int k; // 第三个数C的下标
+	for (i = 0; i < nums.length; i++) {
+		if (i > 0 && nums[i] == nums[i - 1]) {
+			continue;
+		}
+		j = i + 1;
+		while (j < nums.length) {
+			int[] subNums = new int[nums.length - j - 1];
+			target = -(nums[i] + nums[j]);
+			k = binarySearch(nums, j + 1, nums.length, target);
+			if (k >j) {
+				List<Integer> list = new ArrayList<>(3);
+				list.add(nums[i]);
+				list.add(nums[j]);
+				list.add(nums[k]);
+				result.add(list);
+			}
+			j++;
+			while (j < nums.length && nums[j] == nums[j - 1]) {
+				j++;
+			}
+		}
+	}
+	return result;
+}
+
+// 二分查找
+private int binarySearch(int[] a, int i, int j, int key) {
+	int low = i;
+	int high = j - 1;
+
+	while (low <= high) {
+		int mid = (low + high) >>> 1;
+		int midVal = a[mid];
+
+		if (midVal < key)
+			low = mid + 1;
+		else if (midVal > key)
+			high = mid - 1;
+		else
+			return mid; // key found
+	}
+	return -(low + 1);  // key not found.
+}
+```
+
+提交后发现，结果不如第一种方法，结果对别如下：
+
+<img src='./src/main/resources/pictures/question_15.jpg' align='middle' width='700'>
+
+后来仔细想了一下才发现原因：方法1在内部循环的时候，可以同时确定2个数B和C，复杂度是$O(n^2)$，而方法2需要先确定B，再使用二分查找确定C，复杂度是$o(n^2*logn)$，所以效率比方法1更低。
+
+### 
 
 
 
