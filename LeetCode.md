@@ -1,14 +1,20 @@
 # LeetCode - 题解
 
-<img src='https://img.shields.io/badge/language-Java-red.svg' align='left'><img src='https://img.shields.io/badge/license-MIT-blue.svg' align='left'>
+<img src='https://img.shields.io/badge/language-Java-red.svg' align='left'><img src='https://img.shields.io/badge/license-MIT-blue.svg' align='left'><img src='https://img.shields.io/badge/contribution-welcome-green.svg' align='left'>
 
 
 
 ## 前言
 
-按照公众号文章[如何全方位的准备数据结构和算法？](https://mp.weixin.qq.com/s/6BuXwpEwCy85jYGKlRpOGA)介绍的策略进行[LeetCode](https://leetcode.com/problemset/algorithms/)的刷题，题解和动图参考引用了[leetcode题解](https://github.com/azl397985856/leetcode)和[LeetCodeAnimation](https://github.com/MisterBooo/LeetCodeAnimation)。
+文献[^1]提出`软件是人脑力的替代,若把软件比拟为人,则开发方法的思维模式可比拟为软件系统的“世界观”和“方法论”`，另外，文章[^2]提出`语言只是实现逻辑的一种工具，核心能力是逻辑本身，...，核心竞能力跟语言其实没有多大的关系`。
 
-## 1.数组
+从这两篇文章可以得出：**软件开发的关键，不在于语言的具体形式，而是业务应用场景所需的核心技术，背后则是开发的思维逻辑**。前者不同的应用场景有所不同，在抽象层次上，后者都是相通的。
+
+而一切软件开发的基础，都是**算法与数据结构**：`程序=算法+数据结构`，因此，有必要时刻保持对`算法与数据结构`的练习和理解，这需要有一个合适的环境进行练习（刷题）。
+
+有目标和有策略地练习，可以有效地提升效率、增强印象、加深理解、增加记忆的持久性。为此，按照文章[^3]介绍的方法策略，在[LeetCode](https://leetcode.com/problemset/algorithms/)上进行刷题，部分题解和动图参考引用自[leetcode题解](https://github.com/azl397985856/leetcode)和[LeetCodeAnimation](https://github.com/MisterBooo/LeetCodeAnimation)。
+
+## 数组
 
 ### 1.[Two Sum](https://leetcode.com/problems/two-sum)
 
@@ -239,7 +245,9 @@ private int binarySearch(int[] a, int i, int j, int key) {
 
 后来仔细想了一下才发现原因：方法1在内部循环的时候，可以同时确定2个数B和C，复杂度是$O(n^2)$，而方法2需要先确定B，再使用二分查找确定C，复杂度是$o(n^2*logn)$，所以效率比方法1更低。
 
-### 
+### 16.[3Sum Closest](https://leetcode.com/problems/3sum-closest)
+
+> 
 
 
 
@@ -375,14 +383,22 @@ public int lengthOfLongestSubstring(String s) {
 
 
 
+# 附录
+
+## Z.参考文献
+
+[^1]: 软件开发方法发展回顾与展望：http://www.jos.org.cn/jos/ch/reader/view_abstract.aspx?flag=1&file_no=5650&journal_id=jos
+[^2]: 写给期待年薪百万的IT同学：https://mp.weixin.qq.com/s/KKFH_avd8vdtTcvQTAD-lg
+
+[^3]: 如何全方位的准备数据结构和算法？：https://mp.weixin.qq.com/s/6BuXwpEwCy85jYGKlRpOGA
+
+
 
 
 
 <p style="color: rgb(0, 204, 204); text-align: right;">
     <a href="#LeetCode - 题解">top⬆</a>
 </p>
-
-
 
 
 
