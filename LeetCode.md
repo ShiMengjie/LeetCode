@@ -85,7 +85,7 @@ public static int[] twoSum(int[] nums, int target) {
 **理解和思路：**
 
 1. 水的容积与3个变量有关：左边的高、右边的高、两者的下标距离，要求水的容积最大，也就是求两边的高度和X轴组成的矩形面积；
-2. 创建两个指针 left 和 right，分表表示左边的坐标和右边的坐标，计算出初始面积：从nums[left] 和 nums[right]中选择出较小值最为 height，面积为 area = height *      (right - left)；
+2. 创建两个指针 left 和 right，分表表示左边的坐标和右边的坐标，计算出初始面积：从nums[left] 和 nums[right]中选择出较小值最为 height，面积为 area = height * (right - left)；
 3. $left$从左向右遍历，$right$从右向左遍历，因为两者的距离 (right - left) 在变小，所以只有当遍历到的值大于height时才会停止，计算新的面积，更新最大面积，直到left == right
 4. 时间复杂度$O(n)$，空间复杂度$O(1)$。
 
@@ -247,21 +247,219 @@ private int binarySearch(int[] a, int i, int j, int key) {
 
 ### 16.[3Sum Closest](https://leetcode.com/problems/3sum-closest)
 
-> 
+> Given an array `nums` of *n* integers and an integer `target`, find three integers in `nums` such that the sum is closest to `target`. Return the sum of the three integers. You may assume that each input would have exactly one solution.
 
+**Example:**
 
+```java
+Given array nums = [-1, 2, 1, -4], and target = 1.
+The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
+```
 
+**理解和思路:**
 
+1. 从前面第1、15题不同的是，求最接近目标值的三个数，并返回它们的和值。
+2. 解法与[题15](# 15.[3Sum](https://leetcode.com/problems/3sum))相似，但是与它不同的是，第二个数和第三个数允许重复。
 
+**代码实现:**
 
+```java
+public int threeSumClosest(int[] nums, int target) {
+	int result = 0;
+	if (nums == null || nums.length == 0) {
+		return result;
+	}
+	if (nums.length <= 3) {
+		return nums[0] + nums[1] + nums[2];
+	}
+	Arrays.sort(nums);
+	result = nums[0] + nums[1] + nums[nums.length - 1]; // 随机选择3个数求和作为初始值
+	int i = 0;
+	int j;
+	int k;
+	int sum;
+	for (; i < nums.length - 2; i++) {
+		if (i > 0 && nums[i - 1] == nums[i])
+			continue;
+		j = i + 1;
+		k = nums.length - 1;
+		while (j < k) {
+			sum = nums[i] + nums[j] + nums[k];
+			if (sum == target) {
+				return sum;
+			} else if (sum < target) {
+				j++;
+			} else {
+				k--;
+			}
+			// 更新result的值
+			result = Math.abs(sum - target) < Math.abs(target - result) ? sum : result;
+		}
+	}
+	return result;
+}
+```
 
+### 18.[4Sum](https://leetcode.com/problems/4sum)
 
+> Given an array `nums` of *n* integers and an integer `target`, are there elements *a*, *b*, *c*, and *d* in `nums` such that *a* + *b* + *c* + *d* = `target`? Find all unique quadruplets in the array which gives the sum of `target`.
+>
+> **Note:**
+>
+> The solution set must not contain duplicate quadruplets.
 
+**Example:**
 
+```java
+Given array nums = [1, 0, -1, 0, -2, 2], and target = 0.
 
+A solution set is:
+[
+  [-1,  0, 0, 1],
+  [-2, -1, 1, 2],
+  [-2,  0, 0, 2]
+]
+```
+
+**理解和思路:**
+
+1. 求4个数的和，令它们的和值等于目标值，求出所有不重复的解，与[题15](# 15.[3Sum](https://leetcode.com/problems/3sum))最大的区别在于，多了一个数；
+2. 基本思路：从4Sum --> 3Sum --> 2Sum，在每一次向下求解时，注意结束运行的特殊情况和更新目标值。
+
+```java
+public List<List<Integer>> fourSum(int[] nums, int target) {
+	List<List<Integer>> result = new ArrayList<>();
+	if (nums == null || nums.length < 4) {
+		return result;
+	}
+	int len = nums.length;
+	Arrays.sort(nums);
+	for (int i = 0; i < len - 3; i++) {
+		// 如果最小的4个数和大于目标数或者最大的4个数和小于目标数，结束运行
+		if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target
+				|| nums[len - 1] + nums[len - 2] + nums[len - 3] + nums[len - 4] < target) {
+			break;
+		}
+		// 如果当前数与最大的3个数之和小于目标值，则跳过
+		if (nums[i] + nums[len - 1] + nums[len - 2] + nums[len - 3] < target) {
+			continue;
+		}
+		// 避免重复值
+		if (i > 0 && nums[i] == nums[i - 1]) {
+			continue;
+		}
+		// 指定第一个数，计算第二个目标数
+		int target2 = target - nums[i];
+		for (int j = i + 1; j < len - 2; j++) {
+			// 在第二层遍历中，同样要进行第一轮类似的判断
+			if (nums[j] + nums[j + 1] + nums[j + 2] > target2
+					|| nums[len - 1] + nums[len - 2] + nums[len - 3] < target2) {
+				break;
+			}
+			if (nums[j] + nums[len - 1] + nums[len - 2] < target2) {
+				continue;
+			}
+			if (j > i + 1 && nums[j] == nums[j - 1]) {
+				continue;
+			}
+			// 指定第二个数，计算第三个目标数
+			int target3 = target2 - nums[j];
+			// 在剩下的数中，寻找和为target3的两个数
+			int left = j + 1, right = len - 1;
+			while (left < right) {
+				int sum = nums[left] + nums[right];
+				if (sum == target3) {
+					// 如果和等于目标3，那么把所有数都添加进列表中
+					result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+					// 避免left和right的数重复
+					while (left < right && nums[left] == nums[left + 1]) {
+						left++;
+					}
+					while (left < right && nums[right] == nums[right - 1]) {
+						right--;
+					}
+					left++;
+					right--;
+				} else if (sum < target3) {
+					left++;
+				} else {
+					right--;
+				}
+			}
+		}
+	}
+	return result;
+}
+```
+
+### 26.[Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array)
+
+> Given a sorted array *nums*, remove the duplicates [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) such that each element appear only *once* and return the new length.
+>
+> Do not allocate extra space for another array, you must do this by **modifying the input array in-place** with O(1) extra memory.
+
+**Example 1:**
+
+```vim
+Given nums = [1,1,2],
+
+Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively.It doesn't matter what you leave beyond the returned length.
+```
+
+**Example 2:**
+
+```vim
+Given nums = [0,0,1,1,1,2,2,3,3,4],
+Your function should return length = 5, with the first five elements of nums being modified to 0, 1, 2, 3, and 4 respectively.
+It doesn't matter what values are set beyond the returned length.
+```
+
+**理解和思路：**
+
+1. 从一个有序数组中移除重复的元素，返回移除后的数组长度，不允许使用额外的空间，只能在传入的数组上做操作，不用在意最后数组中剩下的元素；
+
+2. 要移除重复的元素，需要两个下标指针$i,j$，如下图所示：
+
+   <img src='./src/main/resources/pictures/question_26.jpg' align='middle' width='400'>
+   
+   下标$i$及其前面部分由数组中不重复的元素组成，下标$nums[i,..,j]$部分是与下标$i$处元素值相同的元素，下标$j$指向的当前遍历到的元素；
+   
+3. 如果下标$j$处的值与下标$i$处的值不等，就把下标$j$的值复制到下标$i+1$处，然后下标$i$和下标$j$分别向后移动一位，过程如下：
+
+   <img src='./src/main/resources/pictures/question_26.gif' align='middle' width='500'>
+
+**代码实现：**
+
+```java
+public int removeDuplicates(int[] nums) {
+	if (nums == null) {
+		return 0;
+	}
+	if (nums.length < 2) {
+		return nums.length;
+	}
+	int i = 0;
+	int j = 1;
+	for (; j < nums.length; j++) {
+		if (nums[j] == nums[j - 1]) {
+			continue;
+		}
+		nums[++i] = nums[j];
+	}
+	return i + 1;
+}
+```
+
+### 27.[Remove Element](https://leetcode.com/problems/remove-element)
+
+> Given an array *nums* and a value *val*, remove all instances of that value [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) and return the new length.
+>
+> Do not allocate extra space for another array, you must do this by **modifying the input array** [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) with O(1) extra memory.
+>
+> The order of elements can be changed. It doesn't matter what you leave beyond the new length.
 
 <p style="color: rgb(0, 204, 204); text-align: right;">
-<a href="#LeetCode - 题解">top⬆</a>
+  <a href="#LeetCode - 题解">top⬆</a>
 </p>
 
 
@@ -399,6 +597,3 @@ public int lengthOfLongestSubstring(String s) {
 <p style="color: rgb(0, 204, 204); text-align: right;">
     <a href="#LeetCode - 题解">top⬆</a>
 </p>
-
-
-

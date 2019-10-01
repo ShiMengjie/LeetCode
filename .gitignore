@@ -2,4 +2,4 @@
 *.xml
 *.iml
 ./idea/
-
+*.vsdx
