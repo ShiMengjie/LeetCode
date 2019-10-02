@@ -12,7 +12,7 @@
 
 而一切软件开发的基础，都是**算法与数据结构**：`程序=算法+数据结构`，因此，有必要时刻保持对`算法与数据结构`的练习和理解，这需要有一个合适的环境进行练习（刷题）。
 
-有目标和有策略地练习，可以有效地提升效率、增强印象、加深理解、增加记忆的持久性。为此，按照文章[^3]介绍的方法策略，在[LeetCode](https://leetcode.com/problemset/algorithms/)上进行刷题，部分题解和动图参考引用自[leetcode题解](https://github.com/azl397985856/leetcode)和[LeetCodeAnimation](https://github.com/MisterBooo/LeetCodeAnimation)。
+有目标和有策略地练习，可以有效地提升效率、增强印象、加深理解、增加记忆的持久性。为此，按照文章[^3]介绍的方法策略，在[LeetCode](https://leetcode.com/problemset/algorithms/)上进行刷题，部分题解和动图参考引用自leetcode题解[^4]和LeetCodeAnimation[^5]。
 
 ## 数组
 
@@ -424,7 +424,7 @@ It doesn't matter what values are set beyond the returned length.
    
    下标$i$及其前面部分由数组中不重复的元素组成，下标$nums[i,..,j]$部分是与下标$i$处元素值相同的元素，下标$j$指向的当前遍历到的元素；
    
-3. 如果下标$j$处的值与下标$i$处的值不等，就把下标$j$的值复制到下标$i+1$处，然后下标$i$和下标$j$分别向后移动一位，过程如下：
+3. 如果下标$j$处的值与下标$i$处的值不等，就把下标$j$的值复制到下标$i+1$处，然后下标$i$和下标$j$分别向后移动一位，动图展示的过程如下[^5]：
 
    <img src='./src/main/resources/pictures/question_26.gif' align='middle' width='500'>
 
@@ -585,12 +585,12 @@ public int lengthOfLongestSubstring(String s) {
 
 ## Z.参考文献
 
-[^1]: 软件开发方法发展回顾与展望：http://www.jos.org.cn/jos/ch/reader/view_abstract.aspx?flag=1&file_no=5650&journal_id=jos
-[^2]: 写给期待年薪百万的IT同学：https://mp.weixin.qq.com/s/KKFH_avd8vdtTcvQTAD-lg
+[^1]: [软件开发方法发展回顾与展望](http://www.jos.org.cn/jos/ch/reader/view_abstract.aspx?flag=1&file_no=5650&journal_id=jos)
+[^2]: [写给期待年薪百万的IT同学](https://mp.weixin.qq.com/s/KKFH_avd8vdtTcvQTAD-lg)
 
-[^3]: 如何全方位的准备数据结构和算法？：https://mp.weixin.qq.com/s/6BuXwpEwCy85jYGKlRpOGA
-
-
+[^3]: [如何全方位的准备数据结构和算法？](https://mp.weixin.qq.com/s/6BuXwpEwCy85jYGKlRpOGA)
+[^4]: [leetcode题解](https://github.com/azl397985856/leetcode)
+[^5]: [LeetCodeAnimation](https://github.com/MisterBooo/LeetCodeAnimation)
 
 
 
