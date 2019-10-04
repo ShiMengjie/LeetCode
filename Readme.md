@@ -6,6 +6,8 @@
 
 ## 前言
 
+<img src='./src/main/resources/pictures/Pic.png' align='middle' width='500'>
+
 文献[^1]提出`软件是人脑力的替代,若把软件比拟为人,则开发方法的思维模式可比拟为软件系统的“世界观”和“方法论”`，另外，文章[^2]提出`语言只是实现逻辑的一种工具，核心能力是逻辑本身，...，核心竞能力跟语言其实没有多大的关系`。
 
 从这两篇文章可以得出：**软件开发的关键，不在于语言的具体形式，而是业务应用场景所需的核心技术，背后则是开发的思维逻辑**。前者不同的应用场景有所不同，在抽象层次上，后者都是相通的。
@@ -458,9 +460,71 @@ public int removeDuplicates(int[] nums) {
 >
 > The order of elements can be changed. It doesn't matter what you leave beyond the new length.
 
+**Example 1:**
+
+```
+Given nums = [3,2,2,3], val = 3,
+Your function should return length = 2, with the first two elements of nums being 2.
+It doesn't matter what you leave beyond the returned length.
+```
+
+**Example 2:**
+
+```
+Given nums = [0,1,2,2,3,0,4,2], val = 2,
+Your function should return length = 5, with the first five elements of nums containing 0, 1, 3, 0, and 4.
+Note that the order of those five elements can be arbitrary.
+It doesn't matter what values are set beyond the returned length.
+```
+
+**理解与思路：**
+
+1. 给一个数组nums 和数值val，要求从数组中去除和val相同的元素，返回最后数组的长度newLength,，且要求nums[0,...,newLenth-1]的范围内没有与val相等的元素。
+2. 和[题26](# 26.[Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array))相似，要使用两个下标，分别表示有效的数组范围和正在遍历的数组下标。
+
+**代码实现：**
+
+```java
+public int removeElement(int[] nums, int val) {
+	int i = 0;
+	int j = 1;
+	while (i < nums.length) {
+		if (nums[j] != val) {
+			nums[i++] = nums[j];
+		}
+	}
+	return i;
+}
+```
+
+### 31.[Next Permutation](https://leetcode.com/problems/next-permutation)
+
+> Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
+>
+> If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).The replacement must be in-place, do not allocate extra memory.
+>
+> Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
+>
+> 1,2,3  →  1,3,2
+>
+> 3,2,1  →  1,2,3
+>
+> 1,1,5  →  1,5,1
+
+**理解和思路：**
+
+1. 输入一个数组序列，返回它在字典序列中的下一个序列，如果没有，就返回字典序中的第一个序列，不能使用额外的空间。
+2. 
+
+
+
 <p style="color: rgb(0, 204, 204); text-align: right;">
   <a href="#LeetCode - 题解">top⬆</a>
 </p>
+
+
+
+
 
 
 
