@@ -1,22 +1,10 @@
 package com.leetcode.solution.array;
 
-import org.junit.Test;
-
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class Question_015 {
-    @Test
-    public void test() {
-
-        int[] nums = {-1, 0, 1, 2, -1, -4};
-        List<List<Integer>> result = threeSum(nums);
-        System.out.printf("==========");
-
-    }
 
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
