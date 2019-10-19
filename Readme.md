@@ -4,6 +4,8 @@
 
 
 
+
+
 ## 前言
 
 <img src='./src/main/resources/pictures/Pic.png' align='middle' width='500'>
@@ -18,7 +20,9 @@
 
 ## 数组
 
-### 1.[Two Sum](https://leetcode.com/problems/two-sum)
+### 1.Two Sum
+
+[原题](https://leetcode.com/problems/two-sum)
 
 > Given an array of integers, return **indices** of the two numbers such that they add up to a specific target. You may assume that each input would have ***exactly*** one solution, and you may not use the *same* element twice.
 
@@ -67,7 +71,9 @@ public static int[] twoSum(int[] nums, int target) {
 }
 ```
 
-### 11.[Container With Most Water](https://leetcode.com/problems/container-with-most-water)
+### 11.Container With Most Water
+
+[原题](https://leetcode.com/problems/container-with-most-water)
 
 > Given *n* non-negative integers *a1*, *a2*, ..., *an* , where each represents a point at coordinate (*i*, *ai*). *n* vertical lines are drawn such that the two endpoints of line *i* is at (*i*, *ai*) and (*i*, 0). Find two lines, which together with x-axis forms a container, such that the container contains the most water.
 >
@@ -112,7 +118,9 @@ public static int maxArea(int[] nums) {
 }
 ```
 
-### 15.[3Sum](https://leetcode.com/problems/3sum)
+### 15.3Sum
+
+[原题](https://leetcode.com/problems/3sum)
 
 > Given an array nums of *n* integers, are there elements *a*, *b*, *c* in nums such that *a* + *b* + *c* = 0? Find all unique triplets in the array which gives the sum of zero.
 >
@@ -247,7 +255,9 @@ private int binarySearch(int[] a, int i, int j, int key) {
 
 后来仔细想了一下才发现原因：方法1在内部循环的时候，可以同时确定2个数B和C，复杂度是$O(n^2)$，而方法2需要先确定B，再使用二分查找确定C，复杂度是$o(n^2*logn)$，所以效率比方法1更低。
 
-### 16.[3Sum Closest](https://leetcode.com/problems/3sum-closest)
+### 16.3Sum Closest
+
+[原题](https://leetcode.com/problems/3sum-closest)
 
 > Given an array `nums` of *n* integers and an integer `target`, find three integers in `nums` such that the sum is closest to `target`. Return the sum of the three integers. You may assume that each input would have exactly one solution.
 
@@ -302,7 +312,9 @@ public int threeSumClosest(int[] nums, int target) {
 }
 ```
 
-### 18.[4Sum](https://leetcode.com/problems/4sum)
+### 18.4Sum
+
+[原题](https://leetcode.com/problems/4sum)
 
 > Given an array `nums` of *n* integers and an integer `target`, are there elements *a*, *b*, *c*, and *d* in `nums` such that *a* + *b* + *c* + *d* = `target`? Find all unique quadruplets in the array which gives the sum of `target`.
 >
@@ -394,7 +406,9 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 }
 ```
 
-### 26.[Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array)
+### 26.Remove Duplicates from Sorted Array
+
+[原题](https://leetcode.com/problems/remove-duplicates-from-sorted-array)
 
 > Given a sorted array *nums*, remove the duplicates [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) such that each element appear only *once* and return the new length.
 >
@@ -452,7 +466,9 @@ public int removeDuplicates(int[] nums) {
 }
 ```
 
-### 27.[Remove Element](https://leetcode.com/problems/remove-element)
+### 27.Remove Element
+
+[原题](https://leetcode.com/problems/remove-element)
 
 > Given an array *nums* and a value *val*, remove all instances of that value [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) and return the new length.
 >
@@ -497,7 +513,9 @@ public int removeElement(int[] nums, int val) {
 }
 ```
 
-### 31.[Next Permutation](https://leetcode.com/problems/next-permutation)
+### 31.Next Permutation
+
+[原题](https://leetcode.com/problems/next-permutation)
 
 > Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
 >
@@ -570,6 +588,90 @@ private void swap(int[] nums, int idx1, int idx2) {
 	nums[idx2] = tmp;
 }
 ```
+
+这一方法应用：在某些场景下，需要使用固定的一些字符，生成不同的序列，可以使用该方法依次生成每个用户的序列作为id。
+
+### 33. Search in Rotated Sorted Array
+
+[原题](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+
+> Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+>
+> (i.e., `[0,1,2,4,5,6,7]` might become `[4,5,6,7,0,1,2]`).
+>
+> You are given a target value to search. If found in the array return its index, otherwise return `-1`.
+>
+> You may assume no duplicate exists in the array.
+>
+> Your algorithm's runtime complexity must be in the order of *O*(log *n*).
+
+**Example 1:**
+
+```java
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+```
+
+**Example 2:**
+
+```java
+Input: nums = [4,5,6,7,0,1,2], target = 3
+Output: -1
+```
+
+**理解和思路：**
+
+1. 有序数组被旋转后，依然是由两个有序数组组成，如下图所示：
+
+   <img src='./src/main/resources/pictures/question_33.jpg' align='middle' width='400'>
+
+   $nums[left,...,N]$和$nums[N+1,...,right]$都是两个正序的子数组，要查找目标值$target$在数组中的下标，首先要确定的是$target$在哪一个子数组中。
+
+2. 如果$target =< nums[right]$，$target$在第二个子数组中，可以确定搜索范围右边界，但是无法确定左边界；如果$target > nums[right]$，$target$在第一个子数组中，可以确定搜索范围的左边界，无法确定右边界。我们需要确定一个参数，组成完整的搜索范围。在二分查找中，使用中间下标$mid = (left + right) / 2$，来判断搜索范围的边界，同理，我们在这里也使用中间下标$mid = (left + right) / 2$，但是要额外判断$nums[mid]$属于哪一个子数组。
+
+3. 如果$nums[mid] < nums[right]$，说明中间元素在第二个子数组，反之在第一个子数组。通过比较$target$与$nums[mid]$的大小关系，来确定搜索的范围：
+
+   * $nums[mid] < nums[right]$：中间元素在第二个子数组
+     * 如果$nums[mid] < target$且$target <=  nums[right]$，那么在$nums[mid+1,right]$范围内进行二分搜索
+     * 如果上面的条件不成立（$nums[mid] >= target$或$target>  nums[right]$，那么搜索范围变成$nums[left,mid-1]$
+   
+   * $nums[mid] >= nums[right]$：中间元素在第一个子数组
+     * 如果$nums[left] <= nums[target]$且$target <  nums[mid]$，那么在$nums[left,mid-1]$范围内进行二分搜索
+     * 如果上面的条件不成立（$nums[left] > target$或$target >=  nums[mid]$，那么搜索范围变成$nums[mid+1,right]$
+
+**代码实现：**
+
+```java
+public int search(int[] nums, int target) {
+	if (nums == null || nums.length == 0)
+		return -1;
+
+	int left = 0, right = nums.length - 1;
+
+	while (left <= right) {
+		int mid = (right - left) / 2 + left;
+		if (nums[mid] == target) {
+			return mid;
+		}
+		if (nums[mid] < nums[right]) {
+			if (nums[mid] < target && target <= nums[right]) {
+				left = mid + 1;
+			} else {
+				right = mid - 1;
+			}
+		} else {
+			if (nums[left] <= target && target < nums[mid]) {
+				right = mid - 1;
+			} else {
+				left = mid + 1;
+			}
+		}
+	}
+	return -1;
+}
+```
+
+
 
 
 
