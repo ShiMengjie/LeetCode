@@ -6,5 +6,5 @@
 
 
 
-### [1、Two Sum](.\Q_001.md)
+### [1、Two Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_001.md)
 
