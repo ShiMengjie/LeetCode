@@ -8,9 +8,9 @@
 
 ## Array
 
-#### [001、Two Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_001.md)
+#### [001. Two Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_001.md)
 
-#### [004、Median of Two Sorted Arrays](https://github.com/ShiMengjie/LeetCode/blob/master/Q_004.md)
+#### [004. Median of Two Sorted Arrays](https://github.com/ShiMengjie/LeetCode/blob/master/Q_004.md)
 
 #### [0011. Container With Most Water](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0011.md)
 
