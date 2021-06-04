@@ -1,4 +1,4 @@
-<img src=".\pictures\Pic.png"  />
+![](https://github.com/ShiMengjie/LeetCode/blob/master/pictures/Pic.png)
 
 做算法题就是通过解决一个问题来锻炼解决问题的思维和能力，解决问题的基本思维是什么？
 
