@@ -20,5 +20,9 @@
 
 #### [0018. 4Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0018.md)
 
-#### [0026. Remove Duplicates from Sorted Array](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0026.md)
+#### [0026. Remove Duplicates from Sorted Arra](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0026.md)
+
+#### [0027. Remove Element](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0027.md)
+
+#### [0031. Next Permutation](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0031.md)
 
