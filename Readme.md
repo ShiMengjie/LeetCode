@@ -16,3 +16,9 @@
 
 #### [0015. 3Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0015.md)
 
+#### [0016. 3Sum Closest](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0016.md)
+
+#### [0018. 4Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0018.md)
+
+#### [0026. Remove Duplicates from Sorted Array](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0026.md)
+
