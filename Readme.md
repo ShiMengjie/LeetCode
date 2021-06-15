@@ -107,8 +107,6 @@
 
 ## 题解
 
-### Array
-
 #### [001. Two Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_001.md)
 
 #### [004. Median of Two Sorted Arrays](https://github.com/ShiMengjie/LeetCode/blob/master/Q_004.md)
@@ -128,6 +126,8 @@
 #### [0031. Next Permutation](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0031.md)
 
 #### [0031. Search in Rotated Sorted Array](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0033.md)
+
+#### [0039. 组合总和](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0039.md)
 
 ## 必读文章
 
