@@ -1,10 +1,12 @@
-![](https://github.com/ShiMengjie/LeetCode/blob/master/pictures/Pic.png)
+![wallhaven-p8xjop](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//imgwallhaven-p8xjop.jpg)
 
-做算法题目的是锻炼解决问题的思维和能力，解决问题的基本思维是什么？
+## 想法
+
+思考问题这个能力是需要锻炼的，坚持做算法题事锻炼思考问题能力的一种途径。解决问题的基本思维是什么？
 
 1、把问题不断分解，分解成多个自己会的小问题，依次去解决这些小问题
 
-2、对于约束条件比较多的问题，可以先从一般性考虑，然后再不断增加条件，逐渐复杂化。
+2、把复杂问题简单化，先从一般性考虑，然后再不断增加条件，逐渐复杂化
 
 ## 做题策略
 
@@ -103,33 +105,18 @@
 
 3、每个阶段结束，进入下个阶段之前，要休息一段时间，彻底理解上个阶段的内容后再开始，禁止不加思考地进入下个阶段
 
-
-
 ## 题解
 
-#### [001. Two Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_001.md)
+为什么要写每道题的题解？
 
-#### [004. Median of Two Sorted Arrays](https://github.com/ShiMengjie/LeetCode/blob/master/Q_004.md)
+`必读文章3`介绍了为什么要写博客，写题解的原因和目的与文中内容是一脉相承的，题解是向别人讲述怎么解决一个问题，通过输出来加强学习，并且能够给自己带来额外价值。
 
-#### [0011. Container With Most Water](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0011.md)
-
-#### [0015. 3Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0015.md)
-
-#### [0016. 3Sum Closest](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0016.md)
-
-#### [0018. 4Sum](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0018.md)
-
-#### [0026. Remove Duplicates from Sorted Array](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0026.md)
-
-#### [0027. Remove Element](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0027.md)
-
-#### [0031. Next Permutation](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0031.md)
-
-#### [0031. Search in Rotated Sorted Array](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0033.md)
-
-#### [0039. 组合总和](https://github.com/ShiMengjie/LeetCode/blob/master/Q_0039.md)
+![img](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img640)
 
 ## 必读文章
 
 1、[如何有效地做算法题](https://www.cnblogs.com/sskyy/p/8268976.html)
 
+2、[短视频时代，仍在做图文的我还有救吗？](https://mp.weixin.qq.com/s/fbCIQH2sXzg1RFc4HkVSwg)
+
+3、[2021 写博客指南·万字长文警告](https://mp.weixin.qq.com/s/M6SBXKAMxMoHmzUzCPXiXQ)
