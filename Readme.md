@@ -120,3 +120,37 @@
 2、[短视频时代，仍在做图文的我还有救吗？](https://mp.weixin.qq.com/s/fbCIQH2sXzg1RFc4HkVSwg)
 
 3、[2021 写博客指南·万字长文警告](https://mp.weixin.qq.com/s/M6SBXKAMxMoHmzUzCPXiXQ)
+
+## 电子书下载
+
+《计算机网络：自顶向下方法-第6版》
+
+链接：https://pan.baidu.com/s/1F0Hf8413krT_CmdT0GjnGw 
+提取码：i5fc 
+
+《设计模式：可复用面向对象软件的基础》
+
+链接：https://pan.baidu.com/s/1hEbtjyOhwbKJUbL6ebuqAQ 
+提取码：9tkz 
+
+《深入理解计算机系统-第3版》
+
+链接：https://pan.baidu.com/s/1AA240qGHTZfqzdkoJxDfbA 
+提取码：c5uu 
+
+《算法导论-第2版》
+
+链接：https://pan.baidu.com/s/1FNFY53OcBWKFNKfuipz2_g 
+提取码：slf8 
+
+《算法-第4版》
+
+链接：https://pan.baidu.com/s/1OVQD5sCnomigLtuj8_t_qA 
+提取码：tc1g 
+
+
+
+《现代操作系统-第4版》
+
+链接：https://pan.baidu.com/s/1RG0-Lr9iNBYdRN7linbkhw 
+提取码：1v0v 
