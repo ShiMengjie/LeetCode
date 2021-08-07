@@ -25,8 +25,9 @@
 ```
 
 <div align=center>
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.gif"/>
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640.gif"/>
 </div>
+
 
 # 分析阶段
 
@@ -76,7 +77,9 @@ $$
 
 ![image-20210728233525903](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210728233525903.png)
 
-![image-20210728233525903](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.gif)
+<div align=center>
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640.gif"/>
+</div>
 
 ### 官方题解
 
@@ -93,7 +96,11 @@ $$
 * 在到达 end 之前，在途中下标 $i$ 处加了一次油，到了 end 不需要加油，加油次数也要加1，这个算的是下标 $i$ 处的那一次加油，并且 end 变成 maxPosition，表示在下标 $i$ 处加油后能够到达 maxPosition
 * 越过第一个 end 之后，汽车重复前面步骤，最终到达终点
 
-代码实现在“编码阶段-官方题解”部分。
+代码实现在“编码阶段-官方题解”部分。视频演示如下：
+
+<video id="video" controls="" preload="none">       
+    <source id="mp4" src="https://gameacademy.v.netease.com/2021/0807/718a4f4869ecece017d98c3c5523756dqt.mp4" type="video/mp4">
+</video>
 
 <div align=center>
 <img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640.png"/>
