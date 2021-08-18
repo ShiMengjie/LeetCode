@@ -1,5 +1,7 @@
 # LeetCode-二叉树遍历
 
+一颗二叉树的唯一入口，就是它的根节点；在遍历到某个节点时，要考虑怎么记录它的前置节点（父节点、兄弟节点）。
+
 ## [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
 
 <img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817191420071.png" alt="image-20210817191420071" style="zoom:80%;" />
@@ -160,7 +162,7 @@ class Solution {
                 root.left = null;
                 root = tmp;
             }
-            // 把最后一个节点取出，如果没有子节点，就添加到列表中
+            // 把最后一个节点取出，如果没有子节点（叶子结点），就添加到列表中
             TreeNode node = stack.pop();
             if (node.left == null && node.right == null) {
                 list.add(node.val);
@@ -175,4 +177,57 @@ class Solution {
 ```
 
 ## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+
+### 递归版本
+
+
+
+### 迭代版本
+
+当遍历到左子节点时，父节点已经遍历过了，并且已经添加进列表中了；当遍历到右子节点时，父节点、左子节点都已经遍历过且添加进列表中了。需要用一个先进先出的结构（队列）来临时保存节点，把父节点、左节点、右节点依次添加进去，并按次序从队列取出。
+
+每一次迭代，都对应这树的某一层，当迭代开始时，队列的大小就是当前层次的节点数。
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<List<Integer>> res = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            // 队列中剩余的节点数，就是当前层的节点数
+            int size = queue.size();
+            List<Integer> subList = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                subList.add(node.val);
+            }
+            res.add(subList);
+        }
+        return res;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
