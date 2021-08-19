@@ -178,10 +178,6 @@ class Solution {
 
 ## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
-### 递归版本
-
-
-
 ### 迭代版本
 
 当遍历到左子节点时，父节点已经遍历过了，并且已经添加进列表中了；当遍历到右子节点时，父节点、左子节点都已经遍历过且添加进列表中了。需要用一个先进先出的结构（队列）来临时保存节点，把父节点、左节点、右节点依次添加进去，并按次序从队列取出。
@@ -219,7 +215,31 @@ class Solution {
 }
 ```
 
+## [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
+
+
+
+
+
+
+## [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+
+
+## [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+
+
+## [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+
+
+## [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+
+
+
+## [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
 
 
 
