@@ -178,8 +178,6 @@ class Solution {
 
 ## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
-### 迭代版本
-
 当遍历到左子节点时，父节点已经遍历过了，并且已经添加进列表中了；当遍历到右子节点时，父节点、左子节点都已经遍历过且添加进列表中了。需要用一个先进先出的结构（队列）来临时保存节点，把父节点、左节点、右节点依次添加进去，并按次序从队列取出。
 
 每一次迭代，都对应这树的某一层，当迭代开始时，队列的大小就是当前层次的节点数。
@@ -217,13 +215,82 @@ class Solution {
 
 ## [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
+这个问题与“102”相同，只不过在返回时，把102的结果倒序，或者在每次遍历插入数据时，把数据插入到结果类表的头部。
 
+```java
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<List<Integer>> res = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.offer(root);
 
-
-
-
+        while (!queue.isEmpty()) {
+            // 队列中剩余的节点数，就是当前层的节点数
+            int size = queue.size();
+            List<Integer> subList = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                subList.add(node.val);
+            }
+            res.add(0, subList);
+        }
+        return res;
+    }
+}
+```
 
 ## [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+```java
+public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    if (root == null) {
+        return new ArrayList<>();
+    }
+    List<List<Integer>> res = new LinkedList<>();
+    Queue<TreeNode> queue = new ArrayDeque<>();
+    queue.add(root);
+    // flag == true 表示从左向右，flag == false 表示从右向左
+    boolean flag = true;
+    while (!queue.isEmpty()) {
+        // 按照正常的层序遍历，把节点添加进队列中
+        int size = queue.size();
+        List<TreeNode> nodeList = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            TreeNode node = queue.poll();
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
+            }
+            // 把当前节点保存进临时列表中
+            nodeList.add(node);
+        }
+        // 如果需要翻转，翻转临时列表
+        if (!flag) {
+            Collections.reverse(nodeList);
+        }
+        // 翻转标志
+        flag = !flag;
+        // 把临时列表中节点的值，依次添加进子列表中
+        List<Integer> subList = new ArrayList<>();
+        for (TreeNode node : nodeList) {
+            subList.add(node.val);
+        }
+        res.add(subList);
+    }
+    return res;
+}
+```
 
 
 
