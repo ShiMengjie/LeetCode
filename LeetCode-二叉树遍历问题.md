@@ -251,56 +251,159 @@ class Solution {
 ## [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
 
 ```java
-public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-    if (root == null) {
-        return new ArrayList<>();
-    }
-    List<List<Integer>> res = new LinkedList<>();
-    Queue<TreeNode> queue = new ArrayDeque<>();
-    queue.add(root);
-    // flag == true 表示从左向右，flag == false 表示从右向左
-    boolean flag = true;
-    while (!queue.isEmpty()) {
-        // 按照正常的层序遍历，把节点添加进队列中
-        int size = queue.size();
-        List<TreeNode> nodeList = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            TreeNode node = queue.poll();
-            if (node.left != null) {
-                queue.add(node.left);
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<List<Integer>> res = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        // flag == true 表示从左向右，flag == false 表示从右向左
+        boolean flag = true;
+        while (!queue.isEmpty()) {
+            // 按照正常的层序遍历，把节点添加进队列中
+            int size = queue.size();
+            List<TreeNode> nodeList = new ArrayList<>(size);
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+                // 把当前节点保存进临时列表中
+                nodeList.add(node);
             }
-            if (node.right != null) {
-                queue.add(node.right);
+            // 如果需要翻转，翻转临时列表
+            if (!flag) {
+                Collections.reverse(nodeList);
             }
-            // 把当前节点保存进临时列表中
-            nodeList.add(node);
+            // 翻转标志
+            flag = !flag;
+            // 把临时列表中节点的值，依次添加进子列表中
+            List<Integer> subList = new ArrayList<>();
+            for (TreeNode node : nodeList) {
+                subList.add(node.val);
+            }
+            res.add(subList);
         }
-        // 如果需要翻转，翻转临时列表
-        if (!flag) {
-            Collections.reverse(nodeList);
-        }
-        // 翻转标志
-        flag = !flag;
-        // 把临时列表中节点的值，依次添加进子列表中
-        List<Integer> subList = new ArrayList<>();
-        for (TreeNode node : nodeList) {
-            subList.add(node.val);
-        }
-        res.add(subList);
+        return res;
     }
-    return res;
+}
+```
+
+## [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+前序遍历数组 pre 的第一个元素 pre[0] 是根节点 root，第二个元素 pre[1] 是左子树的根节点；
+
+后续遍历数组 post 的最后一个元素 post[n-1] 是根节点，倒数第二个元素 post[n-2] 是右子树的根节点；如果 pre[1] == post[n-2] 相等，说明根节点 root 只有一颗子树。
+
+假设 post[n-2] 在 pre 数组中的下标为 i，pre[0+1] 在 post 数组中的下标为 j，那么存在如下关系：
+
+* pre[0+1,i-1] 是左子树在 pre 中的范围，pre[i,n-1] 是右子树在 pre 中的范围
+* post[0,j] 是左子树在 post 中的范围，post[j+1,n-2] 是右子树的后序遍历
+
+定义一个递归函数，返回当前树的根节点。
+
+```java
+class Solution {
+    Map<Integer, Integer> preMap, postMap;
+    int[] preorder, postorder;
+
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        this.preMap = getIndexMap(preorder);
+        this.postMap = getIndexMap(postorder);
+        this.preorder = preorder;
+        this.postorder = postorder;
+
+        return recursion(0, preorder.length - 1, 0, preorder.length - 1);
+    }
+
+    /**
+     * 根据前序遍历、后序遍历，递归求解二叉树
+     *
+     * @param ls 树在前序遍历列表中的起始下标
+     * @param le 树在前序遍历列表中的结束下标
+     * @param rs 树在后序遍历列表中的起始下标
+     * @param re 树在后序遍历数组中的结束下标
+     * @return 根节点
+     */
+    private TreeNode recursion(int ls, int le, int rs, int re) {
+        TreeNode root = new TreeNode(preorder[ls]);
+        if (le <= ls) {
+            return root;
+        }
+        // i ： 右子树根节点在 pre 中的下标， j : 左子树根节点在 post 中的下标
+        int i = preMap.get(postorder[re - 1]), j = postMap.get(preorder[ls + 1]);
+        if (preorder[ls + 1] == postorder[re - 1]) {
+            root.left = recursion(ls + 1, le, rs, j);
+        } else {
+            root.left = recursion(ls + 1, i - 1, rs, j);
+            root.right = recursion(i, le, j + 1, re - 1);
+        }
+        return root;
+    }
+
+    private Map<Integer, Integer> getIndexMap(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        return map;
+    }
 }
 ```
 
 
 
-## [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
-
-
-
 ## [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
+前序数组 pre 的第一个元素 pre[0] 是根节点 root，假设 pre[0] 在中序数组 in 中的下标是 i，那么有以下几种情况：
 
+* 如果 i == 0，就说明 root 只有右子树，pre[1,n-1] 是右子树，in[i+1,n-1] 是右子树
+* 如果 i == n- 1，就说明 root 只有左子树，pre[1,n-1] 是左子树，in[0,i-1] 是左子树
+* i为其他值：
+  * 根据前序遍历和中序遍历的规则（中左右、左中右），pre 中左子树的长度等于 in 中左子树的长度，pre 中右子树的长度等于 in 中右子树的长度
+  * 因此，pre[1,i]、in[0,i-1] 是左子树，pre[i+1,n-1]、in[i+1,n-1] 是右子树
+
+```java
+class Solution {
+    Map<Integer, Integer> preMap, inMap;
+    int[] preorder, inorder;
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        this.preorder = preorder;
+        this.inorder = inorder;
+        this.preMap = getIndexMap(preorder);
+        this.inMap = getIndexMap(inorder);
+
+        return recursion(0, preorder.length - 1, 0, inorder.length - 1);
+    }
+
+    private TreeNode recursion(int ls, int le, int rs, int re) {
+        if (ls >= preorder.length || le < ls || re < rs) {
+            return null;
+        }
+        TreeNode root = new TreeNode(preorder[ls]);
+        int i = inMap.get(preorder[ls]);
+        // in 数组中，左子树的长度
+        int l = i - rs;
+        root.left = recursion(ls + 1, ls + l, rs, i - 1);
+        root.right = recursion(ls + l + 1, le, i + 1, re);
+        return root;
+    }
+
+    private Map<Integer, Integer> getIndexMap(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        return map;
+    }
+}
+```
 
 ## [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 
