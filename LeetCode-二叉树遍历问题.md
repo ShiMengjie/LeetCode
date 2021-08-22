@@ -407,6 +407,51 @@ class Solution {
 
 ## [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 
+后序数组 post 的最后一个元素 post[n-1] 是根节点 root，假设 post[n-1] 在中序数组 in 中的下标为 i，那么根据遍历规则，左子树在 in 中的长度为 l = i，可以得到以下信息：
+
+* in[0,i-1] 是左子树的中序遍历，post[0,l-1] 是左子树的后序遍历	
+* in[i+1,n-1] 是右子树的中序遍历，post[l,n-2] 是右子树的后序遍历
+
+```java
+class Solution {
+    Map<Integer, Integer> postMap, inMap;
+    int[] postorder, inorder;
+
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        this.inorder = inorder;
+        this.postorder = postorder;
+        this.inMap = getIndexMap(this.inorder);
+        this.postMap = getIndexMap(this.postorder);
+        return recursion(0, this.inorder.length - 1, 0, this.postorder.length - 1);
+    }
+
+    private TreeNode recursion(int ls, int le, int rs, int re) {
+        // 因为需要在两个数组中寻找元素，所以只要有一个不满足条件，就可以结束递归
+        if (re >= postorder.length || le < ls || re < rs) {
+            return null;
+        }
+        TreeNode root = new TreeNode(postorder[re]);
+        int i = inMap.get(root.val);
+        // 左子树的长度
+        int l = i - ls;
+        root.left = recursion(ls, i - 1, rs, rs + l - 1);
+        root.right = recursion(i + 1, le, rs + l , re - 1);
+        return root;
+    }
+
+    private Map<Integer, Integer> getIndexMap(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        return map;
+    }
+}
+```
+
+## [1028. 从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/)
+
+
 
 
 ## [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
