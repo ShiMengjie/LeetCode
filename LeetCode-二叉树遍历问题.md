@@ -456,6 +456,37 @@ class Solution {
 
 ## [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
 
+在生成前序遍历的过程中，生成链表。
+
+```java
+class Solution {
+    public void flatten(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        if (root != null) {
+            stack.add(root);
+        }
+        TreeNode tmp = null, node = null;
+        while (!stack.isEmpty()) {
+            node = stack.pop();
+            // 先把右节点压进栈中，因为右节点在左节点添加完之后，才会出栈
+            if (node.right != null) {
+                stack.push(node.right);
+            }
+            if (node.left != null) {
+                stack.push(node.left);
+                // 把左指针设置为 null
+                node.left = null;
+            }
+            // 更新 tmp 的指向，如果 tmp 为null，表示当前node 是根节点
+            if (tmp != null) {
+                tmp.right = node;
+            }
+            tmp = node;
+        }
+    }
+}
+```
+
 
 
 
