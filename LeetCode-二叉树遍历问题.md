@@ -451,6 +451,74 @@ class Solution {
 
 ## [1028. 从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/)
 
+```java
+class Solution {
+
+    public TreeNode recoverFromPreorder(String traversal) {
+        // 保存取出的节点，保存进 path 中
+        Stack<TreeNode> path = new Stack<>();
+        int pos = 0;
+        // 遍历的下标不能超过字符串长度
+        while (pos < traversal.length()) {
+            // level ： 当前节点的深度， -- 的长度
+            int level = 0;
+            while (traversal.charAt(pos) == '-') {
+                ++level;
+                ++pos;
+            }
+            // 取出数字
+            int value = 0;
+            while (pos < traversal.length() && Character.isDigit(traversal.charAt(pos))) {
+                value = value * 10 + (traversal.charAt(pos) - '0');
+                ++pos;
+            }
+            // 构造节点
+            TreeNode node = new TreeNode(value);
+            // 根据前序遍历的规则，从 root 一直遍历它的左子节点，所以如果 level == path.size，说明当前节点是它父节点的左节点
+            // 设置当前节点为栈顶节点的左子节点
+            if (level == path.size()) {
+                if (!path.isEmpty()) {
+                    path.peek().left = node;
+                }
+            } else {
+                // 如果 level != path.size，说明当前节点是路径上某个节点的右节点，那么不断地把栈中节点 pop 出，直到 level == path.size
+                // 设置当前节点为栈顶节点的右子节点
+                while (level != path.size()) {
+                    path.pop();
+                }
+                path.peek().right = node;
+            }
+            // 把当前节点 push 到栈顶
+            path.push(node);
+        }
+        // 全部 pop 出，只剩下根节点
+        while (path.size() > 1) {
+            path.pop();
+        }
+        return path.peek();
+    }
+
+    public static class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+}
+```
+
 
 
 
