@@ -21,6 +21,49 @@ class Solution {
 
 ## [264. 丑数 II](https://leetcode-cn.com/problems/ugly-number-ii/)
 
+最简单的方法：从1开始遍历每个数，判断是否是丑数，如果是就添加到结果集中，直到结果集大小为 n。
+
+```java
+class Solution {
+    List<Integer> list;
+
+    public int nthUglyNumber(int n) {
+        // 初始化结果集
+        list = new ArrayList<>(n);
+        list.add(0, 1);
+        list.add(1, 2);
+        list.add(2, 3);
+        list.add(3,4);
+        list.add(4,5);
+
+        int i = 5;
+        int num = 6;
+        while (i < n) {
+            if (isUgly(num)) {
+                list.add(i , num);
+                i++;
+            }
+            num++;
+        }
+        return list.get(n - 1);
+    }
+
+
+    public boolean isUgly(int n) {
+        if (n <= 0) {
+            return false;
+        }
+        for (int i = list.size() - 1; i >= 1; i--) {
+            int tmp = list.get(i);
+            while (n % tmp == 0) {
+                n = n / tmp;
+            }
+        }
+        return n == 1;
+    }
+}
+```
+
 
 
 
