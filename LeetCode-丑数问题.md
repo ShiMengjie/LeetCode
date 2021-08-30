@@ -66,6 +66,71 @@ class Solution {
 
 
 
+去重、排序：
+
+- 去重用哈希
+- 排序用有序堆
+
+
+
+
+
+```java
+class Solution {
+    public int nthUglyNumber(int n) {
+        int[] factors = new int[]{2, 3, 5};
+
+        PriorityQueue<Long> queue = new PriorityQueue<>();
+        Set<Long> set = new HashSet<>();
+
+        queue.add(1L);
+        set.add(1L);
+        long cur = 1;
+        for (int i = 1; i <= n; i++) {
+            cur = queue.poll();
+            for (int factor : factors) {
+                long num = factor * cur;
+                if (set.add(num)) {
+                    queue.add(num);
+                }
+            }
+        }
+        return (int)cur;
+    }
+}
+```
+
+
+
+动态规划
+
+```java
+class Solution {
+    public int nthUglyNumber(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        int p2 = 1, p3 = 1, p5 = 1;
+        for (int i = 2; i <= n; i++) {
+            int num2 = 2 * dp[p2], num3 = 3 * dp[p3], num5 = 5 * dp[p5];
+            int min = Math.min(Math.min(num2, num3), num5);
+            dp[i] = min;
+            if (min == num2) {
+                p2++;
+            }
+            if (min == num3) {
+                p3++;
+            }
+            if (min == num5) {
+                p5++;
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+
+
 
 
 ## [1201. 丑数 III](https://leetcode-cn.com/problems/ugly-number-iii/)
