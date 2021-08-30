@@ -1,19 +1,88 @@
-# LeetCode-二叉树遍历
+# LeetCode-二叉树遍历问题
 
-一颗二叉树的唯一入口，就是它的根节点；在遍历到某个节点时，要考虑怎么记录它的前置节点（父节点、兄弟节点）。
+一些二叉树遍历问题的整理，后续会继续补充：
+
+[144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
+
+[94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+
+[145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
+
+## 前言
+
+定义二叉树的节点类 `TreeNode`：
+
+```java
+public class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode() {
+    }
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+```
+
+在遍历二叉树之前，我们先明确一个事实：
+
+一棵二叉树是从根节点 root 开始，这是它唯一的入口，只能从一个父节点找到它的左右子节点。
+
+因此，当我们遍历到某个节点 node 时，要想继续遍历到它的父节点或兄弟节点，就需要在遍历到 node 节点之前记录下它的父节点或兄弟节点，不同的遍历方式，实际上可以看做是，使用不同的方式记录和取出父节点、兄弟节点。
 
 ## [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
 
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817191420071.png" alt="image-20210817191420071" style="zoom:80%;" />
+> 遍历方式：根-左-右
 
-### 递归版本
+如下图所示，树的入口是根节点 A，遍历顺序如下：
 
-定义函数 pre(list,root) 表示把根节点为 root 的二叉树前序遍历保存进列表 list 中。
+1、遍历根节点 A
 
-root 的左子节点是左子树的根节点，root 的又子节点是右子树的根节点，可以不断递归。
+------
+
+遍历 A 的左子树，B = A.left 作为左子树的根节点，是左子树的入口，遍历顺序如下：
+
+2.1、遍历节点B
+
+2.2、遍历 B 的左子节点 D
+
+2.3、遍历 B 的右子节点 E
+
+------
+
+遍历A的右子树，C = A.right 作为右子树的根节点，是右子树的入口，遍历顺序如下：
+
+3.1、遍历节点 C
+
+3.2、遍历 C 的左子节点 F
+
+3.3、遍历 C 的右子节点 G
+
+![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817191420071.png)
+
+![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
+
+### 递归
+
+从前面的遍历过程可以看出，前序遍历都是先遍历根节点，再遍历左子树，最后遍历右子树，过程相同。因此，可以使用递归函数来实现遍历过程。
+
+定义函数：$pre(list,root)$
+含义：把根节点为 root 的二叉树，以前序遍历的方式保存进列表 list 中，$pre(list,root.letf)、pre(list,root.right)$分别表示遍历root 节点的左子树和右子树。
+
+代码实现如下：
 
 ```java
 class Solution {
+
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
         pre(list, root);
@@ -22,28 +91,67 @@ class Solution {
 
     private void pre(List<Integer> list, TreeNode root) {
         if (root != null) {
+            // 遍历根节点
             list.add(root.val);
+            // 遍历左子树
             pre(list, root.left);
+            // 遍历右子树
             pre(list, root.right);
         }
     }
 }
 ```
 
-### 迭代版本
+### 迭代
 
-当遍历到某个节点时，能知道它的左子节点和右子节点，当左子树的所有节点都添加进列表后，才会开始添加右子树，换句话说“右子节点被**先**遍历到了，但是**后**添加到列表中”，比如上图中，在遍历节点A的时候，已知了节点B和C，但是要把B的子树都添加进列表后再添加C的子树。
+怎么用迭代的方式现实前序遍历？
 
-在遍历到A时，需要一个地方保存B和C的数据，而且要满足：先进后出，所以使用栈临时保存。
+我们回顾一下前面的遍历过程：
+
+- 在“2.3”遍历完节点D后，再遍历它的兄弟节点E
+- 在“3.1”遍历完左子树后，再开始遍历右子树根节点
+- 在“3.3”遍历完节点F后，再遍历它的兄弟节点G
+
+在“前言”部分，我们已经知道，只能在父节点找到左右子节点，不能从子节点找到父节点或兄弟节点。因此，我们在遍历到节点 node 前，要记录下它的兄弟节点。
+
+**在遍历过程中，怎么记录节点？**
+
+从上面树的结构图和遍历结果发现：
+
+- 遍历节点B之前，要记录B的兄弟节点C
+- 遍历节点D之前，要记录D的兄弟节点E
+
+在遍历的结果数组中我们发现：
+
+- 同一层的节点，右子节点比左子节点先记录，但是排在后面，B和C、D和E都是如此
+- 右子树的所有节点，都在左子树节点之后
+
+这种“先进-后出”记录结构，很适合用栈来实现：
+
+- 先 push 右子节点，再 push 左子节点
+- pop 出左子节点后，再 push 左子节点的“右子节点、左子节点”，保证左子树先遍历
+
+代码实现如下：
 
 ```java
 class Solution {
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
-        Stack<TreeNode> stack = new Stack<>();
-        if (root != null) {
-            stack.add(root);
+        if(root == null) {
+            return list;
         }
+        // 根节点先遍历
+        list.add(root.val);
+
+        Stack<TreeNode> stack = new Stack<>();
+        // 依次记录右子节点、左子节点
+        if (root.right != null) {
+            stack.push(root.right);
+        }
+        if (root.left != null) {
+            stack.push(root.left);
+        }
+
         while (!stack.isEmpty()) {
             TreeNode node = stack.pop();
             list.add(node.val);
@@ -62,14 +170,51 @@ class Solution {
 
 ## [94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817192920426.png" alt="image-20210817192920426" style="zoom:80%;" />
+> 遍历方式：左-根-右
 
-### 递归版本
+如下图所示，树的入口是根节点 A，遍历顺序如下：
 
-思路同“前序遍历”
+------
+
+如下图所示，树的入口是根节点 A，遍历顺序如下：
+
+1.1、遍历 B 的左子节点 D
+
+1.2、遍历 B 节点
+
+1.3、遍历 B 右子节点 E
+
+------
+
+2、遍历根节点 A
+
+------
+
+遍历A的右子树，C = A.right 作为右子树的根节点，是右子树的入口，遍历顺序如下：
+
+3.1、遍历 C 的左子节点 F
+
+3.2、遍历节点 C
+
+3.2、遍历 C 右子节点 G
+
+![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817192920426.png)
+
+![image-20210829163341263](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
+
+### 递归
+
+从前面的遍历过程可以看出，终须遍历都是先遍历它的左子树、再遍历根节点、最后遍历右子树，过程相同。因此，可以使用递归函数来实现遍历过程。
+
+定义函数：$inorder(list,root)$
+
+含义：把根节点为 root 的二叉树的中序遍历保存进列表 list 中，$inorder(list,root.letf)、inorder(list,root.right)$分别表示遍历root 节点的左子树和右子树。
+
+代码实现如下：
 
 ```java
 class Solution {
+    
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
         inorder(list, root);
@@ -78,35 +223,53 @@ class Solution {
 
     private void inorder(List<Integer> list, TreeNode root) {
         if (root != null) {
+            // 遍历左子树
             inorder(list, root.left);
+            // 遍历根节点
             list.add(root.val);
+            // 遍历右子树
             inorder(list, root.right);
         }
     }
 }
 ```
 
-### 迭代版本
+### 迭代
 
-当遍历到某个节点时，沿着它的左分支一直遍历，直到 null 为止，同时要把遍历到的节点依次 push 到栈中，这样在把左子节点添加进列表后，能够返回到该节点。比如，当遍历到节点A时，要把A先push到栈里，然后沿着左分支一直遍历，并且把遍历到的节点都push到栈中，然后再从栈中依次 pop 出节点。
+有了前序遍历的迭代经验，我们很容易发现，中序遍历用栈的痕迹更明显：从根节点（父节点）进入，但是根节点（父节点）却排在左子树后面。
 
-当从左节点回退到父节点时，把值添加进列表中，并对右节点重复前面的操作。
+因此，我们可以用一个栈，从根节点开始，不断遍历左子树，把父节点和左子节点都 push 进栈。
+
+
+
+**每个节点的右子树怎么遍历？**
+
+我们知道，要进入右子节点，就要先遍历到它的父节点，所以当我们从栈中 pop 出一个节点 node 时，判断 node 是否有右子节点。如果有右子节点，那么就从 node.right 开始，遍历该右子树。
+
+
+
+代码实现如下：
 
 ```java
 class Solution {
+
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
+        if (root == null) {
+            return list;
+        }
         Stack<TreeNode> stack = new Stack<>();
 
         while (root != null || !stack.isEmpty()) {
+            // 从 root 节点进入，沿着左子树不断遍历，把父节点、左子节点 push 进栈
             while (root != null) {
                 stack.push(root);
                 root = root.left;
             }
-            // 把栈中的最后一个节点 pop 出来，添加进列表中
+            // pop 栈顶节点
             TreeNode node = stack.pop();
             list.add(node.val);
-            // 把右节点赋值给 root，在下一次循环时，执行重复前面的入栈操作
+            // 如果有右子节点，让 root 指向右子树的根节点，在下一次循环时，遍历 node 的右子树
             root = node.right;
         }
         return list;
@@ -116,12 +279,49 @@ class Solution {
 
 ## [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
 
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817200607741.png" alt="image-20210817200607741" style="zoom:80%;" />
+> 遍历方式：左-右-根
 
-### 递归版本
+如下图所示，树的入口是根节点 A，遍历顺序如下：
+
+遍历 A 的左子树，B = A.left 作为左子树的根节点，是左子树的入口，遍历顺序如下：
+
+1.1、遍历 B 的左子节点 D
+
+1.2、遍历 B 的右子节点 E
+
+1.3、遍历节点 B
+
+------
+
+遍历A的右子树，C = A.right 作为右子树的根节点，是右子树的入口，遍历顺序如下：
+
+2.1、遍历 C 的左子节点 F
+
+2.2、遍历 C 的右子节点 G
+
+2.3、遍历节点 C
+
+------
+
+3、遍历根节点A
+
+![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829165839783.png)
+
+![image-20210829170257962](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829170257962.png)
+
+### 递归
+
+从前面的遍历过程可以看出，后序遍历都是先遍历它的左子树、再遍历右子树、最后遍历根节点，过程相同。因此，可以使用递归函数来实现遍历过程。
+
+定义函数：$postOrder(list,root)$
+
+含义：把根节点为 root 的二叉树的中序遍历保存进列表 list 中，$postOrder(list,root.letf)、postOrder(list,root.right)$分别表示遍历root 节点的左子树和右子树。
+
+代码实现如下：
 
 ```java
 class Solution {
+    
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> list = new LinkedList<>();
         postOrder(list, root);
@@ -130,39 +330,69 @@ class Solution {
 
     private void postOrder(List<Integer> list, TreeNode root) {
         if (root != null) {
+            // 遍历左子树
             postOrder(list, root.left);
+            // 遍历右子树
             postOrder(list, root.right);
+            // 遍历根节点
             list.add(root.val);
         }
     }
 }
 ```
 
-### 迭代版本
+### 迭代
 
-因为是先遍历到父节点，但是先添加左节点和右节点，所以用栈保存 父节点、右节点。
+根据前面的经验：从根节点（父节点）进入，但是根节点（父节点）却排在左子树、右子树后面。
+
+
+
+因此，我们用一个栈，从根节点开始，把根节点、右子节点、左子节点，依次 push 进栈中，然后再从栈中依次 pop 出栈顶节点。
+
+
+
+**从栈顶 pop 出节点后，要做什么？**
+
+从后序遍历的规则可以看出，它依次遍历父节点的左子树、右子树、父节点自身。因此，在从栈顶 push 出节点 node 后，要判断 node 是否有子节点：
+
+\- 如果没有子节点，就可以把节点值添加进结果集
+
+\- 如果有子节点，就要把 node 节点作为子树的根节点入口，按照上面的步骤 push 进栈中
+
+
+
+**这样做会有什么问题？**
+
+我们把节点 node 从栈顶 pop 出来后，如果它有子节点，会执行入栈操作。那么当从栈顶再 push 出来时，还会入栈，形成了一个死循环。所以，在入栈后，要把 node 节点的 左右子节点指针 指向 null，避免死循环。
+
+
+
+代码实现如下：
 
 ```java
 class Solution {
+
     public List<Integer> postorderTraversal(TreeNode root) {
+
         List<Integer> list = new LinkedList<>();
         Stack<TreeNode> stack = new Stack<>();
 
         while (root != null || !stack.isEmpty()) {
             while (root != null) {
-                // 把根节点、右节点、左节点依次添加进栈
-                // 如果把子节点添加进栈，就要把子节点的指针设置为 null，这样在后续从栈中取出节点时，不会重复添加
-                // 也表明，如果一个节点左右指针都是 null，要么它是叶子节点，要么它的子节点都已经进栈了，且添加进列表了，可以添加该节点了
+                // 把根节点 push 入栈
                 stack.push(root);
+                // 把右子节点 push 入栈，并把有指针设为 null
                 if (root.right != null) {
                     stack.push(root.right);
                     root.right = null;
                 }
+                // 指向左子节点，在下一个循环时，把左子节点 push 入栈，把左指针设为 null
                 TreeNode tmp = root.left;
                 root.left = null;
                 root = tmp;
             }
-            // 把最后一个节点取出，如果没有子节点（叶子结点），就添加到列表中
+            // pop 出栈顶节点，如果没有子节点，就添加进结果集
+            // 如果一个节点左右指针都是 null，它要么是叶子节点，要么它的子节点都已经进栈了，且添加进列表了，可以把该节点遍历进结果集
             TreeNode node = stack.pop();
             if (node.left == null && node.right == null) {
                 list.add(node.val);
@@ -175,6 +405,12 @@ class Solution {
     }
 }
 ```
+
+
+
+# TODO 
+
+
 
 ## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
