@@ -129,11 +129,55 @@ class Solution {
 }
 ```
 
-
-
-
-
 ## [1201. 丑数 III](https://leetcode-cn.com/problems/ugly-number-iii/)
+
+暴力解法，超时：
+
+```java
+public int nthUglyNumber(int n, int a, int b, int c) {
+
+    int i = 1, idx = 1, res = 0;
+    while (i <= n) {
+        if (idx % a == 0 || idx % b == 0 || idx % c == 0) {
+            i++;
+            res = idx;
+        }
+        idx++;
+    }
+    return res;
+}
+```
+
+二分查找：
+
+```java
+class Solution {
+    public int nthUglyNumber(int n, int a, int b, int c) {
+        long l = 1, r = Integer.MAX_VALUE;
+        long ab = lcm(a,b);
+        long ac = lcm(a,c);
+        long bc = lcm(b,c);
+        long abc = lcm(a,bc);
+
+        while(l < r){
+            long mid = l + r >> 1;
+            long count = mid/a + mid/b + mid/c - mid/ab - mid/ac - mid/bc + mid/abc;
+            if(count >= n) r = mid;
+            else l = mid+1;
+        }
+        return (int)l;
+    }
+
+    private long lcm(long a, long b){
+        return a*b/gcd(a,b);
+    }
+
+    private long gcd(long x, long y){
+        if( x == 0) return y;
+        return gcd(y%x, x);
+    }
+}
+```
 
 
 
