@@ -1,6 +1,4 @@
-# LeetCode-打家劫舍系列问题
-
-![image-20210816091443234](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210816091443234.png)
+# LeetCode-打家劫舍问题
 
 ## [198. 打家劫舍](https://leetcode-cn.com/problems/house-robber/)
 
