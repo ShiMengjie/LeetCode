@@ -182,3 +182,60 @@ class Solution {
 
 
 ## [313. 超级丑数](https://leetcode-cn.com/problems/super-ugly-number/)
+
+模仿“丑数2”的解法，但是超时：
+
+```java
+public int nthSuperUglyNumber(int n, int[] primes) {
+
+    PriorityQueue<Long> queue = new PriorityQueue<>();
+    Set<Long> set = new HashSet<>();
+
+    queue.add(1L);
+    set.add(1L);
+    long cur = 1;
+    for (int i = 1; i <= n; i++) {
+        cur = queue.poll();
+        for (int factor : primes) {
+            long num = factor * cur;
+            if (set.add(num)) {
+                queue.add(num);
+            }
+        }
+    }
+    return (int) cur;
+}
+```
+
+
+
+
+
+指针和动态规划：
+
+```java
+class Solution {
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] dp = new int[n], point = new int[primes.length], tmp = new int[primes.length];
+        dp[0] = 1;
+        Arrays.fill(point, 1);
+        Arrays.fill(tmp, -1);
+
+        for (int i = 2; i <= n; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int j = 0; j < primes.length; j++) {
+                tmp[j] = dp[point[j] - 1] * primes[j];
+                min = Math.min(tmp[j], min);
+            }
+            dp[i - 1] = min;
+            for (int j = 0; j < tmp.length; j++) {
+                if (min == tmp[j]) {
+                    point[j]++;
+                }
+            }
+        }
+        return dp[n - 1];
+    }
+}
+```
+
