@@ -1,4 +1,4 @@
-# LeetCode—链表问题
+# LeetCode—第K个数问题
 
 
 
@@ -55,4 +55,21 @@ class Solution {
 ## [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/)
 
 相同的问题：[删除链表的倒数第 n 个结点](https://leetcode-cn.com/problems/SLwz0R/)
+
+
+
+
+
+## [215. 数组中的第K个最大元素](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
+
+如果输入是整个数组，那么用一个效率比较高的排序算法，然后取第K个元素；如果数组中的元素是依次给的，那么用堆排序更高效，每新增一个元素的复杂度是 log n。
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        Arrays.sort(nums);
+        return nums[nums.length - k];
+    }
+}
+```
 
