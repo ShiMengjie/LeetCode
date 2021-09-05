@@ -8,6 +8,12 @@
 
 [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
 
+[102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+
+[107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
+
+[103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
 ## 前言
 
 定义二叉树的节点类 `TreeNode`：
@@ -406,20 +412,92 @@ class Solution {
 }
 ```
 
-
-
-# TODO 
-
-
-
 ## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
-当遍历到左子节点时，父节点已经遍历过了，并且已经添加进列表中了；当遍历到右子节点时，父节点、左子节点都已经遍历过且添加进列表中了。需要用一个先进先出的结构（队列）来临时保存节点，把父节点、左节点、右节点依次添加进去，并按次序从队列取出。
+> 遍历方式：逐层遍历整棵数，同层节点从左向右遍历
 
-每一次迭代，都对应这树的某一层，当迭代开始时，队列的大小就是当前层次的节点数。
+如下图所示，树的入口是根节点 A，遍历顺序如下：
+
+1、遍历根节点A
+
+------
+
+遍历 A 的两个子节点，遍历顺序如下：
+
+2.1、遍历左子节点 B
+
+2.2、遍历右子节点 C
+
+------
+
+遍历 B 和 C 的两个两个子节点，遍历顺序如下：
+
+3.1、遍历 B 的左子节点 D
+
+3.2、遍历 B 的右子节点 E
+
+3.3、遍历 C 的左子节点 F
+
+3.4、遍历 C 的右子节点 G
+
+![Snipaste_2021-09-05_16-44-29](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/Snipaste_2021-09-05_16-44-29.gif)
+
+我们只能从根节点进入一棵树。
+
+在层序遍历结果中，根节点（父节点）排在它的左右子节点的前面，因此和前面不同的是，我们需要使用一个先进先出的队列，把父节点、左子节点、右子节点依次添加进队列，再依次从队列取出。
+
+代码实现如下：
 
 ```java
 class Solution {
+
+    public List<Integer> levelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+        List<Integer> res = new LinkedList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        // 把父节点添加进队列
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode node = queue.poll();
+            // 把左子节点添加进队列
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            // 把右子节点添加进队列
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+            // 把父节点值添加进列表
+            res.add(node.val);
+        }
+        return res;
+    }
+}
+```
+
+------
+
+然而，问题要求把二叉树中每一层的所有节点添加进一个列表。这就要求，我们在遍历某一层节点时，知道该层有多少个节点，遍历完这一层所有节点后，再遍历下一层。
+
+**怎么知道某一层有多少个节点？**
+
+从前面的图片和代码我们可以发现，当遍历某一层节点时：
+
+- 当遍历这一层最左边的节点时，才开始在队列中添加下一层的节点
+
+- 当遍历完这一层最右边的节点时，下一层的节点添加完毕
+
+因此，我们在遍历某一层最左边节点时，队列中的节点数就是这一层的节点数，我们取出这一层的节点数后，取出相同数量的节点数后，队列中剩余的节点就是下一层的节点数。
+
+
+代码实现如下：
+
+```java
+class Solution {
+
     public List<List<Integer>> levelOrder(TreeNode root) {
         if (root == null) {
             return new ArrayList<>();
@@ -431,6 +509,7 @@ class Solution {
         while (!queue.isEmpty()) {
             // 队列中剩余的节点数，就是当前层的节点数
             int size = queue.size();
+            // 取出当前层的节点，并把下一层节点添加进队列
             List<Integer> subList = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
@@ -449,12 +528,15 @@ class Solution {
 }
 ```
 
-## [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
+### [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
-这个问题与“102”相同，只不过在返回时，把102的结果倒序，或者在每次遍历插入数据时，把数据插入到结果类表的头部。
+该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 相同，在把每一层子节点列表添加进结果列表时，添加到结果列表的头部。
+
+代码实现如下：
 
 ```java
 class Solution {
+
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
         if (root == null) {
             return new ArrayList<>();
@@ -464,7 +546,6 @@ class Solution {
         queue.offer(root);
 
         while (!queue.isEmpty()) {
-            // 队列中剩余的节点数，就是当前层的节点数
             int size = queue.size();
             List<Integer> subList = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
@@ -477,6 +558,7 @@ class Solution {
                 }
                 subList.add(node.val);
             }
+            // 把这一层的节点列表，添加到结果哦列表的头部
             res.add(0, subList);
         }
         return res;
@@ -484,10 +566,15 @@ class Solution {
 }
 ```
 
-## [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+### [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+同样是层序遍历，只不过在遍历过程中，要每隔一层就要翻转一次节点列表。可以使用一个标志位来表示是否要翻转，并在每一层遍历后修改标志位。
+
+代码实现如下：
 
 ```java
 class Solution {
+
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         if (root == null) {
             return new ArrayList<>();
@@ -498,7 +585,7 @@ class Solution {
         // flag == true 表示从左向右，flag == false 表示从右向左
         boolean flag = true;
         while (!queue.isEmpty()) {
-            // 按照正常的层序遍历，把节点添加进队列中
+            // 正常的层序遍历
             int size = queue.size();
             List<TreeNode> nodeList = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
@@ -512,23 +599,28 @@ class Solution {
                 // 把当前节点保存进临时列表中
                 nodeList.add(node);
             }
+
             // 如果需要翻转，翻转临时列表
             if (!flag) {
                 Collections.reverse(nodeList);
             }
-            // 翻转标志
+            // 修改翻转标志
             flag = !flag;
-            // 把临时列表中节点的值，依次添加进子列表中
-            List<Integer> subList = new ArrayList<>();
-            for (TreeNode node : nodeList) {
-                subList.add(node.val);
-            }
-            res.add(subList);
+            // 把临时列表中节点的值转换成列表，依次添加进子列表中
+            res.add(nodeList.stream().map(o -> o.val).collect(Collectors.toList()));
         }
         return res;
     }
 }
 ```
+
+
+
+
+
+# TODO 
+
+
 
 ## [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
 
@@ -797,7 +889,11 @@ class Solution {
 
 
 
+## 相似问题
 
+[589. N 叉树的前序遍历](https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/)
+
+[590. N 叉树的后序遍历](https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/)
 
 
 
