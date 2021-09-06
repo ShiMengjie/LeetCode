@@ -1,5 +1,13 @@
 # LeetCode-跳跃游戏问题
 
+LeetCode的跳跃游戏相关问题题解整理，问题列表：
+
+[55. 跳跃游戏](https://leetcode-cn.com/problems/jump-game/)
+
+
+
+
+
 ## [55. 跳跃游戏](https://leetcode-cn.com/problems/jump-game/)
 
 
