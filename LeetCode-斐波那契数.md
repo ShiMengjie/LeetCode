@@ -1,4 +1,4 @@
-# LeetCode-斐波拉切数
+# LeetCode-斐波那契数
 
 ## [509. 斐波那契数](https://leetcode-cn.com/problems/fibonacci-number/)
 
@@ -27,8 +27,6 @@ class Solution {
 
 
 
-
-
 ## [1137. 第 N 个泰波那契数](https://leetcode-cn.com/problems/n-th-tribonacci-number/)
 
 ```java
@@ -50,4 +48,20 @@ class Solution {
     }
 }
 ```
+
+## [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
+
+
+
+## [746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
+
+
+
+## [842. 将数组拆分成斐波那契序列](https://leetcode-cn.com/problems/split-array-into-fibonacci-sequence/)
+
+
+
+## [873. 最长的斐波那契子序列的长度](https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/)
+
+
 
