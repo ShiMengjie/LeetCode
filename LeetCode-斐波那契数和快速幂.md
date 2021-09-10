@@ -18,6 +18,8 @@ LeetCode 上有几道斐波那契数相关的问题，这类问题一般使用�
 
 [50. Pow(x, n)](https://leetcode-cn.com/problems/powx-n/)
 
+[372. 超级次方](https://leetcode-cn.com/problems/super-pow/)
+
 ## 动态规划求解
 
 ### [509. 斐波那契数](https://leetcode-cn.com/problems/fibonacci-number/)
@@ -155,7 +157,11 @@ class Solution {
 
 ## 快速幂
 
-### 方法介绍
+### 算法描述
+
+![image-20210910115253376](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210910115253376.png)
+
+![image-20210910115303807](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210910115303807.png)
 
 
 
