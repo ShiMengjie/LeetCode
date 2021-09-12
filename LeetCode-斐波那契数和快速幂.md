@@ -2,7 +2,7 @@
 
 LeetCode 上有几道斐波那契数相关的问题，这类问题一般使用动态规划求解。
 
-后来看了 [《程序员代码面试指南：IT名企算法与数据结构题目最优解》](https://book.douban.com/subject/26638586/)，才知道这类问题可以使用快速幂来求解矩阵乘积，从而在 $log(N)$ 的时间复杂内求解。
+后来看了 [《程序员代码面试指南：IT名企算法与数据结构题目最优解》](https://book.douban.com/subject/26638586/)，才知道这类问题使用快速幂求解矩阵乘积，可以在 $log(N)$ 的时间复杂内求解。
 
 因此，把 LeetCode 上斐波那契数和快速幂相关问题统一整理起来，方便后面复习。
 
@@ -36,7 +36,7 @@ TODO
 
 问题描述：
 
-![image-20210912145850436](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912145850436.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912145850436.png)
 
 
 我们可以使用动态规划求解斐波那契数，求解过程如下：
@@ -49,16 +49,16 @@ TODO
 
 4、状态转移方程：
 $$
-dp[n] = 
-\begin{cases} 
+\begin{aligned} 
+dp[n] &=
+\begin{cases}
 dp[n-1] + dp[n-2], \quad n \ge 2 \\
-n, \quad n \le 1
+n, \quad n \le 1 \\
 \end{cases}
-\tag{1}
+\end{aligned}
 $$
 
-
-从公式（1）可以看出，解斐波那契数列的定义本身就包含了动态规划的“状态、数组、base case、状态转移方程”，并且，$F(n)$ 只和  $F(n-1)、F(n-2)$ 有关，可以使用两个变量，来优化数组的存储。
+斐波那契数列的定义本身就包含了动态规划的“状态、数组、base case、状态转移方程”，并且，$F(n)$ 只和 $F(n-1)、F(n-2)$ 有关，可以使用两个变量，来优化数组的存储。
 
 代码实现如下：
 
@@ -84,7 +84,7 @@ class Solution {
 
 问题描述：
 
-![image-20210912145903442](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912145903442.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912145903442.png)
 
 该问题的求解思路与[509. 斐波那契数](https://leetcode-cn.com/problems/fibonacci-number/)相似，区别在于 $T(n)$ 与 $T(n -1)、T(n-2)、T(n-3)$ 都相关。
 
@@ -114,7 +114,7 @@ class Solution {
 
 问题描述：
 
-![image-20210912145915262](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912145915262.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912145915262.png)
 
 这一题使用动态规划求解时，状态转移方程和斐波那契数相同。求解过程如下：
 
@@ -134,9 +134,9 @@ dp[n] =
 dp[n-1] + dp[n-2], \quad n \ge 3 \\
 n, \quad n \le 2
 \end{cases}
-\tag{2}
 $$
-可以发现，动态规划的求解过程与前面两个问题相同。
+
+动态规划的求解过程与前面两个问题相同。
 
 代码实现如下：
 
@@ -161,7 +161,7 @@ class Solution {
 
 那有没有更快的求解方法？能否在 $log(N)$ 的时间复杂度范围内求解？这就需要使用下面介绍的快速幂。
 
-![POPO-screenshot-20210908-205947](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
 
 ## 快速幂
 
@@ -173,28 +173,31 @@ class Solution {
 
 计算 $a$ 的 $n$ 次方就是把 $n$ 个 $a$ 乘在一起：
 $$
-a^{n} = \underbrace{a \times a \cdots \times a}_{n\text{ 个 a}} \tag{3}
+a^{n} = \underbrace{a \times a \cdots \times a}_{n\text{ 个 a}}
 $$
 在 $a,n$ 值比较小的时候，可以通过遍历连乘的方式计算。但是当 $a,n$ 取值很大时，这种方法就不太适用了。
 
 不过，根据幂运算规则，我们知道：
 $$
-a^{b+c} = a^b \cdot a^c,\quad a^{2b} = a^b \cdot a^b = (a^b)^2 \tag{4}
+a^{b+c} = a^b \cdot a^c,\quad a^{2b} = a^b \cdot a^b = (a^b)^2
 $$
 根据该运算规则，可以使用快速幂算法来求解。快速幂的基本思想是：把指数 $n$ 以二进制的形式表示，然后按二进制位来求幂，可以把求幂任务分割成更小的计算任务。
 
 把整数 $n$ 转换成二进制表示，二进制表示的位数为：$ k= \lfloor \log_2 n \rfloor + 1$ 。$n$ 表示为：
+
 $$
-n = n_k \cdot 2^k + n_{k-1} \cdot 2^{k-1} + n_{k-2} \cdot 2^{k-2} + \cdots + n_1 \cdot 2^1 + n_0 \cdot 2^0,\quad \text{其中,}\,n_i\in{\{0,1\}} \tag{5}
+n = n_k \cdot 2^k + n_{k-1} \cdot 2^{k-1} + n_{k-2} \cdot 2^{k-2} + \cdots + n_1 \cdot 2^1 + n_0 \cdot 2^0,\quad \text{其中,}\,n_i\in{\{0,1\}}
 $$
-公式（3）可以表示为：
+
+$a$ 的 $n$ 次方可以表示为：
+
 $$
 \begin{aligned} 
-a^n & = a^{(n_k \cdot 2^k + n_{k-1} \cdot 2^{k-1} + n_{k-2} \cdot 2^{k-2} + \cdots + n_1 \cdot 2^1 + n_0 \cdot 2^0)} \\ & 
-= a^{n_0\cdot2^0} \times a^{n_1\cdot2^1}\times \cdots \times a^{n_k \cdot 2^t} 
-\end{aligned} 
-\tag{6}
+a^n &= a^{(n_k \cdot 2^k + n_{k-1} \cdot 2^{k-1} + n_{k-2} \cdot 2^{k-2} + \cdots + n_{1} \cdot 2^{1} + n_{0} \cdot 2^{0})} \\&
+= a^{n_0\cdot2^0} \times a^{n_1\cdot2^1}\times \cdots \times a^{n_k \cdot 2^t}
+\end{aligned}
 $$
+
 在上面的公式中，各个乘积项 $a$ 的指数值为：$2^0=1,2^1=2,2^2=4,...,2^k$，后一个数是前一个数的平方。因此，知道了 $a^{1}$ 的值，只需要经过  $\Theta(\log n)$ 次乘法就能计算出 $a^n$。
 
 ### 示例
@@ -277,24 +280,29 @@ class Solution {
 }
 ```
 
-![POPO-screenshot-20210908-205947](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
 
 ## 快速幂计算矩阵乘积
 
-> 下面的内容，来自参考阅读：[程序员代码面试指南：IT名企算法与数据结构题目最优解](https://book.douban.com/subject/26638586/)
+> 下面的内容，来自参考阅读：《[程序员代码面试指南：IT名企算法与数据结构题目最优解](https://book.douban.com/subject/26638586/)》
 
-快速幂怎么用来求解斐波拉切数？
+快速幂怎么用来求解斐波那契数？
 
-斐波拉切数的转移方程：$F(n) = F(n-1) + F(n-2)$，可以使用矩阵乘法的形式表现：
-
-$$
-\left[F(n),F(n-1)\right] = \left[F(n-1),F(n-2)\right] \times \begin{bmatrix}   1 & 1 \\   1 & 0 \end{bmatrix} \tag{7}
-$$
-
-斐波拉切数的计算公式可以表示为：
+斐波那契数的转移方程：$F(n) = F(n-1) + F(n-2)$，可以写作矩阵乘法的形式：
 
 $$
-\begin{align}
+\begin{aligned}
+\left[F(n),F(n-1)\right] 
+
+= \left[F(n-1),F(n-2)\right] \times {\left| \begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right|} \\&
+
+\end{aligned}
+$$
+
+斐波那契数的计算公式可以表示为：
+
+$$
+\begin{aligned}
 \left[F(n),F(n-1)\right] \\&
 
 = \left[F(n-1),F(n-2)\right] \times {\left| \begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right|} \\&
@@ -305,11 +313,10 @@ $$
 
 = \left[F(2),F(1)\right] \times {\left| \begin{matrix} 1 & 1 \\ 1 & 0 \end{matrix} \right|}^{n-2} \\& 
 
-\end{align}
-\tag{8}
+\end{aligned}
 $$
 
-可以发现，在公式（8）中，需要计算矩阵的 $n-2$ 次幂。我们可以修改一下前面计算快速幂的代码，用来计算矩阵的次幂。
+需要计算矩阵的 $n-2$ 次幂。我们可以修改一下前面计算快速幂的代码，用来计算矩阵的次幂。
 
 用于计算矩阵的快速幂代码如下：
 
@@ -359,7 +366,7 @@ public int[][] mulMat(int[][] mat1, int[][] mat2) {
 
 有了矩阵的快速幂计算方法，就可以使用快速幂来计算前面的问题。
 
-![POPO-screenshot-20210908-205947](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
 
 ## 快速幂求解
 
@@ -520,7 +527,7 @@ class Solution {
 }
 ```
 
-![POPO-screenshot-20210908-205947](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
 
 ## 小结
 
@@ -534,7 +541,7 @@ class Solution {
 
 问题描述：
 
-![image-20210912150614391](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912150614391.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912150614391.png)
 
 解题思路与[70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)相似，只不过在状态转移时，要加上当前台阶上的花费，并取最小值。
 
@@ -564,18 +571,6 @@ class Solution {
 }
 ```
 
-### [842. 将数组拆分成斐波那契序列](https://leetcode-cn.com/problems/split-array-into-fibonacci-sequence/)
-
-TODO
-
-### [873. 最长的斐波那契子序列的长度](https://leetcode-cn.com/problems/length-of-longest-fibonacci-subsequence/)
-
-TODO
-
-### [372. 超级次方](https://leetcode-cn.com/problems/super-pow/)
-
-TODO
-
 ## 参考阅读
 
 [快速幂](https://oi-wiki.org/math/quick-pow/)
@@ -584,3 +579,4 @@ TODO
 
 [程序员代码面试指南：IT名企算法与数据结构题目最优解](https://book.douban.com/subject/26638586/)
 
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912215800520.png)
