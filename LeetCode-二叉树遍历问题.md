@@ -1,8 +1,8 @@
-# LeetCode-二叉树遍历问题
+# LeetCode-二叉树遍历
+
+整理了 LeetCode 上一些二叉树遍历相关问题。
 
 ## 问题列表
-
-一些二叉树遍历问题的整理，后续会继续补充：
 
 [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
 
@@ -15,6 +15,8 @@
 [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
 [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
+
+[889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
 
 ## 前言
 
@@ -616,15 +618,9 @@ class Solution {
 }
 ```
 
-
-
-
-
-# TODO 
-
-
-
 ## [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
 
 前序遍历数组 pre 的第一个元素 pre[0] 是根节点 root，第二个元素 pre[1] 是左子树的根节点；
 
@@ -686,7 +682,7 @@ class Solution {
 }
 ```
 
-
+# TODO
 
 ## [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
@@ -894,6 +890,3 @@ class Solution {
 [589. N 叉树的前序遍历](https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/)
 
 [590. N 叉树的后序遍历](https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/)
-
-
-
