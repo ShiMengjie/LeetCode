@@ -1,4 +1,4 @@
-# LeetCode-股票系列问题题解
+# LeetCode-股票问题
 
 LeetCode 的股票系列问题一共有六道题，如下所示：
 
