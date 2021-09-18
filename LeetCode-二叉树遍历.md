@@ -618,6 +618,8 @@ class Solution {
 }
 ```
 
+# TODO
+
 ## [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
 
 ![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
@@ -682,7 +684,7 @@ class Solution {
 }
 ```
 
-# TODO
+
 
 ## [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 
@@ -880,13 +882,3 @@ class Solution {
     }
 }
 ```
-
-
-
-
-
-## 相似问题
-
-[589. N 叉树的前序遍历](https://leetcode-cn.com/problems/n-ary-tree-preorder-traversal/)
-
-[590. N 叉树的后序遍历](https://leetcode-cn.com/problems/n-ary-tree-postorder-traversal/)
