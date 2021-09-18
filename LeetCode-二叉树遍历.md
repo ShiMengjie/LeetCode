@@ -1,6 +1,6 @@
 # LeetCode-二叉树遍历
 
-整理了 LeetCode 上一些二叉树遍历相关问题。
+整理了 LeetCode 上关于二叉树遍历的一些问题。
 
 ## 问题列表
 
@@ -43,11 +43,18 @@ public class TreeNode {
 }
 ```
 
-在遍历二叉树之前，我们先明确一个事实：
+该节点组成的二叉树有以下特点：
 
-一棵二叉树是从根节点 root 开始，这是它唯一的入口，只能从一个父节点找到它的左右子节点。
+- 根节点是一棵二叉树的唯一入口
+- 一个节点，只能从它的父节点遍历到它
 
-因此，当我们遍历到某个节点 node 时，要想继续遍历到它的父节点或兄弟节点，就需要在遍历到 node 节点之前记录下它的父节点或兄弟节点，不同的遍历方式，实际上可以看做是，使用不同的方式记录和取出父节点、兄弟节点。
+比如，在下图中，要遍历到节点B，只能从它的父节点A才能遍历到，C也是同理，不能从B遍历它的兄弟节点C。
+
+![image-20210918213122129](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210918213122129.png)
+
+因此，在二叉树的“前序、中序、后序”遍历过程中。当我们遍历到某个节点 node 时，要能够继续遍历 node 的父节点或兄弟节点，就需要在遍历 node 的父节点时，记录下 node 的父节点和兄弟节点，然后再以某种方式取出。
+
+不同的遍历方式，可以看做是，使用不同的方式记录和取出父节点、兄弟节点。
 
 ## [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
 
@@ -61,7 +68,7 @@ public class TreeNode {
 
 遍历 A 的左子树，B = A.left 作为左子树的根节点，是左子树的入口，遍历顺序如下：
 
-2.1、遍历节点B
+2.1、遍历节点 B
 
 2.2、遍历 B 的左子节点 D
 
@@ -69,7 +76,7 @@ public class TreeNode {
 
 ------
 
-遍历A的右子树，C = A.right 作为右子树的根节点，是右子树的入口，遍历顺序如下：
+遍历 A 的右子树，C = A.right 作为右子树的根节点，是右子树的入口，遍历顺序如下：
 
 3.1、遍历节点 C
 
@@ -83,10 +90,11 @@ public class TreeNode {
 
 ### 递归
 
-从前面的遍历过程可以看出，前序遍历都是先遍历根节点，再遍历左子树，最后遍历右子树，过程相同。因此，可以使用递归函数来实现遍历过程。
+前序遍历都是先遍历根节点，再遍历左子树，最后遍历右子树，可以使用递归实现。
 
 定义函数：$pre(list,root)$
-含义：把根节点为 root 的二叉树，以前序遍历的方式保存进列表 list 中，$pre(list,root.letf)、pre(list,root.right)$分别表示遍历root 节点的左子树和右子树。
+
+含义：把根节点为 root 的二叉树，以前序遍历的方式保存进列表 list 中，$pre(list,root.letf)、pre(list,root.right)$ 分别表示遍历root 节点的左子树和右子树。
 
 代码实现如下：
 
@@ -114,32 +122,31 @@ class Solution {
 
 ### 迭代
 
-怎么用迭代的方式现实前序遍历？
+**怎么用迭代的方式现实前序遍历？**
 
 我们回顾一下前面的遍历过程：
 
-- 在“2.3”遍历完节点D后，再遍历它的兄弟节点E
+- 在“2.3”遍历完节点 D 后，再遍历它的兄弟节点 E
 - 在“3.1”遍历完左子树后，再开始遍历右子树根节点
-- 在“3.3”遍历完节点F后，再遍历它的兄弟节点G
+- 在“3.3”遍历完节点 F 后，再遍历它的兄弟节点 G
 
-在“前言”部分，我们已经知道，只能在父节点找到左右子节点，不能从子节点找到父节点或兄弟节点。因此，我们在遍历到节点 node 前，要记录下它的兄弟节点。
+在“前言”部分，我们已经知道，只能在父节点才能遍历到它的左右子节点，不能从子节点遍历到父节点或兄弟节点。因此，我们在遍历到节点 node 前，要记录下它的兄弟节点。
 
 **在遍历过程中，怎么记录节点？**
 
 从上面树的结构图和遍历结果发现：
 
-- 遍历节点B之前，要记录B的兄弟节点C
-- 遍历节点D之前，要记录D的兄弟节点E
+- 遍历节点 B 之前，要记录 B 的兄弟节点 C
+- 遍历节点 D 之前，要记录 D 的兄弟节点 E
 
 在遍历的结果数组中我们发现：
 
-- 同一层的节点，右子节点比左子节点先记录，但是排在后面，B和C、D和E都是如此
-- 右子树的所有节点，都在左子树节点之后
+- 同一层的节点，右子节点比左子树节点先遍历到，但是却排在左子树的后面，比如节点 C 比节点 D 先遍历到，却排在节点 D 后面
 
-这种“先进-后出”记录结构，很适合用栈来实现：
+这种“先进-后出”记录方式，可以用栈来实现：
 
-- 先 push 右子节点，再 push 左子节点
-- pop 出左子节点后，再 push 左子节点的“右子节点、左子节点”，保证左子树先遍历
+- 先 push 右子节点进栈，再 push 左子节点进栈
+- pop 出左子节点后，再 push 左子节点的“右子节点、左子节点”，保证左子树满足前序遍历
 
 代码实现如下：
 
@@ -178,6 +185,55 @@ class Solution {
 }
 ```
 
+### [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
+
+生成一个单链表，并满足以下要求：
+
+- 链表的起始节点就是根节点
+- 每个节点只有右指针，没有左指针
+- 链表中节点顺序与前序遍历相同
+
+在前序遍历的过程中：
+
+- 要把每个节点的左子节点设置为 null
+- 把当前遍历的节点设置为前一个节点的右子节点
+
+因此，使用两个临时变量 pre、cur 分别指向前一个节点、当前遍历的节点。
+
+代码实现如下：
+
+```java
+class Solution {
+    public void flatten(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        if (root != null) {
+            stack.add(root);
+        }
+        // 前一个节点、当前节点
+        TreeNode pre = null, cur = null;
+        while (!stack.isEmpty()) {
+            // 正常的前序遍历
+            cur = stack.pop();
+            if (cur.right != null) {
+                stack.push(cur.right);
+            }
+            if (cur.left != null) {
+                stack.push(cur.left);
+                // 把左指针设置为 null
+                cur.left = null;
+            }
+            // 更新 pre 的指向，如果 pre 为 null，表示 cur 是根节点
+            if (pre != null) {
+                pre.right = cur;
+            }
+            pre = cur;
+        }
+    }
+}
+```
+
+
+
 ## [94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 
 > 遍历方式：左-根-右
@@ -186,13 +242,13 @@ class Solution {
 
 ------
 
-如下图所示，树的入口是根节点 A，遍历顺序如下：
+遍历 A 的左子树，B = A.left 是左子树的根节点，是左子树的入口，遍历顺序如下：
 
 1.1、遍历 B 的左子节点 D
 
-1.2、遍历 B 节点
+1.2、节点 D 没有子树，遍历 D 的父节点 B
 
-1.3、遍历 B 右子节点 E
+1.3、遍历 B 右子节点 E，E 没有子树，左子树遍历完成
 
 ------
 
@@ -200,13 +256,13 @@ class Solution {
 
 ------
 
-遍历A的右子树，C = A.right 作为右子树的根节点，是右子树的入口，遍历顺序如下：
+遍历 A 的右子树，C = A.right 是右子树的根节点，是右子树的入口，遍历顺序如下：
 
 3.1、遍历 C 的左子节点 F
 
-3.2、遍历节点 C
+3.2、节点 F 没有子树，遍历 F 的父节点 C
 
-3.2、遍历 C 右子节点 G
+3.2、遍历 C 右子节点 G，G 没有子树，右子树遍历完成
 
 ![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817192920426.png)
 
@@ -214,11 +270,11 @@ class Solution {
 
 ### 递归
 
-从前面的遍历过程可以看出，终须遍历都是先遍历它的左子树、再遍历根节点、最后遍历右子树，过程相同。因此，可以使用递归函数来实现遍历过程。
+中序遍历都是先遍历左子树、再遍历根节点、最后遍历右子树，可以使用递归函数来实现遍历过程。
 
 定义函数：$inorder(list,root)$
 
-含义：把根节点为 root 的二叉树的中序遍历保存进列表 list 中，$inorder(list,root.letf)、inorder(list,root.right)$分别表示遍历root 节点的左子树和右子树。
+含义：把根节点为 root 的二叉树的中序遍历保存进列表 list 中，$inorder(list,root.letf)、inorder(list,root.right)$ 分别表示遍历root 节点的左子树和右子树。
 
 代码实现如下：
 
@@ -246,15 +302,15 @@ class Solution {
 
 ### 迭代
 
-有了前序遍历的迭代经验，我们很容易发现，中序遍历用栈的痕迹更明显：从根节点（父节点）进入，但是根节点（父节点）却排在左子树后面。
+有了前序遍历的迭代经验，我们很容易发现，中序遍历用栈的痕迹更明显：从根节点（父节点）进入到一棵子树，但是根节点（父节点）却排在左子树后面。
 
-因此，我们可以用一个栈，从根节点开始，不断遍历左子树，把父节点和左子节点都 push 进栈。
+因此，我们可以用一个栈，从根节点开始，不断把根节点和左子节点 push 进栈，然后再 pop 出栈，就可以遍历完每个左子树和它的根节点。
 
 
 
-**每个节点的右子树怎么遍历？**
+**每个根节点的右子树怎么遍历？**
 
-我们知道，要进入右子节点，就要先遍历到它的父节点，所以当我们从栈中 pop 出一个节点 node 时，判断 node 是否有右子节点。如果有右子节点，那么就从 node.right 开始，遍历该右子树。
+因为只能从更节点进入右子树，所以从栈中 pop 处一个节点 node 时，要判断它是否有右子节点。如果有右子节点，就要从 node.right 开始，遍历该右子树。
 
 
 
@@ -279,7 +335,7 @@ class Solution {
             // pop 栈顶节点
             TreeNode node = stack.pop();
             list.add(node.val);
-            // 如果有右子节点，让 root 指向右子树的根节点，在下一次循环时，遍历 node 的右子树
+            // 让 root 指向右子树的根节点，在下一次循环时，遍历 node 的右子树
             root = node.right;
         }
         return list;
@@ -292,6 +348,8 @@ class Solution {
 > 遍历方式：左-右-根
 
 如下图所示，树的入口是根节点 A，遍历顺序如下：
+
+------
 
 遍历 A 的左子树，B = A.left 作为左子树的根节点，是左子树的入口，遍历顺序如下：
 
@@ -321,11 +379,11 @@ class Solution {
 
 ### 递归
 
-从前面的遍历过程可以看出，后序遍历都是先遍历它的左子树、再遍历右子树、最后遍历根节点，过程相同。因此，可以使用递归函数来实现遍历过程。
+后序遍历都是先遍历左子树、再遍历右子树、最后遍历根节点，可以使用递归函数来实现。
 
 定义函数：$postOrder(list,root)$
 
-含义：把根节点为 root 的二叉树的中序遍历保存进列表 list 中，$postOrder(list,root.letf)、postOrder(list,root.right)$分别表示遍历root 节点的左子树和右子树。
+含义：把根节点为 root 的二叉树的中序遍历保存进列表 list 中，$postOrder(list,root.letf)、postOrder(list,root.right)$ 分别表示遍历root 节点的左子树和右子树。
 
 代码实现如下：
 
@@ -353,9 +411,7 @@ class Solution {
 
 ### 迭代
 
-根据前面的经验：从根节点（父节点）进入，但是根节点（父节点）却排在左子树、右子树后面。
-
-
+根节点和左右子树节点的关系：先遍历根节点（父节点），但是根节点（父节点）却排在左子树、右子树后面。
 
 因此，我们用一个栈，从根节点开始，把根节点、右子节点、左子节点，依次 push 进栈中，然后再从栈中依次 pop 出栈顶节点。
 
@@ -363,17 +419,16 @@ class Solution {
 
 **从栈顶 pop 出节点后，要做什么？**
 
-从后序遍历的规则可以看出，它依次遍历父节点的左子树、右子树、父节点自身。因此，在从栈顶 push 出节点 node 后，要判断 node 是否有子节点：
+后序遍历依次遍历父节点的左子树、右子树、父节点自身，因此，在从栈顶 push 出节点 node 后，要判断 node 是否有子节点：
 
-- 如果没有子节点，就可以把节点值添加进结果集
-
-- 如果有子节点，就要把 node 节点作为子树的根节点入口，按照上面的步骤 push 进栈中
-
+- 如果没有子节点，就可以把 node 节点值添加进结果列表
+- 如果有子节点，就要把 node 节点作为子树的根节点，按照前面的步骤，把 node、node.right、node.left 再依次 push 进栈
 
 
-**这样做会有什么问题？**
 
-我们把节点 node 从栈顶 pop 出来后，如果它有子节点，会执行入栈操作。那么当从栈顶再 push 出来时，还会入栈，形成了一个死循环。所以，在入栈后，要把 node 节点的 左右子节点指针 指向 null，避免死循环。
+**存在什么问题？**
+
+把 node 节点从栈里 pop 出来后，如果有子节点会再次被 push 进栈，导致死循环。所以，在把 node 节点的左右子节点 push 进栈之后，要把左右子节点分别设置为 null，避免死循环。
 
 
 
@@ -383,7 +438,6 @@ class Solution {
 class Solution {
 
     public List<Integer> postorderTraversal(TreeNode root) {
-
         List<Integer> list = new LinkedList<>();
         Stack<TreeNode> stack = new Stack<>();
 
@@ -391,7 +445,7 @@ class Solution {
             while (root != null) {
                 // 把根节点 push 入栈
                 stack.push(root);
-                // 把右子节点 push 入栈，并把有指针设为 null
+                // 把右子节点 push 入栈，并把右指针设为 null
                 if (root.right != null) {
                     stack.push(root.right);
                     root.right = null;
@@ -402,7 +456,7 @@ class Solution {
                 root = tmp;
             }
             // pop 出栈顶节点，如果没有子节点，就添加进结果集
-            // 如果一个节点左右指针都是 null，它要么是叶子节点，要么它的子节点都已经进栈了，且添加进列表了，可以把该节点遍历进结果集
+            // 如果一个节点左右指针都是 null，要么它是叶子节点，要么它的子节点都已经进栈了，可以把该节点遍历进结果集
             TreeNode node = stack.pop();
             if (node.left == null && node.right == null) {
                 list.add(node.val);
@@ -418,7 +472,7 @@ class Solution {
 
 ## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
-> 遍历方式：逐层遍历整棵数，同层节点从左向右遍历
+> 遍历方式：逐层遍历整棵数，同层节点从左向右添加进结果列表
 
 如下图所示，树的入口是根节点 A，遍历顺序如下：
 
@@ -446,9 +500,9 @@ class Solution {
 
 ![Snipaste_2021-09-05_16-44-29](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/Snipaste_2021-09-05_16-44-29.gif)
 
-我们只能从根节点进入一棵树。
+在层序遍历结果中，根节点（父节点）排在它的左右子节点的前面。
 
-在层序遍历结果中，根节点（父节点）排在它的左右子节点的前面，因此和前面不同的是，我们需要使用一个先进先出的队列，把父节点、左子节点、右子节点依次添加进队列，再依次从队列取出。
+因此和前面的三种遍历方式不同，我们使用一个先进先出的队列，父节点、左子节点、右子节点 先后进队再出队。
 
 代码实现如下：
 
@@ -484,17 +538,17 @@ class Solution {
 
 ------
 
-然而，问题要求把二叉树中每一层的所有节点添加进一个列表。这就要求，我们在遍历某一层节点时，知道该层有多少个节点，遍历完这一层所有节点后，再遍历下一层。
+[102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 要求把二叉树中同一层的节点添加进同一个字列表。这就要求，在遍历某一层节点时，知道该层有多少个节点，遍历完这一层所有节点后，再遍历下一层。
 
 **怎么知道某一层有多少个节点？**
 
 从前面的图片和代码我们可以发现，当遍历某一层节点时：
 
-- 当遍历这一层最左边的节点时，才开始在队列中添加下一层的节点
+- 当遍历开始这一层最左节点时，会在队列中添加下一层的节点
 
-- 当遍历完这一层最右边的节点时，下一层的节点添加完毕
+- 当遍历完这一层最右节点时，下一层的节点添加完成
 
-因此，我们在遍历某一层最左边节点时，队列中的节点数就是这一层的节点数，我们取出这一层的节点数后，取出相同数量的节点数后，队列中剩余的节点就是下一层的节点数。
+因此，在遍历某一层最左边节点时，队列中大小就是这一层的节点数。我们只要取出与列表大小相同的节点数，就取完这一层的节点了。
 
 
 代码实现如下：
@@ -534,7 +588,7 @@ class Solution {
 
 ### [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
-该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 相同，在把每一层子节点列表添加进结果列表时，添加到结果列表的头部。
+该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 解法相同，区别在于：把每一层子节点列表添加进结果集时，添加到结果集的头部。
 
 代码实现如下：
 
@@ -572,7 +626,7 @@ class Solution {
 
 ### [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
 
-同样是层序遍历，只不过在遍历过程中，要每隔一层就要翻转一次节点列表。可以使用一个标志位来表示是否要翻转，并在每一层遍历后修改标志位。
+该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 解法相同，区别在于：在遍历过程中，每隔一层就要翻转一次节点列表。可以使用一个标志位来表示是否要翻转，并在每一层遍历后修改标志位。
 
 代码实现如下：
 
@@ -591,7 +645,7 @@ class Solution {
         while (!queue.isEmpty()) {
             // 正常的层序遍历
             int size = queue.size();
-            List<TreeNode> nodeList = new ArrayList<>(size);
+            List<Integer> nodeList = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
                 if (node.left != null) {
@@ -601,17 +655,16 @@ class Solution {
                     queue.add(node.right);
                 }
                 // 把当前节点保存进临时列表中
-                nodeList.add(node);
+                nodeList.add(node.val);
             }
-
             // 如果需要翻转，翻转临时列表
             if (!flag) {
                 Collections.reverse(nodeList);
             }
             // 修改翻转标志
             flag = !flag;
-            // 把临时列表中节点的值转换成列表，依次添加进子列表中
-            res.add(nodeList.stream().map(o -> o.val).collect(Collectors.toList()));
+            // 把临时列表添加进结果集
+            res.add(nodeList);
         }
         return res;
     }
@@ -842,42 +895,6 @@ class Solution {
             this.val = val;
             this.left = left;
             this.right = right;
-        }
-    }
-}
-```
-
-
-
-
-## [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
-
-在生成前序遍历的过程中，生成链表。
-
-```java
-class Solution {
-    public void flatten(TreeNode root) {
-        Stack<TreeNode> stack = new Stack<>();
-        if (root != null) {
-            stack.add(root);
-        }
-        TreeNode tmp = null, node = null;
-        while (!stack.isEmpty()) {
-            node = stack.pop();
-            // 先把右节点压进栈中，因为右节点在左节点添加完之后，才会出栈
-            if (node.right != null) {
-                stack.push(node.right);
-            }
-            if (node.left != null) {
-                stack.push(node.left);
-                // 把左指针设置为 null
-                node.left = null;
-            }
-            // 更新 tmp 的指向，如果 tmp 为null，表示当前node 是根节点
-            if (tmp != null) {
-                tmp.right = node;
-            }
-            tmp = node;
         }
     }
 }
