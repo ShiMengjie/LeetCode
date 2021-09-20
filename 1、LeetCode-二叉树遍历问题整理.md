@@ -98,9 +98,9 @@ public class TreeNode {
 
 3.3、遍历 C 的右子节点 G
 
-![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817191420071.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817191420071.png)
 
-![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
 
 #### 递归
 
@@ -232,9 +232,9 @@ class Solution {
 
 3.2、遍历 C 右子节点 G，G 没有子树，右子树遍历完成
 
-![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817192920426.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210817192920426.png)
 
-![image-20210829163341263](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
 
 #### 递归
 
@@ -642,11 +642,11 @@ class Solution {
 
 前序遍历和中序遍历的结果数组：
 
-![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
 
 <center>前序遍历结果数组</center>
 
-![image-20210829163341263](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
 
 <center>中序遍历结果数组</center>
 
@@ -715,7 +715,7 @@ class Solution {
 
 中序遍历和后序遍历数组结果如下所示：
 
-![image-20210829163341263](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
 
 <center>中序遍历结果数组</center>
 
@@ -926,7 +926,7 @@ class Solution {
 
 这一题和[105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)、 [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/) 的不同之处在于：这里没有中序遍历和后序遍历的结果，而是使用短横杠“-”的个数来表示节点的深度。比如，给的示例中，节点 ,3、6 深度都是2，所以有两个短横杆“--”：
 
-![image-20210920150241325](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210920150241325.png)
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210920150241325.png)
 
 **怎么从这样的字符串中恢复二叉树？**
 
