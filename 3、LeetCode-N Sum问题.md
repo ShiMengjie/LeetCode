@@ -1,3 +1,97 @@
+
+
+用二叉树或前缀树试试看？
+
+# 1、Two Sum
+
+> Given an array of integers, return **indices** of the two numbers such that they add up to a specific target. You may assume that each input would have ***exactly*** one solution, and you may not use the *same* element twice.
+
+**Example：**
+
+> Given nums = [2, 7, 11, 15], target = 9,
+>
+> Because nums[**0**] + nums[**1**] = 2 + 7 = 9,
+> return [**0**, **1**].
+
+## 解法1
+
+要在一个数组`nums`中找到两个数` num[i]、num[j]`，让两者之和等于目标值`target=num[i] + num[j]`。
+
+可以把问题分解成两个小问题：
+
+1、先找到第一个数`num[i]`
+
+2、然后找到第二个数`target- num[i]`
+
+
+
+**怎么解决这两个小问题？**
+
+1、遍历数组`nums`，依次把数组中的每一个元素作为`num[i]`
+
+2、根据前一步确定的`num[i]`，依次遍历数组中剩下的元素，判断每个元素是否等于`target- num[i]`
+
+### 代码实现
+
+```java
+/**
+ * 在数组中找到和值等于目标值得两个元素
+ *
+ * @param nums   数组
+ * @param target 目标值
+ * @return 和值等于目标值得两个元素下标
+ */
+public static int[] twoSum(int[] nums, int target) {
+    for (int i = 0; i < nums.length; i++) {
+        int number = target - nums[i];
+        for (int j = i + 1; j < nums.length; j++) {
+            if (nums[j] == number) {
+                return new int[]{i, j};
+            }
+        }
+    }
+    return null;
+}
+```
+
+需要两层的嵌套循环，时间复杂度为：$O(n^2)$，没有使用额外空间，空间复杂度：$O(1)$。
+
+## 解法2
+
+在第二个小问题中，目的是根据元素 `nums[i]` 找到 `target - nums[i]` 的下标。
+
+如果我们维护一个元素值与下标的映射关系，类似于 HashMap 中的 K-V 关系：`num[i] -> i`、`target - num[i] -> j`，当遍历到 `num[i]`时，判断 `target - nums[i]` 是否在 map 中，存在就取出下标，不存在就把 `num[i] -> i` 保存进 map 中，这样只需要一次遍历。
+
+### 代码实现
+
+```java
+/**
+ * 在数组中找到和值等于目标值得两个元素
+ *
+ * @param nums   数组
+ * @param target 目标值
+ * @return 和值等于目标值得两个元素下标
+ */
+public static int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int number = 0;
+    for (int i = 0; i < nums.length; i++) {
+        number = target - nums[i];
+        if (map.containsKey(number)) {
+            return new int[]{map.get(number), i};
+        }
+        map.put(nums[i], i);
+    }
+    return null;
+}
+```
+
+只需要一次遍历，时间复杂度：$O(n)$，需要额外空间保存map，空间复杂度：$O(n)$。
+
+
+
+------
+
 # 15. 3Sum
 
 > Given an integer array nums, return all the triplets `[nums[i], nums[j], nums[k]]` such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] == 0`.
@@ -140,7 +234,7 @@ public String generateUniqueStr(List<Integer> subList) {
 
 然而，这个解法的性能惨不忍睹，LeetCode 的结果如下：
 
-![question_15](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//imgquestion_15.png)
+![question_15](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/imgquestion_15.png)
 
 分析一下这个解法的时间复杂度：
 
@@ -230,3 +324,127 @@ public List<List<Integer>> threeSum(int[] nums) {
 ## 总结
 
 对数组进行排序和去重，都可以避免重复元素被再次查找出来。
+
+
+
+------
+
+# 18. [4Sum](https://leetcode.com/problems/4sum)
+
+> Given an array `nums` of `n` integers, return *an array of all the **unique** quadruplets* `[nums[a], nums[b], nums[c], nums[d]]` such that:
+>
+> * `0 <= a, b, c, d < n`
+>
+> * ``a`, `b`, `c`, and `d` are **distinct**.
+>
+> * `nums[a] + nums[b] + nums[c] + nums[d] == target`
+>
+> You may return the answer in **any order**.
+
+ **Example 1:**
+
+```
+Input: nums = [1,0,-1,0,-2,2], target = 0
+Output: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]
+```
+
+**Example 2:**
+
+```
+Input: nums = [2,2,2,2,2], target = 8
+Output: [[2,2,2,2]]
+```
+
+## 解法
+
+给定一个数组 `nums `和一个目标值 `target`，判断数组 `nums `中是否存在四个元素 a，b，c 和 d ，使得 a + b + c + d 的值与  `target`相等？找出所有满足条件且不重复的四元组。
+
+这道题类似于`Q_0015`，只不过多了一层循环，代码如下。
+
+### 代码实现
+
+```java
+public List<List<Integer>> fourSum(int[] nums, int target) {
+    List<List<Integer>> result = new ArrayList<>();
+    if (nums == null || nums.length < 4) {
+        return result;
+    }
+    Arrays.sort(nums);
+    for (int i = 0; i < nums.length; i++) {
+        if (i > 0 && nums[i] == nums[i - 1]) {
+            continue;
+        }
+        List<List<Integer>> list = getThreeSum(nums, target - nums[i], i);
+        if (list.size() > 0) {
+            for (List<Integer> subList : list) {
+                subList.add(nums[i]);
+            }
+            result.addAll(list);
+        }
+    }
+    return result;
+}
+
+/**
+     * 从有序数组中，找到和值等于目标值 target 的三个元素
+     *
+     * @param nums   有序数组
+     * @param target 目标值
+     * @param begin  开始排除的下标
+     * @return
+     */
+public List<List<Integer>> getThreeSum(int[] nums, int target, int begin) {
+    List<List<Integer>> list = new ArrayList<>();
+    if (nums == null || nums.length < 3) {
+        return list;
+    }
+    for (int i = begin + 1; i < nums.length; i++) {
+        if (i > begin + 1 && nums[i] == nums[i - 1]) {
+            continue;
+        }
+        int j = i + 1;
+        int k = nums.length - 1;
+        while (j < k) {
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum == target) {
+                List<Integer> subList = new ArrayList<>(3);
+                subList.add(nums[i]);
+                subList.add(nums[j]);
+                subList.add(nums[k]);
+                list.add(subList);
+                
+                j++;
+                k--;
+
+                while (j < k && nums[j] == nums[j - 1]) {
+                    j++;
+                }
+                while (j < k && nums[k] == nums[k + 1]) {
+                    k--;
+                }
+            } else if (sum < target) {
+                j++;
+                while (j < k && nums[j] == nums[j - 1]) {
+                    j++;
+                }
+            } else {
+                k--;
+                while (j < k && nums[k] == nums[k + 1]) {
+                    k--;
+                }
+            }
+        }
+    }
+    return list;
+}
+```
+
+时间复杂度：$O(N^3)$
+
+## 总结
+
+没啥好总结的。
+
+## 参考阅读
+
+[一个函数秒杀 2Sum 3Sum 4Sum 问题](https://mp.weixin.qq.com/s/fSyJVvggxHq28a0SdmZm6Q)

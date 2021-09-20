@@ -1,6 +1,6 @@
-# LeetCode-二叉树遍历
+# LeetCode-二叉树遍历问题整理
 
-整理了 LeetCode 上关于二叉树遍历的一些问题。
+整理了 LeetCode 上关于二叉树遍历的相关问题。
 
 ## 问题列表
 
@@ -12,11 +12,21 @@
 
 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
+[889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+[105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+[106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+
+相关问题：
+
+[114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
+
 [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
 [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
 
-[889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+[1028. 从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/)
 
 ## 前言
 
@@ -52,11 +62,15 @@ public class TreeNode {
 
 ![image-20210918213122129](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210918213122129.png)
 
-因此，在二叉树的“前序、中序、后序”遍历过程中。当我们遍历到某个节点 node 时，要能够继续遍历 node 的父节点或兄弟节点，就需要在遍历 node 的父节点时，记录下 node 的父节点和兄弟节点，然后再以某种方式取出。
+因此，在二叉树的“前序、中序、后序”遍历过程中，当我们遍历到某个节点 node 时，要能够继续遍历 node 的父节点或兄弟节点，就需要在遍历 node 的父节点时，记录下 node 的父节点和兄弟节点，然后再以某种方式取出。
 
 不同的遍历方式，可以看做是，使用不同的方式记录和取出父节点、兄弟节点。
 
-## [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
+## 遍历方式
+
+
+
+### [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
 
 > 遍历方式：根-左-右
 
@@ -88,7 +102,7 @@ public class TreeNode {
 
 ![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
 
-### 递归
+#### 递归
 
 前序遍历都是先遍历根节点，再遍历左子树，最后遍历右子树，可以使用递归实现。
 
@@ -120,7 +134,7 @@ class Solution {
 }
 ```
 
-### 迭代
+#### 迭代
 
 **怎么用迭代的方式现实前序遍历？**
 
@@ -185,56 +199,10 @@ class Solution {
 }
 ```
 
-### [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
-
-生成一个单链表，并满足以下要求：
-
-- 链表的起始节点就是根节点
-- 每个节点只有右指针，没有左指针
-- 链表中节点顺序与前序遍历相同
-
-在前序遍历的过程中：
-
-- 要把每个节点的左子节点设置为 null
-- 把当前遍历的节点设置为前一个节点的右子节点
-
-因此，使用两个临时变量 pre、cur 分别指向前一个节点、当前遍历的节点。
-
-代码实现如下：
-
-```java
-class Solution {
-    public void flatten(TreeNode root) {
-        Stack<TreeNode> stack = new Stack<>();
-        if (root != null) {
-            stack.add(root);
-        }
-        // 前一个节点、当前节点
-        TreeNode pre = null, cur = null;
-        while (!stack.isEmpty()) {
-            // 正常的前序遍历
-            cur = stack.pop();
-            if (cur.right != null) {
-                stack.push(cur.right);
-            }
-            if (cur.left != null) {
-                stack.push(cur.left);
-                // 把左指针设置为 null
-                cur.left = null;
-            }
-            // 更新 pre 的指向，如果 pre 为 null，表示 cur 是根节点
-            if (pre != null) {
-                pre.right = cur;
-            }
-            pre = cur;
-        }
-    }
-}
-```
+------
 
 
-
-## [94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+### [94. 二叉树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 
 > 遍历方式：左-根-右
 
@@ -268,7 +236,7 @@ class Solution {
 
 ![image-20210829163341263](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
 
-### 递归
+#### 递归
 
 中序遍历都是先遍历左子树、再遍历根节点、最后遍历右子树，可以使用递归函数来实现遍历过程。
 
@@ -300,7 +268,7 @@ class Solution {
 }
 ```
 
-### 迭代
+#### 迭代
 
 有了前序遍历的迭代经验，我们很容易发现，中序遍历用栈的痕迹更明显：从根节点（父节点）进入到一棵子树，但是根节点（父节点）却排在左子树后面。
 
@@ -343,7 +311,7 @@ class Solution {
 }
 ```
 
-## [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
+### [145. 二叉树的后序遍历](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
 
 > 遍历方式：左-右-根
 
@@ -377,7 +345,7 @@ class Solution {
 
 ![image-20210829170257962](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829170257962.png)
 
-### 递归
+#### 递归
 
 后序遍历都是先遍历左子树、再遍历右子树、最后遍历根节点，可以使用递归函数来实现。
 
@@ -409,7 +377,7 @@ class Solution {
 }
 ```
 
-### 迭代
+#### 迭代
 
 根节点和左右子树节点的关系：先遍历根节点（父节点），但是根节点（父节点）却排在左子树、右子树后面。
 
@@ -470,7 +438,7 @@ class Solution {
 }
 ```
 
-## [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
+### [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
 > 遍历方式：逐层遍历整棵数，同层节点从左向右添加进结果列表
 
@@ -586,9 +554,290 @@ class Solution {
 }
 ```
 
+## 恢复二叉树
+
+### [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+
+前序遍历和后序遍历的结果数组如下所示：
+
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
+
+<center>前序遍历数组</center>
+
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829170257962.png)
+
+<center>后序遍历数组</center>
+
+根据前序遍历和后序遍历的规则，以及遍历结果数组，我们可以得出：
+
+- 在前序遍历数组 pre 中，第一个元素 pre[0] 是二叉树的根节点 root，第二个元素 pre[1] 是左子树的根节点；
+- 在后序遍历数组 post 中，最后一个元素 post[n-1] 是根节点，倒数第二个元素 post[n-2] 是右子树的根节点；
+- 如果 pre[1] == post[n-2] 相等，说明根节点 root 只有一课子树。
+
+
+
+根据子树根节点在 pre 和 post 中下标位置，我们可以确定左右子树的范围，求解过程如下：
+
+假设右子树根节点 post[n-2] 在 pre 数组中的下标为 i，左子树根节点 pre[1] 在 post 数组中的下标为 j，那么存在如下关系：
+
+* pre[1,i-1] 是左子树在 pre 中的范围，post[0,j] 是左子树在 post 中的范围
+* pre[i,n-1] 是右子树在 pre 中的范围，post[j+1,n-2] 是右子树在 post 中的范围
+
+因为左子树和右子树也满足上述规则，所以我们可以使用一个递归函数 `recursion(ls,le,rs,re)` 来恢复二叉树。传入的参数分别为：
+
+- 当前树的左子树，在 pre 中的开始和结束下标
+
+- 当前树的右子树，在 post 中的开始和结束下标
+
+
+
+代码实现如下：
+
+```java
+class Solution {
+    /**
+     * 两个 hashmap 分别记录 前序遍历、后续遍历 中各个值的下标
+     */
+    Map<Integer, Integer> preMap, postMap;
+    int[] preorder, postorder;
+
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        this.preMap = getIndexMap(preorder);
+        this.postMap = getIndexMap(postorder);
+        this.preorder = preorder;
+        this.postorder = postorder;
+
+        return recursion(0, preorder.length - 1, 0, preorder.length - 1);
+    }
+
+    private TreeNode recursion(int ls, int le, int rs, int re) {
+        // 先取出根节点
+        TreeNode root = new TreeNode(preorder[ls]);
+        if (le <= ls) {
+            return root;
+        }
+        // i ： 右子树根节点在 pre 中的下标， j : 左子树根节点在 post 中的下标
+        int i = preMap.get(postorder[re - 1]), j = postMap.get(preorder[ls + 1]);
+        // 如果左右子树根节点相同，说明 root 只有一个子节点
+        if (preorder[ls + 1] == postorder[re - 1]) {
+            root.left = recursion(ls + 1, le, rs, j);
+        } else {
+            root.left = recursion(ls + 1, i - 1, rs, j);
+            root.right = recursion(i, le, j + 1, re - 1);
+        }
+        return root;
+    }
+
+    private Map<Integer, Integer> getIndexMap(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        return map;
+    }
+}
+```
+
+### [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+
+前序遍历和中序遍历的结果数组：
+
+![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
+
+<center>前序遍历结果数组</center>
+
+![image-20210829163341263](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
+
+<center>中序遍历结果数组</center>
+
+根据前序遍历和中序遍历的规，以及遍历结果数组，我们可以得出：
+
+- 前序遍历数组 pre 的第一个元素 pre[0] 是二叉树的根节点 root
+- 在中序遍历数组 in 中，根节点的左边是左子树、右边是右子树
+
+假设 pre[0] 在中序遍历数组 in 中的下标是 i，那么有以下几种情况：
+
+* i == 0：root 只有右子树，pre[1,n-1] 是右子树，in[i+1,n-1] 是右子树
+* i == n- 1：root 只有左子树，pre[1,n-1] 是左子树，in[0,i-1] 是左子树
+* i 等于其他值：pre[1,i]、in[0,i-1] 是左子树，pre[i+1,n-1]、in[i+1,n-1] 是右子树
+
+与 [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/) 不同的是，这里只使用了一个变量 i（根节点在中序遍历中的下标），就能确定左右子树。
+
+
+
+因为左子树和右子树也满足上述规则，同理，我们定义一个递归函数来求解 `recursion(ls,le,rs,re)`。
+
+代码实现如下：
+
+```java
+class Solution {
+    /**
+     * 记录前序遍历、中序遍历中每个数的下标
+     */
+    Map<Integer, Integer> preMap, inMap;
+    int[] preorder, inorder;
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        this.preorder = preorder;
+        this.inorder = inorder;
+        this.preMap = getIndexMap(preorder);
+        this.inMap = getIndexMap(inorder);
+
+        return recursion(0, preorder.length - 1, 0, inorder.length - 1);
+    }
+
+    private TreeNode recursion(int ls, int le, int rs, int re) {
+        // 子树的范围已经无效，说明已经遍历结束了
+        if (ls >= preorder.length || le < ls || re < rs) {
+            return null;
+        }
+        // 根节点
+        TreeNode root = new TreeNode(preorder[ls]);
+        // 根节点在中序遍历中的、in 数组中左子树的长度
+        int i = inMap.get(preorder[ls]), l = i - rs;
+        // 根据左子树的长度，计算出左右子树的范围
+        root.left = recursion(ls + 1, ls + l, rs, i - 1);
+        root.right = recursion(ls + l + 1, le, i + 1, re);
+        return root;
+    }
+
+    private Map<Integer, Integer> getIndexMap(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        return map;
+    }
+}
+```
+
+### [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+
+中序遍历和后序遍历数组结果如下所示：
+
+![image-20210829163341263](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829163341263.png)
+
+<center>中序遍历结果数组</center>
+
+![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829170257962.png)
+
+<center>后序遍历数组</center>
+
+根据中序遍历和后序遍历的规则，以及遍历结果数组，我们可以得出：
+
+- 后序数组 post 中，最后一个元素 post[n-1] 是二叉树的根节点 root
+- 在中序遍历数组 in 中，根节点的左边是左子树、右边是右子树
+
+假设 post[n-1] 在中序遍历数组 in 中的下标为 i，可以得到以下信息：
+
+- 在中序遍历数组中，左子树的开始下标是0，左子树在 in 中的长度为 l = i - 0
+
+* in[0,i-1] 是左子树的中序遍历，post[0,l-1] 是左子树的后序遍历	
+* in[i+1,n-1] 是右子树的中序遍历，post[l,n-2] 是右子树的后序遍历
+
+与 [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/) 相似，这里也只使用了一个变量 i（根节点在中序遍历中的下标），就能确定左右子树。
+
+
+
+因为左子树和右子树也满足上述规则，同理，我们定义一个递归函数来求解 `recursion(ls,le,rs,re)`。
+
+代码实现如下：
+
+```java
+class Solution {
+    /**
+     * 后序遍历、中序遍历数组中元素的下标
+     */
+    Map<Integer, Integer> postMap, inMap;
+    int[] postorder, inorder;
+
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        this.inorder = inorder;
+        this.postorder = postorder;
+        this.inMap = getIndexMap(this.inorder);
+        this.postMap = getIndexMap(this.postorder);
+        return recursion(0, this.inorder.length - 1, 0, this.postorder.length - 1);
+    }
+
+    private TreeNode recursion(int ls, int le, int rs, int re) {
+        // 没有有效的子树范围
+        if (re >= postorder.length || le < ls || re < rs) {
+            return null;
+        }
+        // 根节点
+        TreeNode root = new TreeNode(postorder[re]);
+        // 根节点在中序遍历中的下标、左子树的长度
+        int i = inMap.get(root.val), l = i - ls;
+        
+        root.left = recursion(ls, i - 1, rs, rs + l - 1);
+        root.right = recursion(i + 1, le, rs + l, re - 1);
+        return root;
+    }
+
+    private Map<Integer, Integer> getIndexMap(int[] nums) {
+        Map<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            map.put(nums[i], i);
+        }
+        return map;
+    }
+}
+```
+
+## 其他相关问题
+
+### [114. 二叉树展开为链表](https://leetcode-cn.com/problems/flatten-binary-tree-to-linked-list/)
+
+本题与 [144. 二叉树的前序遍历](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/) 相似，都需要前序遍历二叉树。区别在于，本题要生成一个单链表，且满足以下要求：
+
+- 链表的起始节点是二叉树的根节点
+- 每个节点只有右指针，没有左指针
+- 链表中节点顺序与前序遍历相同
+
+我们在前序遍历的基础上，增加以下改动：
+
+- 要把每个节点的左子节点设置为 null
+- 把当前遍历的节点设置为前一个节点的右子节点
+
+因此，使用两个临时变量 pre、cur 分别指向前一个节点、当前遍历的节点。
+
+代码实现如下：
+
+```java
+class Solution {
+    public void flatten(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        if (root != null) {
+            stack.add(root);
+        }
+        // 前一个节点、当前节点
+        TreeNode pre = null, cur = null;
+        while (!stack.isEmpty()) {
+            // 正常的前序遍历
+            cur = stack.pop();
+            if (cur.right != null) {
+                stack.push(cur.right);
+            }
+            if (cur.left != null) {
+                stack.push(cur.left);
+                // 把左指针设置为 null
+                cur.left = null;
+            }
+            // 更新 pre 的指向，如果 pre 为 null，表示 cur 是根节点
+            if (pre != null) {
+                pre.right = cur;
+            }
+            pre = cur;
+        }
+    }
+}
+```
+
 ### [107. 二叉树的层序遍历 II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
 
-该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 解法相同，区别在于：把每一层子节点列表添加进结果集时，添加到结果集的头部。
+该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 解法相同。
+
+区别在于：把每一层子节点列表添加进结果集时，添加到结果集的头部。
 
 代码实现如下：
 
@@ -626,7 +875,9 @@ class Solution {
 
 ### [103. 二叉树的锯齿形层序遍历](https://leetcode-cn.com/problems/binary-tree-zigzag-level-order-traversal/)
 
-该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 解法相同，区别在于：在遍历过程中，每隔一层就要翻转一次节点列表。可以使用一个标志位来表示是否要翻转，并在每一层遍历后修改标志位。
+该问题与 [102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/) 解法相同。
+
+区别在于：在遍历过程中，每隔一层就要翻转一次节点列表。可以使用一个标志位来表示是否要翻转，并在每一层遍历后修改标志位。
 
 代码实现如下：
 
@@ -671,166 +922,115 @@ class Solution {
 }
 ```
 
-# TODO
+### [1028. 从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/)
 
-## [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/)
+这一题和[105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)、 [889. 根据前序和后序遍历构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/) 的不同之处在于：这里没有中序遍历和后序遍历的结果，而是使用短横杠“-”的个数来表示节点的深度。比如，给的示例中，节点 ,3、6 深度都是2，所以有两个短横杆“--”：
 
-![image-20210829155351605](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210829155351605.png)
+![image-20210920150241325](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210920150241325.png)
 
-前序遍历数组 pre 的第一个元素 pre[0] 是根节点 root，第二个元素 pre[1] 是左子树的根节点；
+**怎么从这样的字符串中恢复二叉树？**
 
-后续遍历数组 post 的最后一个元素 post[n-1] 是根节点，倒数第二个元素 post[n-2] 是右子树的根节点；如果 pre[1] == post[n-2] 相等，说明根节点 root 只有一颗子树。
+我们知道，前序遍历的结果由“根节点-左子树-右子树”组成，并且“左子树”和“右子树”的结构与整棵树的结构相同。
 
-假设 post[n-2] 在 pre 数组中的下标为 i，pre[0+1] 在 post 数组中的下标为 j，那么存在如下关系：
+如果我们从字符串中能够确定整棵树的“根节点、根节点的左子节点、根节点的右子节点”，就能用同样的方法在“左子树”和“右子树”分别确定它们的根节点和两个子节点，从而以递归的方式求解整棵树。
 
-* pre[0+1,i-1] 是左子树在 pre 中的范围，pre[i,n-1] 是右子树在 pre 中的范围
-* post[0,j] 是左子树在 post 中的范围，post[j+1,n-2] 是右子树的后序遍历
 
-定义一个递归函数，返回当前树的根节点。
+
+**如何确定根节点、左子节点、右子节点？**
+
+一棵树的前序遍历结果中，第一个元素是根节点，第二个元素是根节点的子节点（左子节点或右子节点）。
+
+在这一题的字符串中，我们需要先得到第二个元素的深度，如果第二个元素是左子节点，可以在字符串后续的范围内找到第二个深度相同的节点作为右子节点。
+
+通过确定左子节点、右子节点的下标，从而知道“左子树”、“右子树”在字符串中的范围，递归地求解左子树和右子树。
+
+
+
+代码实现如下：
 
 ```java
 class Solution {
-    Map<Integer, Integer> preMap, postMap;
-    int[] preorder, postorder;
-
-    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
-        this.preMap = getIndexMap(preorder);
-        this.postMap = getIndexMap(postorder);
-        this.preorder = preorder;
-        this.postorder = postorder;
-
-        return recursion(0, preorder.length - 1, 0, preorder.length - 1);
+    public TreeNode recoverFromPreorder(String traversal) {
+        return recursion(traversal, 0, traversal.length() - 1);
     }
 
     /**
-     * 根据前序遍历、后序遍历，递归求解二叉树
+     * 以递归方式，从字符串 traversal 中恢复二叉树
      *
-     * @param ls 树在前序遍历列表中的起始下标
-     * @param le 树在前序遍历列表中的结束下标
-     * @param rs 树在后序遍历列表中的起始下标
-     * @param re 树在后序遍历数组中的结束下标
-     * @return 根节点
+     * @param traversal 字符串
+     * @param start     开始下标，包含 start
+     * @param end       结束下标，包含 end
+     * @return 二叉树
      */
-    private TreeNode recursion(int ls, int le, int rs, int re) {
-        TreeNode root = new TreeNode(preorder[ls]);
-        if (le <= ls) {
-            return root;
+    private TreeNode recursion(String traversal, int start, int end) {
+        if (start > end) {
+            return null;
         }
-        // i ： 右子树根节点在 pre 中的下标， j : 左子树根节点在 post 中的下标
-        int i = preMap.get(postorder[re - 1]), j = postMap.get(preorder[ls + 1]);
-        if (preorder[ls + 1] == postorder[re - 1]) {
-            root.left = recursion(ls + 1, le, rs, j);
+        // 根节点
+        int val = 0;
+        while (start < traversal.length() && Character.isDigit(traversal.charAt(start))) {
+            val = val * 10 + Character.getNumericValue(traversal.charAt(start));
+            start++;
+        }
+        TreeNode root = new TreeNode(val);
+        // 确定左子树的开始下标
+        // level : 根节点后紧跟着的节点深度， ls : 左子树的开始下标
+        int level = 0, ls = start;
+        while (start < traversal.length() && traversal.charAt(ls) == '-') {
+            level++;
+            ls++;
+        }
+        // 找右子树的开始下标
+        int rs = findNodeIndex(traversal, ls, end, level);
+
+        // 递归
+        if (rs < 0) {
+            // 没有右子树
+            root.left = recursion(traversal, ls, end);
         } else {
-            root.left = recursion(ls + 1, i - 1, rs, j);
-            root.right = recursion(i, le, j + 1, re - 1);
+            root.left = recursion(traversal, ls, rs - level - 1);
+            root.right = recursion(traversal, rs, end);
         }
         return root;
     }
 
-    private Map<Integer, Integer> getIndexMap(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>(nums.length);
-        for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i);
+    /**
+     * 在字符串 traversal 中，找到深度为 level 的节点开始下标
+     *
+     * @param traversal 字符串
+     * @param start     查找范围的起点，包含 start
+     * @param end       查找范围的终点，包含 end
+     * @param level     深度, levn >= 1
+     * @return 开始下标，如果没找到，就返回-1
+     */
+    private int findNodeIndex(String traversal, int start, int end, int level) {
+        int len = 0;
+        boolean flag = false;
+        for (; start < end; start++) {
+            while (traversal.charAt(start) == '-') {
+                start++;
+                len++;
+            }
+            // 找到 level 个 '-'
+            if (len == level) {
+                flag = true;
+                break;
+            } else {
+                len = 0;
+            }
         }
-        return map;
+        if (flag) {
+            return start;
+        } else {
+            return -1;
+        }
     }
 }
 ```
 
 
 
-## [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
-
-前序数组 pre 的第一个元素 pre[0] 是根节点 root，假设 pre[0] 在中序数组 in 中的下标是 i，那么有以下几种情况：
-
-* 如果 i == 0，就说明 root 只有右子树，pre[1,n-1] 是右子树，in[i+1,n-1] 是右子树
-* 如果 i == n- 1，就说明 root 只有左子树，pre[1,n-1] 是左子树，in[0,i-1] 是左子树
-* i为其他值：
-  * 根据前序遍历和中序遍历的规则（中左右、左中右），pre 中左子树的长度等于 in 中左子树的长度，pre 中右子树的长度等于 in 中右子树的长度
-  * 因此，pre[1,i]、in[0,i-1] 是左子树，pre[i+1,n-1]、in[i+1,n-1] 是右子树
-
-```java
-class Solution {
-    Map<Integer, Integer> preMap, inMap;
-    int[] preorder, inorder;
-
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        this.preorder = preorder;
-        this.inorder = inorder;
-        this.preMap = getIndexMap(preorder);
-        this.inMap = getIndexMap(inorder);
-
-        return recursion(0, preorder.length - 1, 0, inorder.length - 1);
-    }
-
-    private TreeNode recursion(int ls, int le, int rs, int re) {
-        if (ls >= preorder.length || le < ls || re < rs) {
-            return null;
-        }
-        TreeNode root = new TreeNode(preorder[ls]);
-        int i = inMap.get(preorder[ls]);
-        // in 数组中，左子树的长度
-        int l = i - rs;
-        root.left = recursion(ls + 1, ls + l, rs, i - 1);
-        root.right = recursion(ls + l + 1, le, i + 1, re);
-        return root;
-    }
-
-    private Map<Integer, Integer> getIndexMap(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>(nums.length);
-        for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i);
-        }
-        return map;
-    }
-}
-```
-
-## [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
-
-后序数组 post 的最后一个元素 post[n-1] 是根节点 root，假设 post[n-1] 在中序数组 in 中的下标为 i，那么根据遍历规则，左子树在 in 中的长度为 l = i，可以得到以下信息：
-
-* in[0,i-1] 是左子树的中序遍历，post[0,l-1] 是左子树的后序遍历	
-* in[i+1,n-1] 是右子树的中序遍历，post[l,n-2] 是右子树的后序遍历
-
-```java
-class Solution {
-    Map<Integer, Integer> postMap, inMap;
-    int[] postorder, inorder;
-
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        this.inorder = inorder;
-        this.postorder = postorder;
-        this.inMap = getIndexMap(this.inorder);
-        this.postMap = getIndexMap(this.postorder);
-        return recursion(0, this.inorder.length - 1, 0, this.postorder.length - 1);
-    }
-
-    private TreeNode recursion(int ls, int le, int rs, int re) {
-        // 因为需要在两个数组中寻找元素，所以只要有一个不满足条件，就可以结束递归
-        if (re >= postorder.length || le < ls || re < rs) {
-            return null;
-        }
-        TreeNode root = new TreeNode(postorder[re]);
-        int i = inMap.get(root.val);
-        // 左子树的长度
-        int l = i - ls;
-        root.left = recursion(ls, i - 1, rs, rs + l - 1);
-        root.right = recursion(i + 1, le, rs + l , re - 1);
-        return root;
-    }
-
-    private Map<Integer, Integer> getIndexMap(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>(nums.length);
-        for (int i = 0; i < nums.length; i++) {
-            map.put(nums[i], i);
-        }
-        return map;
-    }
-}
-```
-
-## [1028. 从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/)
+官方题解 [从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/solution/cong-xian-xu-bian-li-huan-yuan-er-cha-shu-by-leetc/) 给出了一种迭代求解的方式，代码以及注释如下：
 
 ```java
 class Solution {
@@ -855,47 +1055,35 @@ class Solution {
             }
             // 构造节点
             TreeNode node = new TreeNode(value);
-            // 根据前序遍历的规则，从 root 一直遍历它的左子节点，所以如果 level == path.size，说明当前节点是它父节点的左节点
-            // 设置当前节点为栈顶节点的左子节点
+            // 根据前序遍历的规则，从 root 一直遍历它的左子节点
+            // 如果 level == path.size，说明当前节点是根节点 或 path中最后一个节点的左子节点
             if (level == path.size()) {
                 if (!path.isEmpty()) {
                     path.peek().left = node;
                 }
             } else {
-                // 如果 level != path.size，说明当前节点是路径上某个节点的右节点，那么不断地把栈中节点 pop 出，直到 level == path.size
-                // 设置当前节点为栈顶节点的右子节点
+                // 如果 level != path.size，说明当前节点是某个节点的右子节点
+                // 从 path 中 pop 出节点，直到 path.size == level，node 就是 path 中最后一个节点的右子节点
                 while (level != path.size()) {
                     path.pop();
                 }
                 path.peek().right = node;
             }
-            // 把当前节点 push 到栈顶
+            // 把节点保存进 path
             path.push(node);
         }
-        // 全部 pop 出，只剩下根节点
+        // 直到只剩下根节点
         while (path.size() > 1) {
             path.pop();
         }
         return path.peek();
     }
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
 }
 ```
+
+## 总结
+
+对“二叉树遍历、二叉树恢复”相关问题进行了整理，关键在于：
+
+- 在遍历二叉树节点的过程中怎么保存和取出节点
+- 不同二叉树遍历结果中，根节点、子树之间的分布规律
