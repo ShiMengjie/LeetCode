@@ -578,5 +578,3 @@ class Solution {
 [矩阵](https://oi-wiki.org/math/matrix/)
 
 [程序员代码面试指南：IT名企算法与数据结构题目最优解](https://book.douban.com/subject/26638586/)
-
-![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210912215800520.png)
