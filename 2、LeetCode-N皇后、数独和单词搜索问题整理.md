@@ -1,4 +1,10 @@
-# [51. N 皇后](https://leetcode-cn.com/problems/n-queens/)、[52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/)
+# LeetCode-N皇后、数独和单词搜索问题
+
+LeetCode 上的“N皇后、数独、单词搜索问题”，可以使用回溯算法在二维数组上寻找有效路径，进而求解。
+
+因此，本文整理 LeetCode 上的相关问题和求解过程，方便后续复习。
+
+## 问题列表
 
 [51. N 皇后](https://leetcode-cn.com/problems/n-queens/)
 
@@ -12,10 +18,14 @@
 
 [212. 单词搜索 II](https://leetcode-cn.com/problems/word-search-ii/)
 
-### [51. N 皇后](https://leetcode-cn.com/problems/n-queens/)
+## [51. N 皇后](https://leetcode-cn.com/problems/n-queens/)
 
-> n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击（任何两个皇后都不能处于同一条横行、纵行或斜线上）。
->
+**n 皇后问题** 研究的是如何将 `n` 个皇后放置在 `n×n` 的棋盘上，并且使皇后彼此之间不能相互攻击。
+
+- 皇后彼此不能相互攻击，也就是说：任何两个皇后都不能处于同一条横行、纵行或斜线上。
+
+问题描述：
+
 > 给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
 >
 > 每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
@@ -37,59 +47,36 @@
 输出：[["Q"]]
 ```
 
-### [52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/)
-
-> **n 皇后问题** 研究的是如何将 `n` 个皇后放置在 `n×n` 的棋盘上，并且使皇后彼此之间不能相互攻击。
->
-> 给你一个整数 `n` ，返回 **n 皇后问题** 不同的解决方案的数量。
-
-**示例 1：**
-
-```tex
-输入：n = 4
-输出：2
-解释：如上图所示，4 皇后问题存在两个不同的解法。
-```
-
-**示例 2：**
-
-```tex
-输入：n = 1
-输出：1
-```
-
 <div align=center>
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.gif"/>
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640.gif"/>
 </div>
-## 分析阶段
 
-“N皇后”问题是回溯算法的经典问题，问题要求解的是：
+“N皇后”问题求解的结果是：
 
-在一个 N*N 的二维数组中，找到N个不同位置上的元素组成一个组合，要求这些元素的位置下标满足以下要求：
+在一个 N*N 的二维数组中，找到N个不同位置上的元素，要求这些元素的位置下标满足以下要求：
 
 - 行下标互不相等
 - 列下标互不相等
-- 任意两元素不在同一条斜线上
+- 任意两个元素不在同一条斜线上
 
-典型的“在元素集合中寻找满足条件的组合”。
+这是回溯问题中典型的“组合”问题。
 
-### 1、问题类型
+### 解题思路
 
-第二类：对某种数结构和算法的使用
+1、遍历二维数组“mat" 第一行中的每个元素 mat[0][i](i=0,1,3,...,N-1)，以 mat[0][i] 作为组合的起点；
 
-使用的算法：回溯算法
+2、确定了第一个元素后，在第二行开始遍历，找到符合条件的第二个元素 mat[1][j](j=0,1,2,3,...,N-1)；
 
-数据结构：回溯算法构造“空间状态树”，使用树形结构
+3、依次类推，直到遍历到最后一行，此时选择的所有元素组成一个有效解。
 
-### 2、解题思路
-
-根据问题要求，我们可以从二维数组的第一行开始，遍历第一行的每个元素，分别以第一行的每个元素作为组合的起点，然后在第二行寻找符合条件的第二个元素，接着寻找第三行符合条件的第三个元素，以此类推，直到最后一行。如果组合中所有元素都符合要求，就把组合添加进解集中。
+这种不断试探，
 
 我们定义递归函数 **backtrack(res, path, row)** 表示：从二维数组的 **row** 行开始，寻找满足问题要求的组合，并添加到结果集 **res** 中。
 
 <div align=center>
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640%20(1).gif"/>
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640%20(1).gif"/>
 </div>
+
 
 接下来，依次确定“回溯算法”的必备要素，最后编码实现。
 
@@ -114,7 +101,7 @@
 
 所以，通过元素的行下标、列下标，可以计算出它所在的斜线。
 
-![imgimage-20210620143856740](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/imgimage-20210620143856740.png)
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/imgimage-20210620143856740.png" alt="imgimage-20210620143856740" style="zoom:50%;" />
 
 #### （3）结束条件
 
@@ -137,8 +124,6 @@
 <img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.png"/>
 </div>
 ## 编码阶段
-
-### LeetCode-51
 
 ```java
 class Solution {
@@ -307,6 +292,31 @@ class Solution {
 ## 总结阶段
 
 “N皇后”问题是经典的回溯问题，只要按照回溯问题的求解步骤，依次确定各个要素，就能很简单地求解。
+
+### [52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/)
+
+> **n 皇后问题** 研究的是如何将 `n` 个皇后放置在 `n×n` 的棋盘上，并且使皇后彼此之间不能相互攻击。
+>
+> 给你一个整数 `n` ，返回 **n 皇后问题** 不同的解决方案的数量。
+
+**示例 1：**
+
+```tex
+输入：n = 4
+输出：2
+解释：如上图所示，4 皇后问题存在两个不同的解法。
+```
+
+**示例 2：**
+
+```tex
+输入：n = 1
+输出：1
+```
+
+
+
+
 
 ## [36. 有效的数独](https://leetcode-cn.com/problems/valid-sudoku/)
 
