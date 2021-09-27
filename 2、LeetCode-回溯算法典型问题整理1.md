@@ -1,6 +1,6 @@
-# LeetCode-经典回溯问题整理
+# LeetCode-回溯算法典型问题整理1
 
-“N皇后、数独、单词搜索、黄金矿工”等问题，是回溯算法的经典问题，这些问题都是在二维数组上，使用回溯算法寻找组合。
+“N皇后、数独、单词搜索、黄金矿工”等问题，是回溯算法的典型问题，这些问题都是使用回溯算法在二维数组上寻找组合。
 
 本文整理了 LeetCode 上的相关问题，方便后续复习。
 
@@ -27,18 +27,16 @@
 ## [51. N 皇后](https://leetcode-cn.com/problems/n-queens/)
 
 > 相同问题：[面试题 08.12. 八皇后](https://leetcode-cn.com/problems/eight-queens-lcci/)
->
-> 相似问题：[52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/)
-
-**n 皇后问题** 研究的是如何将 `n` 个皇后放置在 `n×n` 的棋盘上，并且使皇后彼此之间不能相互攻击。
-
-- 皇后彼此不能相互攻击：任何两个皇后都不能处于同一条横行、纵行或斜线上。
 
 问题描述：
 
-> 给你一个整数 n ，返回所有不同的 “n 皇后问题” 的解决方案。
->
-> 每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+**n 皇后问题** 研究的是如何将 `n` 个皇后放置在 `n×n` 的棋盘上，并且使皇后彼此之间不能相互攻击。
+
+> 皇后彼此不能相互攻击：任何两个皇后都不能处于同一条横行、纵行或斜线上。
+
+给你一个整数 n ，返回所有不同的 “n 皇后问题” 的解决方案。
+
+每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
 
 **示例 1：**
 
@@ -116,7 +114,7 @@
 
 因此，通过元素的下标，可以计算出它所在的斜线。
 
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/imgimage-20210620143856740.png" alt="imgimage-20210620143856740" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/imgimage-20210620143856740.png" alt="imgimage-20210620143856740" style="zoom:50%;"/>
 
 **3、结束条件**
 
@@ -238,6 +236,8 @@ class QueenNode {
 }
 ```
 
+------
+
 ## [52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/)
 
 [52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/) 与 [51. N 皇后](https://leetcode-cn.com/problems/n-queens/) 求解过程相同，只不过这一题是求解“解决方案的个数”。
@@ -308,7 +308,6 @@ class Solution {
             k2.remove(node.getK2());
         }
     }
-
 }
 
 /**
@@ -330,18 +329,6 @@ class QueenNode {
 
     public int getK2() {
         return k2;
-    }
-
-    public String toString(int n) {
-        char[] chs = new char[n];
-        for (int i = 0; i < n; i++) {
-            if (i == col) {
-                chs[i] = 'Q';
-            } else {
-                chs[i] = '.';
-            }
-        }
-        return new String(chs);
     }
 }
 ```
@@ -407,6 +394,8 @@ class Solution {
     }
 }
 ```
+
+------
 
 ## [37. 解数独](https://leetcode-cn.com/problems/sudoku-solver/)
 
@@ -577,114 +566,97 @@ class Solution {
 ```
 
 <div align=center>
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640%20(1).gif"/>
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640.png"/>
 </div>
 
 ## [79. 单词搜索](https://leetcode-cn.com/problems/word-search/)
 
-> 给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
->
-> 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
->
+问题描述：
+
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
 
 **示例 1：**
 
 ![img](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/word2.jpg)
 
 ```tex
-输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输入：board = [
+["A","B","C","E"],
+["S","F","C","S"],
+["A","D","E","E"]], 
+word = "ABCCED"
 输出：true
 ```
 
-**示例 2：**
+### 解题思路
 
-![img](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/word-1.jpg)
+在一个二维数组中，寻找连续“相邻”的元素，组成目标字符串 word。
 
-```tex
-输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "SEE"
-输出：true
-```
+最简单的做法就是：以二维数组中每个元素作为一个字符串的起点，生成以该元素为起点的所有字符串，判断其中是否有字符串与目标字符串 word 相等。
 
-**示例 2：**
+这种做法就是一种暴力求解的思路，为了提升效率，在暴力求解的过程中，如果发现某个字符串部分字符已经与 word 不相等了，就可以不用再继续，可以直接结束。比如，在示例中，输入的 word = "ABCCED"，以第一行第二元素 B 为起点的字符串肯定是不符合要求的，可以直接跳过。
 
-![img](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/word3.jpg)
+这种“不满足条件就提前结束”的思想，就是回溯算法在“暴力求解”上的优化。
 
-```tex
-输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
-输出：false
-```
 
-### 分析阶段
 
-在二维数组中，找到“连续”的元素，是否能组成目标单词。
+回溯算法的求解步骤如下：
 
-1、问题类型
-
-第二类：对某种数结构和算法的使用
-
-使用的算法：在给定的元素集合中，**判断是否存在满足条件的组合**，使用“回溯算法“
-
-数据结构：回溯算法需要构建空间状态树，使用树结构
-
-2、解题思路
-
-“回溯算法”要确定以下条件，然后构建出解集的空间状态树。
-
-（1）选择列表
+**1、选择列表**
 
 二维数组中的所有元素。
 
-（2）路径
+**2、选择路径**
 
 因为每个元素只能使用一次，所以需要记录已经选择的元素下标；另外，不需要返回结果，所以不需要记录已经选择元素。
 
-**（3）结束条件**
+**3、结束条件**
 
-达到什么条件时结束结束当前节点的遍历？
+在什么条件时结束遍历？
 
-1、已经确定的字母个数，大于等于单词长度，说明能找到目标单词，返回 true
+- 已经选择的字符个数，大于等于单词长度，说明已经找到目标单词，返回 true
+- 当前元素的下标不在二维数组范围内，说明已经遍历完所有元素，且不能找到目标单词，返回false
 
-2、当前元素的下标不在二维数组范围内，说明不能找到目标单词，返回false
+**4、选择**
 
-3、当前元素与指定的字母不相同，说明不能找到目标单词，返回false
+满足什么条件的元素可以被添加进路径中？
 
-4、当前元素已经选择过了，不能再继续遍历下去，返回false
+- 当前元素与前一个元素“相邻”
+- 当前元素未被选择过
+- 当前元素与 word 对应位置的字符相同
 
-**（4）选择**
-
-什么条件下才把当前元素添加进路径中？
-
-除了上述结束条件外，就可以被选择。
-
-
+**5、空间状态树**
 
 "空间状态树"如下图所示：
 
-![image-20210622233158158](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/image-20210622233158158.png)
+![image-20210927164503535](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210927164503535.png)
 
-### 编码阶段
+### 代码实现
 
 ```java
 public class Solution {
 
-    public static void main(String[] args) {
-        char[][] board = new char[][]{
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'}};
-        String word = "AAAAAAAAAAAAAAB";
-        System.out.println("'========='" + new Solution().exist(board, word));
-    }
+    char[][] board;
+    String word;
+    /**
+     * 记录对应位置上的元素是否已经选择过
+     */
+    boolean[][] visited;
+    /**
+     * 遍历的方向
+     */
+    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
     public boolean exist(char[][] board, String word) {
+        this.board = board;
+        this.word = word;
+        this.visited = new boolean[board.length][board[0].length];
 
-        boolean[][] visited = new boolean[board.length][board[0].length];
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
-                boolean result = backtrack(board, word, visited, 0, row, col);
+                boolean result = backtrack(row, col, 0);
                 if (result) {
                     return true;
                 }
@@ -693,145 +665,166 @@ public class Solution {
         return false;
     }
 
-    public boolean backtrack(char[][] board, String word, boolean[][] visited, int idx, int row, int col) {
-        // 这里要先判断已经确定的字母个数
-        if (idx == word.length()) {
+    public boolean backtrack(int row, int col, int len) {
+        // 已选择的字符个数
+        if (len == word.length()) {
             return true;
         }
-
+        // 当前下标不在数组范围内
         if (row < 0 || row >= board.length || col < 0 || col >= board[0].length) {
             return false;
         }
-        if (visited[row][col]) {
-            return false;
-        }
-        if (board[row][col] != word.charAt(idx)) {
+        // 当前下标的元素已经选择过、不等于单词对应位置处的字符
+        if (visited[row][col] || board[row][col] != word.charAt(len)) {
             return false;
         }
 
+        // 选择该位置的字符
         visited[row][col] = true;
-        // 左边列的元素
-        boolean result = backtrack(board, word, visited, idx + 1, row, col - 1);
-        if (result) {
-            return true;
-        }
-        // 右边列的元素
-        result = backtrack(board, word, visited, idx + 1, row, col + 1);
-        if (result) {
-            return true;
-        }
-        // 上一行的元素
-        result = backtrack(board, word, visited, idx + 1, row - 1, col);
-        if (result) {
-            return true;
-        }
-        // 下一行的元素
-        result = backtrack(board, word, visited, idx + 1, row + 1, col);
-        if (result) {
-            return true;
-        }
-        visited[row][col] = false;
-        return false;
-    }
-}
-```
 
-在每层递归中，首先要判断是否已经找到所有字母，否则当输入为以下用例时：
-
-> **[["a"]] **
->
-> **"a"**
-
-在第二层递归中 row 和 col 都等于1，会直接返回 false，即使已经找到到单词，依然会返回 false。
-
-
-
-可以根据[官方题解](https://leetcode-cn.com/problems/word-search/solution/dan-ci-sou-suo-by-leetcode-solution/)对上面的代码中“上下左右元素”部分进行优化，优化后代码如下：
-
-```java
-public class Solution {
-
-    public static void main(String[] args) {
-        char[][] board = new char[][]{
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'},
-                {'A', 'A', 'A', 'A', 'A', 'A'}};
-        String word = "AAAAAAAAAAAAAAB";
-        System.out.println("'========='" + new Solution().exist(board, word));
-    }
-
-    public boolean exist(char[][] board, String word) {
-
-        boolean[][] visited = new boolean[board.length][board[0].length];
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
-                boolean result = backtrack(board, word, visited, 0, row, col);
-                if (result) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public boolean backtrack(char[][] board, String word, boolean[][] visited, int idx, int row, int col) {
-        if (idx == word.length()) {
-            return true;
-        }
-
-        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length) {
-            return false;
-        }
-        if (visited[row][col]) {
-            return false;
-        }
-        if (board[row][col] != word.charAt(idx)) {
-            return false;
-        }
-
-        visited[row][col] = true;
-        int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         for (int[] direction : directions) {
-            int newi = row + direction[0], newj = col + direction[1];
-            boolean flag = backtrack(board, word, visited, idx + 1, newi, newj);
+            int newRow = row + direction[0], newCol = col + direction[1];
+            boolean flag = backtrack(newRow, newCol, len + 1);
             if (flag) {
                 return true;
             }
         }
+        // 撤销选择
         visited[row][col] = false;
+        // 返回 false，表示以当前元素为起点，找不到有效解
         return false;
     }
 }
 ```
 
-只是简化了代码样式，性能并没有提升。
-
-总结阶段
-
-依然是在元素集合中找组合，只不过选择条件更加复杂；对于二维数组元素“上下左右”，可以像“官方题解”那样，使用一个二维向量数组表示。
+------
 
 ## [212. 单词搜索 II](https://leetcode-cn.com/problems/word-search-ii/)
 
+问题描述：
 
+给定一个 m x n 二维字符网格 board 和一个单词（字符串）列表 words，找出所有同时在二维网格和字典中出现的单词。
+
+单词必须按照字母顺序，通过 相邻的单元格 内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母在一个单词中不允许被重复使用。
+
+**示例1：**
+
+![image-20210927171601818](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/image-20210927171601818.png)
+
+```shell
+输入：board = [
+["o","a","a","n"],
+["e","t","a","e"],
+["i","h","k","r"],
+["i","f","l","v"]
+], 
+words = ["oath","pea","eat","rain"]
+输出：["eat","oath"]
+```
+
+### 解题思路
+
+这一题与 [79. 单词搜索](https://leetcode-cn.com/problems/word-search/) 的求解过程相同，我们可以依次判断 words 中每个单词是否能在二维数组中找到，如果能在二维数组中找到就添加进结果集。
+
+这样做可以得到答案，但是存在一个问题：每个单词都要对二维数组做相同的回溯过程，导致了大量重复的工作。
+
+我们可以在对二维数组做一次回溯，得到所有字符串集合，从中找到在 words 中的字符串。
+
+### 代码实现
+
+把  [79. 单词搜索](https://leetcode-cn.com/problems/word-search/) 代码稍作修改，实现如下。
+
+```java
+public class Solution {
+
+    char[][] board;
+    /**
+     * 记录对应位置上的元素是否已经选择过
+     */
+    boolean[][] visited;
+    /**
+     * 遍历的方向
+     */
+    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+    /**
+     * 记录要查询的字符串
+     */
+    Set<String> set;
+
+    /**
+     * 结果集
+     */
+    List<String> res = new LinkedList<>();
+
+    public List<String> findWords(char[][] board, String[] words) {
+        this.board = board;
+        this.visited = new boolean[board.length][board[0].length];
+        this.set = new HashSet<>(words.length);
+        // 把输入的字符串添加进集合中
+        set.addAll(Arrays.asList(words));
+
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[row].length; col++) {
+                backtrack(row, col, new StringBuilder());
+            }
+        }
+
+        return res;
+    }
+
+    public void backtrack(int row, int col, StringBuilder sb) {
+        // 如果二维数组中拼接的字符串在 set 中，表明是要查找的字符串，保存进结果集中，并从 set 中移除
+        // 问题限制了，单词长度不会超过 10
+        if (sb.length() <= 10) {
+            if (set.contains(sb.toString())) {
+                res.add(sb.toString());
+                set.remove(sb.toString());
+            }
+        }else {
+            return;
+        }
+        // 当前下标不在数组范围内
+        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length) {
+            return;
+        }
+        // 当前下标的元素已经选择过
+        if (visited[row][col]) {
+            return;
+        }
+
+        // 选择该位置的字符
+        visited[row][col] = true;
+        sb.append(board[row][col]);
+
+        for (int[] direction : directions) {
+            int newRow = row + direction[0], newCol = col + direction[1];
+            backtrack(newRow, newCol, sb);
+        }
+        // 撤销选择
+        visited[row][col] = false;
+        sb.deleteCharAt(sb.length() - 1);
+    }
+}
+```
 
 <div align=center>
-<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/640.gif"/>
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.png"/>
 </div>
 
 ## [1219. 黄金矿工](https://leetcode-cn.com/problems/path-with-maximum-gold/)
 
-> 你要开发一座金矿，地质勘测学家已经探明了这座金矿中的资源分布，并用大小为 m * n 的网格 grid 进行了标注。每个单元格中的整数就表示这一单元格中的黄金数量；如果该单元格是空的，那么就是 0。
->
-> 为了使收益最大化，矿工需要按以下规则来开采黄金：
->
-> 每当矿工进入一个单元，就会收集该单元格中的所有黄金。
-> 矿工每次可以从当前位置向上下左右四个方向走。
-> 每个单元格只能被开采（进入）一次。
-> 不得开采（进入）黄金数目为 0 的单元格。
-> 矿工可以从网格中 任意一个 有黄金的单元格出发或者是停止。
+问题描述：
+
+你要开发一座金矿，地质勘测学家已经探明了这座金矿中的资源分布，并用大小为 m * n 的网格 grid 进行了标注。每个单元格中的整数就表示这一单元格中的黄金数量；如果该单元格是空的，那么就是 0。
+
+为了使收益最大化，矿工需要按以下规则来开采黄金：
+
+- 每当矿工进入一个单元，就会收集该单元格中的所有黄金。
+- 矿工每次可以从当前位置向上下左右四个方向走。
+- 每个单元格只能被开采（进入）一次。
+- 不得开采（进入）黄金数目为 0 的单元格。
+- 矿工可以从网格中 任意一个 有黄金的单元格出发或者是停止。
 
 **示例 1：**
 
@@ -845,43 +838,17 @@ public class Solution {
 一种收集最多黄金的路线是：9 -> 8 -> 7。
 ```
 
-**示例 2：**
+### 解题思路
 
-```tex
-输入：grid = [[1,0,7],[2,0,6],[3,4,5],[0,3,0],[9,0,20]]
-输出：28
-解释：
-[[1,0,7],
- [2,0,6],
- [3,4,5],
- [0,3,0],
- [9,0,20]]
-一种收集最多黄金的路线是：1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7。
-```
+在一个二维数组中，寻找元素的一种组合，使得组合中所有数字的和值是最大的。
 
-![640](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.gif)
+根据问题要求，可以从遍历二维数组中的每个元素，以该元素作为组合的第一个元素，计算出所有组合的结果，然后从中选择最大的一个。
 
-### 分析阶段
 
-问题要求：在一个二维数组中，寻找某种组合，使得组合中所有数字的和最大，并且组合中的数字要满足题目的约束条件。
-
-“寻找组合”类的问题，可以使用“回溯算法”求解。
-
-1、问题类型
-
-第二类：对某种数结构和算法的使用
-
-使用的算法：回溯算法
-
-数据结构：回溯算法构造“空间状态树”，使用树形结构
-
-2、解题思路
-
-根据问题要求，从二维数组中每个位置的元素出发，寻找以该元素为起点的组合，并计算组合中所有元素之和，最后选择出和值最大的一个。
 
 我们定义递归函数 **backtrack(grid, row, col)** 表示：从二维数组 **grid** 下标 **(row,col)** 位置处开始，能够得到的最大和值。
 
-![640 (1)](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640 (1).gif)
+
 
 接下来，依次确定“回溯算法”的必备要素，最后编码实现。
 
@@ -905,17 +872,20 @@ public class Solution {
 
 以“示例1”的输入作为案例，演示求解过程，如下图所示：
 
-![LeetCode-1219](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/LeetCode-1219.gif)
-
-![640](https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.png)
+![screenshot-20210927-174733](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/screenshot-20210927-174733.gif)
 
 ### 编码阶段
 
 ```java
 class Solution {
+
     int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
     
+    boolean[][] visited;
+
     public int getMaximumGold(int[][] grid) {
+
+        visited = new boolean[grid.length][grid[0].length];
 
         int result = 0;
         for (int row = 0; row < grid.length; row++) {
@@ -927,23 +897,33 @@ class Solution {
     }
 
     public int backtrack(int[][] grid, int row, int col) {
+        // 下标已经超出二维数组范围、或者当前位置为0值
         if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length || grid[row][col] == 0) {
             return 0;
         }
-        // 把 row,col 位置的值设置为0，表示已经添加过，防止重复添加
-        int tmp = grid[row][col];
-        grid[row][col] = 0;
+        // 已经选择过该位置的值
+        if (visited[row][col]) {
+            return 0;
+        }
+        // 选择该位置
+        visited[row][col] = true;
+
         int result = 0;
         for (int[] direction : directions) {
             result = Math.max(result, backtrack(grid, row + direction[0], col + direction[1]));
         }
-        // 恢复原值
-        grid[row][col] = tmp;
+        // 撤销选择
+        visited[row][col] = false;
+        // 加上当前元素的值
         return result + grid[row][col];
     }
 }
 ```
 
-## 总结阶段
+<div align=center>
+<img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.png"/>
+</div>
 
-“黄金矿工问题”类似于 [LeetCode-79](https://mp.weixin.qq.com/s?__biz=MzAxOTgzMzk0NA==&mid=2247483758&idx=1&sn=6c8a17270e67a1f1aaa5b46ba163cedb&scene=21#wechat_redirect)、[LeetCode-51](http://mp.weixin.qq.com/s?__biz=MzAxOTgzMzk0NA==&mid=2247483756&idx=1&sn=b291b86bcf32ddb7be8263e31f3d2b02&chksm=9bc1b45bacb63d4dc2ecc1ece8ce6fe3ca6161c7580189349cd522420e8c55cc9e837724031d&scene=21#wechat_redirect)，都是在一个二维数组中选择满足约束条件的数字组合，把二维数组中每个位置的元素，分别作为组合的起点，依次找到所有满足条件的组合。
+## 总结
+
+上面的问题
