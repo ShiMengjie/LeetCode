@@ -237,6 +237,7 @@ class QueenNode {
 <div align=center>
 <img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.png"/>
 </div>
+
 ## [37. 解数独](https://leetcode-cn.com/problems/sudoku-solver/)
 
 问题描述：
@@ -771,6 +772,7 @@ class Solution {
 <div align=center>
 <img src="https://cdn.jsdelivr.net/gh/shimengjie/image-repo//img/640.png"/>
 </div>
+
 ## 相似问题
 
 ### [52. N皇后 II](https://leetcode-cn.com/problems/n-queens-ii/)
