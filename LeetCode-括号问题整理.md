@@ -242,6 +242,8 @@ class Solution {
 
 ### 解题思路
 
+
+
 关键在于，如果遍历到的字符是右括号”)‘，要找到与它匹配的左括号“(’的位置。
 
 ### 代码实现
@@ -267,3 +269,4 @@ class Solution {
 ```
 
 ## [301. 删除无效的括号](https://leetcode-cn.com/problems/remove-invalid-parentheses/)
+
