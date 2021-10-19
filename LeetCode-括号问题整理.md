@@ -16,23 +16,13 @@ LeetCode 上与“括号”有关的问题整理。
 
 [678. 有效的括号字符串](https://leetcode-cn.com/problems/valid-parenthesis-string/)
 
-
-
 [856. 括号的分数](https://leetcode-cn.com/problems/score-of-parentheses/)
-
-
 
 [921. 使括号有效的最少添加](https://leetcode-cn.com/problems/minimum-add-to-make-parentheses-valid/)
 
-
-
 [1111. 有效括号的嵌套深度](https://leetcode-cn.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/)
 
-
-
 [1249. 移除无效的括号](https://leetcode-cn.com/problems/minimum-remove-to-make-valid-parentheses/)
-
-
 
 [1614. 括号的最大嵌套深度](https://leetcode-cn.com/problems/maximum-nesting-depth-of-the-parentheses/)
 
@@ -266,28 +256,77 @@ class Solution {
 
 ### 解题思路
 
+要找到的是“格式正确且连续”的括号字符串最大长度，最直觉的做法是使用动态规划来求解，困难之处在于：怎么确定状态和转移方程。
 
 
-关键在于，如果遍历到的字符是右括号”)‘，要找到与它匹配的左括号“(’的位置。
+
+动态规划中的”状态“是什么？有以下两种理解。
+
+第一种
+
+”状态“是：到字符串下标 $i$ 处为止，最大的连续括号子串长度；
+
+基于这个状态，定义数组 $dp[n]$，$dp[i]$ 表示：在字符串 $s[0,...,i]$ 中，最大的连续括号子串长度；
+
+状态转移方程：
+
+- 如果 $s[i] = ')'$，且 $s[i-1] = '('$，那么 $dp[i] = dp[i-1] + 2$；
+- 如果 $s[i] = ')'$，但 $s[i-1] = ')'$，需要找到与 $s[i]$ 匹配的字符下标，因为 $dp[i-1]$ 表示的是 “$s[0,...,i-1]$ 中最大的括号子串长度”，无法确定有效括号子串的下标范围，所以无法找到与 $s[i]$ 匹配的字符下标，也就无法写出转移方程；
+
+因此，这种“状态“是无效的。
+
+
+
+第二种
+
+“状态”是：以字符串下标 $i$ 处结尾的，最大的连续括号子串长度；
+
+基于这个状态，定义数组 $dp[n]$，$dp[i]$ 表示：以字符 $s[i]$ 结尾的最大括号子串长度，子串 $s[i - dp[i] + 1,...,i]$ 是一个有效的括号子串；
+
+状态转移方程：
+
+- 如果 $s[i] = ')'$，且 $s[i-1] = '('$，那么 $dp[i] = dp[i-1] + 2$；
+- 如果 $s[i] = ')'$，但 $s[i-1] = ')'$，那么 $s[i - dp[i-1],..., i-1]$ 是一个有效或无效的子串，$s[i]$ 匹配的字符位置下标为：$preIdx = i - 1 - dp[i-1] - 1$；如果 $s[preIdx] = '('$，那么 $dp[i] = dp[preIdx - 1] + dp[i - 1] + 2$；
+
+因此，这种情况下的“状态”定义是有效的。
+
+
+
+从上面的过程可以看出，关键是要找到与 $s[i]$ 匹配的字符下标。
 
 ### 代码实现
 
 ```java
-class Solution {
+public class Solution {
+    
     public int longestValidParentheses(String s) {
-        int maxans = 0;
+        int res = 0, preIdx = 0;
         int[] dp = new int[s.length()];
         for (int i = 1; i < s.length(); i++) {
             if (s.charAt(i) == ')') {
                 if (s.charAt(i - 1) == '(') {
-                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
-                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
-                    dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+                    if (i >= 2) {
+                        dp[i] = dp[i - 2] + 2;
+                    } else {
+                        dp[i] = 2;
+                    }
+                } else {
+                    // preIdx : s[i] 对应的下标
+                    preIdx = i - dp[i - 1] - 1;
+                    // s[preIdx] 存在且是左括号
+                    if (preIdx >= 0 && s.charAt(preIdx) == '(') {
+                        // preIdx - 1 存在
+                        if (preIdx - 1 >= 0) {
+                            dp[i] = dp[preIdx - 1] + dp[i - 1] + 2;
+                        } else {
+                            dp[i] = dp[i - 1] + 2;
+                        }
+                    }
                 }
-                maxans = Math.max(maxans, dp[i]);
+                res = Math.max(res, dp[i]);
             }
         }
-        return maxans;
+        return res;
     }
 }
 ```
