@@ -38,20 +38,20 @@
 
 在一个整数数组 `nums` 中找到两个数 `nums[i]`、`nums[j]`，要两者之和要等于目标值 `target`。
 
-#### 方法1
+**方法1**
 
-最直接的做法是：第一次遍历数组时，把每个元素作为一个数 `nums[i]`，然后第二次遍历数组，找到 `nums[j] = target - nums[i]`，对数组进行两次遍历或两层遍历就可以求解。
+最直接的做法是：两层遍历数组，在第一层遍历时，把每个元素作为 `nums[i]`，然后第二层遍历数组剩余元素，找到 `nums[j] = target - nums[i]`。
 
-#### 方法2
+**方法2**
 
-方法1中，在寻找第二个数 `nums[j]` 时，问题变成了“在数组中寻找某个数”，这类问题的求解思路一般是：
+方法1中，在寻找第二个数 `nums[j]` 时，问题其实变成了“在数组中寻找某个数”，这类问题的求解思路一般是：
 
 - 在有序数组中使用二分查找（比如 Mysql）
 - 在无序数组中使用 hash 查找（比如 Redis）
 
-因为问题要求返回数字的下标，所以只能使用 hash 查找。
+因为问题要求返回数字的下标，排序会打乱顺序，所以只能使用 hash 查找。
 
-我们可以维护一个 `hashMap`，`key`值是数中数字的值，`value`是数字的下标。在遍历数组的过程中，判断 `nums[j] = target - nums[i]` 是否在 `hashMap`中，如果存在就取出下标，如果不存在就把 ` (nums[i],i)` 保存进 `hashMap`中。
+我们可以维护一个 `hashMap`，`key`值是数组中的元素，`value`是元素的下标。在遍历数组的过程中，把当前元素作为 `nums[i]`，并判断 `nums[j] = target - nums[i]` 是否在 `hashMap`中，如果存在就取出下标，如果不存在就把 ` (nums[i],i)` 保存进 `hashMap`中。
 
 
 
@@ -59,7 +59,7 @@
 
 ### 代码实现
 
-#### 方法1
+**方法1**
 
 ```java
 class Solution {
@@ -77,7 +77,7 @@ class Solution {
 }
 ```
 
-#### 方法2
+**方法2**
 
 ```java
 class Solution {
@@ -113,11 +113,11 @@ class Solution {
 
 ### 解题思路
 
-与《[1. 两数之和](https://leetcode-cn.com/problems/two-sum/)》相比，这一题额外要求找出三个数 `nums[i]、nums[j]、nums[k]` 的组合，且组合不能重复。
+与《[1. 两数之和](https://leetcode-cn.com/problems/two-sum/)》相比，这一题要求找出三个数 `nums[i]、nums[j]、nums[k]` 的组合（不是下标），且组合不能重复。
 
 可以仿照《[1. 两数之和](https://leetcode-cn.com/problems/two-sum/)》的解法：在第一层遍历中确定第一个数 `nums[i]`，第二层遍历在数组剩余范围内确定第二个数和第三个数。
 
-那么怎么保证每次的组合不会重复呢？
+**那么怎么保证每次的组合不会重复呢？**
 
 最简单的方法是先对数组做<font color=ff0000>**排序**</font>，然后在确定第一个数时，要跳过相同的数，确定第二个数时，跳过相同的数。通过跳过相同的数，从而确保组合不会重复。
 
@@ -151,7 +151,7 @@ class Solution {
 
                     j++;
                     k--;
-                    // 同理，跳过与前一个值相等的元素
+                    // 跳过值相等的元素
                     while (j < k && nums[j] == nums[j - 1]) {
                         j++;
                     }
@@ -191,7 +191,7 @@ class Solution {
 
 ### 解题思路
 
-这一题与《[15. 三数之和](https://leetcode-cn.com/problems/3sum/)》相似，只不过多了一层循环，在第一层循环中确定第一个数，然后调用《[15. 三数之和](https://leetcode-cn.com/problems/3sum/)》的求解方法，求解出其他三个数。
+这一题与《[15. 三数之和](https://leetcode-cn.com/problems/3sum/)》相似，只不过要求的是4个元素，只需要再多一层循环，在第一层循环中确定第一个数，然后调用《[15. 三数之和](https://leetcode-cn.com/problems/3sum/)》的求解方法，求解出剩余三个数。
 
 ### 代码实现
 
@@ -206,6 +206,7 @@ class Solution {
 
         List<List<Integer>> res = new LinkedList<>();
         for (int i = 0; i < nums.length; i++) {
+            // 跳过相同的数
             if (i >= 1 && nums[i] == nums[i - 1]) {
                 continue;
             }
@@ -269,26 +270,30 @@ class Solution {
 
 ## NSum
 
-前面问题的求解方法都很类似，求解 N 个数之和等于 target 值，就是在 “求解 N - 1 个数之和等于 target 值” 基础上，再加一层循环。最底层的 2Sum 的复杂度可以降低到 O(L)，所以 NSum 的复杂度是 O(L^{N-1})，L 是数组长度。
+前面三个问题的求解方式都很想相似，可以统一看做是一个 NSum 问题：求解 $N$ 个数之和等于某个 $target$ 值。
 
-如果 N 值很大，比如100、10000，如果按照前面的写法，要不断地增加嵌套循环，代码无法实现，因此我们需要写出一个统一的能适用于 NSum 的代码模板。
+前面的求解方式就是在 “求解 $N - 1$ 个数之和等于 $target$ 值” 基础上，再加一层循环。最底层的 `2Sum` 的复杂度可以降低到 $O(L)$，所以 $NSum$ 的复杂度是 $O(L^{N-1})$，$L$ 是数组长度。
+
+如果 $N$ 值很大，比如100、10000，如果按照前面的写法，要不断地增加嵌套循环，代码越来越冗余和难以实现，因此我们需要写出一个适用用于 $NSum$ 问题的模板代码。
 
 ### 回溯
 
 问题是求解组合，所以很自然地想到使用回溯算法来求解。
 
-定义回溯方法 $backtrack(res, path, idx, target)$ 含义是：从数组 nums 的下标 idx 开始，寻找和值等于 target 的组合，把组合添加到结果集 res 中，path 是选择路径。
+我们定义回溯方法 $backtrack(res, path, idx, target)$，改方法的作用是：从数组 $nums$ 的下标 $idx$ 开始，寻找和值等于 $target$ 的组合，把组合添加到结果集 $res$ 中，$path$ 是回溯过程中的选择路径。
 
 回溯求解过程如下：
 
-- 结束条件：路径长度等于 N，且 target == 0 时，表示已经找到一个组合，添加进结果集，返回上一个回溯点；
+- 结束条件：路径长度等于 $N$ 时：
+  - 如果满足 $target == 0$，表示已经找到一个组合，就把选择路径添加进结果集；
+  - 返回上一个回溯点；
 - 选择路径：记录已经选中的数字，作为组合中的元素；
-- 选择：当前数字不是该层递归中第一个元素，且与前数组中前一个元素值不相等，就添加进选择列表中；
+- 选择：当前数字不是该层递归中第一个元素，且与数组中前一个元素值不相等，就添加进选择列表中；
 - 空间状态树：略。
 
 
 
-回溯的确能够以一个模板方法来求解 NSum 问题，但是它的复杂度是 O(L^N)，时间复杂度比较高，一直无法通过 LeetCode 的最后几个测试用例。代码实现如下：
+代码实现如下（这里是实现了 $NSum$ 的类）：
 
 ```java
 class NSum {
@@ -312,8 +317,10 @@ class NSum {
     }
 
     private void backtrack(List<List<Integer>> res, List<Integer> path, int idx, int target) {
-        if (path.size() == n && target == 0) {
-            res.add(new ArrayList<>(path));
+        if (path.size() == n) {
+            if(target == 0) {
+                res.add(new ArrayList<>(path));
+            }
             return;
         }
 
@@ -329,9 +336,15 @@ class NSum {
 }
 ```
 
+回溯的确能够以一个模板方法来求解 $NSum$ 问题，但它的复杂度是 $O(L^N)$，一直无法通过 《[15. 三数之和](https://leetcode-cn.com/problems/3sum/)》和《[18. 四数之和](https://leetcode-cn.com/problems/4sum/)》的最后几个测试用例，所以我们需要寻找其他方式。
+
 ### 递归
 
-前面在求解《[15. 三数之和](https://leetcode-cn.com/problems/3sum/)》和《[18. 四数之和](https://leetcode-cn.com/problems/4sum/)》时发现，两个问题的代码形式很相似，我们可以在这两题的代码上做一些修改，形成一个递归求解的方式。NSum 对象如下：
+求解《[15. 三数之和](https://leetcode-cn.com/problems/3sum/)》和《[18. 四数之和](https://leetcode-cn.com/problems/4sum/)》的过程我们可以发现，两个问题的代码形式很相似。我们可以在这两题的代码上做一些修改，形成一个递归求解的代码。
+
+定义递归方法：$recursion(n, target, start)$，该方法的含义是：在数组 $nums$ 的下标 $start$ 开始，寻找 $n$ 个数，要求它们的和值等于 $target$。递归的结束条件是：当传入的  $n == 2$ 时，这时使用 $2Sum$ 的求解方法。 
+
+$NSum$ 对象的代码如下：
 
 ```java
 /**
@@ -424,7 +437,7 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 
 ## 总结
 
-通过对几个相似问题的求解，得出了一个求解 NSum 问题的通用模板。
+通过对几个相似问题的求解，得出了一个求解 $NSum$ 问题的通用模板。
 
 ## 参考阅读
 
