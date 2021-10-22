@@ -1,5 +1,7 @@
 # LeetCode-N Sum问题整理
 
+LeetCode 上有 2Sum、3Sum、4Sum 问题，对这3个问题进行了整理，然后给出了求解 NSum 问题的模板代码。
+
 ## 问题列表
 
 [1. 两数之和](https://leetcode-cn.com/problems/two-sum/)
