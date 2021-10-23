@@ -444,3 +444,7 @@ public List<List<Integer>> fourSum(int[] nums, int target) {
 ## 参考阅读
 
 1、[一个函数秒杀 2Sum 3Sum 4Sum 问题](https://mp.weixin.qq.com/s/fSyJVvggxHq28a0SdmZm6Q)
+
+
+
+原文地址：https://mp.weixin.qq.com/s/cSIjxJrDDksPWrc7V8StgQ
