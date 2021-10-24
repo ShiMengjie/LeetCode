@@ -161,8 +161,6 @@ class Solution {
 
 那有没有更快的求解方法？能否在 $log(N)$ 的时间复杂度范围内求解？这就需要使用下面介绍的快速幂。
 
-![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
-
 ## 快速幂
 
 > 快速幂的算法描述，来自参考阅读：[快速幂](https://oi-wiki.org/math/quick-pow/)
@@ -280,8 +278,6 @@ class Solution {
 }
 ```
 
-![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
-
 ## 快速幂计算矩阵乘积
 
 > 下面的内容，来自参考阅读：《[程序员代码面试指南：IT名企算法与数据结构题目最优解](https://book.douban.com/subject/26638586/)》
@@ -365,8 +361,6 @@ public int[][] mulMat(int[][] mat1, int[][] mat2) {
 ```
 
 有了矩阵的快速幂计算方法，就可以使用快速幂来计算前面的问题。
-
-![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
 
 ## 快速幂求解
 
@@ -527,8 +521,6 @@ class Solution {
 }
 ```
 
-![](https://cdn.jsdelivr.net/gh/shimengjie/image-repo/img/POPO-screenshot-20210908-205947.png)
-
 ## 小结
 
 与传统的动态规划方法相比，快速幂能在更快地时间复杂度内求解问题。
@@ -573,8 +565,8 @@ class Solution {
 
 ## 参考阅读
 
-[快速幂](https://oi-wiki.org/math/quick-pow/)
+1、[快速幂](https://oi-wiki.org/math/quick-pow/)
 
-[矩阵](https://oi-wiki.org/math/matrix/)
+2、[矩阵](https://oi-wiki.org/math/matrix/)
 
-[程序员代码面试指南：IT名企算法与数据结构题目最优解](https://book.douban.com/subject/26638586/)
+3、[程序员代码面试指南：IT名企算法与数据结构题目最优解](https://book.douban.com/subject/26638586/)
