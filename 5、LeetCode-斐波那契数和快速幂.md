@@ -10,17 +10,15 @@ LeetCode 上有几道斐波那契数相关的问题，这类问题一般使用�
 
 [509. 斐波那契数](https://leetcode-cn.com/problems/fibonacci-number/)
 
-[剑指 Offer 10- I. 斐波那契数列](https://leetcode-cn.com/problems/fei-bo-na-qi-shu-lie-lcof/)
-
 [1137. 第 N 个泰波那契数](https://leetcode-cn.com/problems/n-th-tribonacci-number/)
 
 [70. 爬楼梯](https://leetcode-cn.com/problems/climbing-stairs/)
 
 [50. Pow(x, n)](https://leetcode-cn.com/problems/powx-n/)
 
-[746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
+相关问题
 
-TODO
+[746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
 
 [842. 将数组拆分成斐波那契序列](https://leetcode-cn.com/problems/split-array-into-fibonacci-sequence/)
 
@@ -527,7 +525,7 @@ class Solution {
 
 但是在代码实现上，动态规划更加简单，快速幂比较较为复杂。
 
-## 其他相似问题
+## 相关问题
 
 ### [746. 使用最小花费爬楼梯](https://leetcode-cn.com/problems/min-cost-climbing-stairs/)
 
