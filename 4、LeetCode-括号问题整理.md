@@ -348,3 +348,118 @@ public class Solution {
 
 ### 解题思路
 
+
+
+
+
+### 代码实现
+
+#### 方法1
+
+```java
+class Solution {
+    int MAX_LEN = 0;
+
+    public List<String> removeInvalidParentheses(String s) {
+
+        Map<Integer, Set<String>> map = new HashMap<>(s.length());
+        int left = 0, right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                left++;
+            }
+            if (ch == ')') {
+                right++;
+            }
+        }
+
+        backtrack(map, s, left, right);
+        for (int i = s.length(); i >= 0; i--) {
+            if (map.containsKey(i)) {
+                return new ArrayList<>(map.get(i));
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    private void backtrack(Map<Integer, Set<String>> map, String str, int left, int right) {
+        int len = str.length();
+        // 只有当前字符串长度 >= MAX_LEN 才有需要保存
+        if (len < MAX_LEN) {
+            return;
+        }
+        // 只有左右括号个数相等时，才有可能是有效的括号字符串
+        if (left == right) {
+            if (isValid(str)) {
+                if (!map.containsKey(len)) {
+                    map.put(len, new HashSet<>());
+                }
+                map.get(len).add(str);
+                MAX_LEN = len;
+                return;
+            }
+        }
+        // 遍历结束了
+        if (len == 0) {
+            map.put(0,
+                    new HashSet<String>() {{
+                        add("");
+                    }}
+            );
+            return;
+        }
+        // 依次移除每一个位置的字符，然后回溯
+        for (int i = 0; i < len; i++) {
+            char ch = str.charAt(i);
+            if (ch == '(') {
+                left--;
+            }
+            if (ch == ')') {
+                right--;
+            }
+            String newStr = new StringBuilder(str).deleteCharAt(i).toString();
+            backtrack(map, newStr, left, right);
+            if (ch == '(') {
+                left++;
+            }
+            if (ch == ')') {
+                right++;
+            }
+        }
+    }
+
+    public boolean isValid(String sb) {
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < sb.length(); i++) {
+            char ch = sb.charAt(i);
+            if (Character.isLetter(ch)) {
+                continue;
+            }
+            // 是左括号就 push 进栈中
+            if (isLeft(ch)) {
+                stack.push(ch);
+            } else {
+                // 特殊情况：栈中没有前置字符，说明只有右括号没有左括号
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                // 判断是否是闭合的括号
+                if (!isClosed(stack.pop(), ch)) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+
+    private boolean isLeft(char ch) {
+        return ch == '(';
+    }
+
+    private boolean isClosed(char left, char right) {
+        return left == '(' && right == ')';
+    }
+}
+```
+
