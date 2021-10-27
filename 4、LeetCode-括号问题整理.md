@@ -12,9 +12,9 @@ LeetCode 上与“括号”有关的问题整理。
 
 [301. 删除无效的括号](https://leetcode-cn.com/problems/remove-invalid-parentheses/)
 
-
-
 [678. 有效的括号字符串](https://leetcode-cn.com/problems/valid-parenthesis-string/)
+
+
 
 [856. 括号的分数](https://leetcode-cn.com/problems/score-of-parentheses/)
 
@@ -348,9 +348,49 @@ public class Solution {
 
 ### 解题思路
 
+#### 方法1
+
+最直接的思路是：依次删除1个字符、2个字符、... 判断删除后的字符串是否是有效括号字符串。
+
+这相当于，每次从字符串中删除1个字符、2个字符、...，剩余有效括号的组合有多少个，变成了一个求解组合的问题。这种问题可以使用回溯算法求解。
+
+代码实现如下所示，为了在回溯过程中能够实现剪枝，使用参数 `MAX_LEN` 记录当前有效字符串的最大长度，如果要检测的字符串长度小于 `MAX_LEN`，就没有必要再检测了。
+
+这个方法的时间复杂度很高，最差情况是：$O(N^{N+1})$，无法通过 LeetCode 上的第71个测试用例。
+
+#### 方法2
+
+在方法1中，我们是枚举了删除字符的所有情况，实际上我们不需要遍历所有情况。
+
+问题要求“删除最少的括号”，我们首先要计算出，要删除多少个左括号和右括号，只要剩余要删除的左括号和右括号个数为0，就表示当前字符串可能是有效的。
+
+求解的思路如下：
+
+1、遍历字符串，计算出要删除的左括号个数 l2remove、右括号个数 r2remove；
+
+2、遍历字符串，尝试删除当前字符 char：
+
+- 如果 l2remove > 0，且 char == '('，就删除当前字符；
+- 如果 r2remove> 0，且 char == ')'，就删除当前字符；
+
+3、记录当前已经使用的左括号个数 lCount、右括号个数 rCount，如果 rCount > 0，那么后面再怎么组合，都不可能变成有效括号。
 
 
 
+在回溯过程中，可以利用一下剪枝方法来提升效率：
+
+- 如果 l2remove  + r2remove 的值大于字符串剩余要遍历的个数，说明剩下的字符串一定是无效的，就停止搜索；
+- 在每次进行搜索时，如果遇到连续相同的括号我们只需要搜索一次即可，比如当前遇到的字符串为 "(((())"，去掉前四个左括号中的任意一个，生成的字符串均为 "((())"；
+
+#### 方法3
+
+我们可以假设有一棵树来保存每一个子串，如下图所示：
+
+
+
+我们要做的就是层序遍历这棵树，把合法的节点保存进结果集。在遍历下一层前，如果结果集中已经有数据了，就结束遍历。
+
+这个思路与”官方题解-方法二：广度优先搜索“相同。
 
 ### 代码实现
 
@@ -385,7 +425,7 @@ class Solution {
 
     private void backtrack(Map<Integer, Set<String>> map, String str, int left, int right) {
         int len = str.length();
-        // 只有当前字符串长度 >= MAX_LEN 才有需要保存
+        // 只有当前字符串长度 >= MAX_LEN 才有必要保存
         if (len < MAX_LEN) {
             return;
         }
@@ -412,6 +452,10 @@ class Solution {
         // 依次移除每一个位置的字符，然后回溯
         for (int i = 0; i < len; i++) {
             char ch = str.charAt(i);
+            // 跳过字母
+            if(Character.isLetter(ch)) {
+                continue;
+            }
             if (ch == '(') {
                 left--;
             }
@@ -429,37 +473,177 @@ class Solution {
         }
     }
 
-    public boolean isValid(String sb) {
-        Stack<Character> stack = new Stack<>();
-        for (int i = 0; i < sb.length(); i++) {
-            char ch = sb.charAt(i);
-            if (Character.isLetter(ch)) {
-                continue;
-            }
-            // 是左括号就 push 进栈中
-            if (isLeft(ch)) {
-                stack.push(ch);
-            } else {
-                // 特殊情况：栈中没有前置字符，说明只有右括号没有左括号
-                if (stack.isEmpty()) {
-                    return false;
-                }
-                // 判断是否是闭合的括号
-                if (!isClosed(stack.pop(), ch)) {
+    private boolean isValid(String str) {
+        int cnt = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '(') {
+                cnt++;
+            } else if (str.charAt(i) == ')') {
+                cnt--;
+                if (cnt < 0) {
                     return false;
                 }
             }
         }
-        return stack.isEmpty();
-    }
-
-    private boolean isLeft(char ch) {
-        return ch == '(';
-    }
-
-    private boolean isClosed(char left, char right) {
-        return left == '(' && right == ')';
+        return cnt == 0;
     }
 }
 ```
+
+#### 方法2
+
+```java
+class Solution {
+    private List<String> res = new LinkedList<>();
+
+    public List<String> removeInvalidParentheses(String s) {
+        int l2remove = 0, r2remove = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                l2remove++;
+            } else if (ch == ')') {
+                if (l2remove == 0) {
+                    r2remove++;
+                } else {
+                    l2remove--;
+                }
+            }
+        }
+        // 回溯求解
+        helper(s, 0, 0, 0, l2remove, r2remove);
+
+        return res;
+    }
+
+    private void helper(String str, int start, int lCount, int rCount, int l2remove, int r2remove) {
+        // 当 l2remove 和 r2remove 都是 0 时，表示此时字符串中左右括号数相等，判断有效性
+        if (l2remove == 0 && r2remove == 0) {
+            if (isValid(str)) {
+                res.add(str);
+            }
+            return;
+        }
+        // 依次移除当前字符
+        for (int i = start; i < str.length(); i++) {
+            // 如果剩余的字符无法满足去掉的数量要求，直接返回
+            if (l2remove + r2remove > str.length() - i) {
+                return;
+            }
+            // 如果遇到连续相同的括号我们只需要搜索一次即可，比如当前遇到的字符串为 "(((())"，去掉前四个左括号中的任意一个，生成的字符串是一样的，均为 "((())"，
+            if (i != start && str.charAt(i) == str.charAt(i - 1)) {
+                if (str.charAt(i) == '(') {
+                    lCount++;
+                } else if (str.charAt(i) == ')') {
+                    rCount++;
+                }
+                continue;
+            }
+            // 尝试去掉当前的左括号
+            if (l2remove > 0 && str.charAt(i) == '(') {
+                helper(str.substring(0, i) + str.substring(i + 1), i, lCount, rCount, l2remove - 1, r2remove);
+            }
+            // 尝试去掉当前的右括号
+            if (r2remove > 0 && str.charAt(i) == ')') {
+                helper(str.substring(0, i) + str.substring(i + 1), i, lCount, rCount, l2remove, r2remove - 1);
+            }
+            // 前面没有去掉当前字符，判断已经使用的左右括号的个数是否相等
+            // 如果已经使用的右括号数大于左括号树，后面再怎么添加，都不可能组成有效的括号
+            if (str.charAt(i) == '(') {
+                lCount++;
+            } else if (str.charAt(i) == ')') {
+                rCount++;
+            }
+            if (rCount > lCount) {
+                break;
+            }
+        }
+    }
+
+    private boolean isValid(String str) {
+        int cnt = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '(') {
+                cnt++;
+            } else if (str.charAt(i) == ')') {
+                cnt--;
+                if (cnt < 0) {
+                    return false;
+                }
+            }
+        }
+        return cnt == 0;
+    }
+}
+```
+
+#### 方法3
+
+```java
+class Solution {
+    public List<String> removeInvalidParentheses(String s) {
+        LinkedHashSet<String> list = new LinkedHashSet<>();
+        list.add(s);
+
+        List<String> ans = new LinkedList<>();
+        while (!list.isEmpty()) {
+
+            for (String str : list) {
+                if (isValid(str)) {
+                    ans.add(str);
+                }
+            }
+            if (!ans.isEmpty()) {
+                return ans;
+            }
+			// 遍历每个字符串，把它的所有子串（子节点）添加进列表中
+            LinkedHashSet<String> tmpList = new LinkedHashSet<>();
+            for (String str : list) {
+                for (int i = 0; i < str.length(); i++) {
+                    if (i > 0 && str.charAt(i) == str.charAt(i - 1)
+                            || Character.isLetter(str.charAt(i))) {
+                        continue;
+                    }
+                    // 删除括号，添加进临时集合中
+                    if (str.charAt(i) == '(' || str.charAt(i) == ')') {
+                        tmpList.add(str.substring(0, i) + str.substring(i + 1));
+                    }
+                }
+            }
+            list = tmpList;
+        }
+        return ans;
+    }
+
+    private boolean isValid(String str) {
+        int cnt = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == '(') {
+                cnt++;
+            } else if (str.charAt(i) == ')') {
+                cnt--;
+                if (cnt < 0) {
+                    return false;
+                }
+            }
+        }
+        return cnt == 0;
+    }
+}
+```
+
+
+
+## [678. 有效的括号字符串](https://leetcode-cn.com/problems/valid-parenthesis-string/)
+
+### 问题描述
+
+
+
+
+
+## 参考阅读
+
+1、[官方题解：删除无效的括号](https://leetcode-cn.com/problems/remove-invalid-parentheses/solution/shan-chu-wu-xiao-de-gua-hao-by-leetcode-9w8au/)
 
