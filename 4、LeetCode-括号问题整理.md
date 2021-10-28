@@ -641,6 +641,50 @@ class Solution {
 
 
 
+### 解题思路
+
+
+
+### 代码实现
+
+#### 动态规划
+
+```java
+public boolean checkValidString(String s) {
+    int n = s.length();
+    boolean[][] dp = new boolean[n][n];
+    // BC1：对角线上元素是否有效
+    for (int i = 0; i < n; i++) {
+        dp[i][i] = s.charAt(i) == '*';
+    }
+    // BC2：对角线上 [i,i+1] 是否是有效括号
+    for (int i = 1; i < n; i++) {
+        char c1 = s.charAt(i - 1), c2 = s.charAt(i);
+        dp[i - 1][i] = (c1 == '(' || c1 == '*') && (c2 == ')' || c2 == '*');
+    }
+    // 开始遍历其他位置的元素
+    for (int i = n - 3; i >= 0; i--) {
+        char c1 = s.charAt(i);
+        for (int j = i + 2; j < n; j++) {
+            char c2 = s.charAt(j);
+            // 1、如果 s[i]、s[j] 能单独组成有效括号，那么 dp[i][j] 是否是有效括号，由 dp[i + 1][j - 1] 决定
+            if ((c1 == '(' || c1 == '*') && (c2 == ')' || c2 == '*')) {
+                dp[i][j] = dp[i + 1][j - 1];
+            }
+            // 2、如果 dp[i+1][j-1] 不是有效的，但是存在 s[k]，令 dp[i][k]、dp[k+1][j] 是有效的，那么 dp[i][j] 也是有效的
+            for (int k = i; k < j && !dp[i][j]; k++) {
+                dp[i][j] = dp[i][k] && dp[k + 1][j];
+            }
+        }
+    }
+    return dp[0][n - 1];
+}
+```
+
+
+
+
+
 
 
 ## 参考阅读
