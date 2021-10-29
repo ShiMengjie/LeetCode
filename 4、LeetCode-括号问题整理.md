@@ -14,9 +14,9 @@ LeetCode 上与“括号”有关的问题整理。
 
 [678. 有效的括号字符串](https://leetcode-cn.com/problems/valid-parenthesis-string/)
 
-
-
 [856. 括号的分数](https://leetcode-cn.com/problems/score-of-parentheses/)
+
+
 
 [921. 使括号有效的最少添加](https://leetcode-cn.com/problems/minimum-add-to-make-parentheses-valid/)
 
@@ -643,11 +643,13 @@ class Solution {
 
 ### 解题思路
 
-
-
-### 代码实现
+> 参考【官方题解】：https://leetcode-cn.com/problems/valid-parenthesis-string/solution/you-xiao-de-gua-hao-zi-fu-chuan-by-leetc-osi3/
 
 #### 动态规划
+
+
+
+##### 代码实现
 
 ```java
 public boolean checkValidString(String s) {
@@ -681,11 +683,81 @@ public boolean checkValidString(String s) {
 }
 ```
 
+#### 栈
 
+在遍历的过程中，要给遇到的每个右括号找到一个前置的左括号或星号，相互抵消。如果右括号的个数大于左括号（左括号抵消后个数为0），那么一定是无效字符串。
 
+当遍历完字符串后，判断剩余的左括号个数是否小于星号，且左括号的下标要小于星号。
 
+遍历剩余的星号和左括号，每个星号抵消一个左括号；当星号没有剩余后，如果左括号还有剩余，就说明有多余的左括号。
 
+##### 代码实现
 
+```java
+class Solution {
+    public boolean checkValidString(String s) {
+        Stack<Integer> left = new Stack<>();
+        Stack<Integer> star = new Stack<>();
+        int n = s.length();
+        for (int i = 0; i < n; i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') {
+                left.push(i);
+            } else if (ch == '*') {
+                star.push(i);
+            } else {
+                if (!left.isEmpty()) {
+                    left.pop();
+                } else if (!star.isEmpty()) {
+                    star.pop();
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        // 判断 left 和 star 是否为空
+        while (!left.isEmpty() && !star.isEmpty()) {
+            if (left.peek() > star.peek()) {
+                return false;
+            } else {
+                left.pop();
+                star.pop();
+            }
+        }
+        return left.isEmpty();
+    }
+}
+```
+
+#### 贪心
+
+```java
+class Solution {
+    public boolean checkValidString(String s) {
+        int lmin = 0, lmax = 0;
+        char ch;
+        for (int i = 0; i < s.length(); i++) {
+            ch = s.charAt(i);
+            if (ch == '(') {
+                lmin++;
+                lmax++;
+            } else if (ch == ')') {
+                lmin--;
+                lmax--;
+                if (lmax < 0) {
+                    return false;
+                }
+            } else {
+                lmin--;
+                lmax++;
+            }
+            lmin = Math.max(lmin, 0);
+        }
+        return lmin == 0;
+    }
+}
+```
 
 ## 参考阅读
 
