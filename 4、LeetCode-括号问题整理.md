@@ -759,6 +759,28 @@ class Solution {
 }
 ```
 
+## [856. 括号的分数](https://leetcode-cn.com/problems/score-of-parentheses/)
+
+### 问题描述
+
+给定一个平衡括号字符串 S，按下述规则计算该字符串的分数：
+
+- () 得 1 分。
+- AB 得 A + B 分，其中 A 和 B 是平衡括号字符串。
+- (A) 得 2 * A 分，其中 A 是平衡括号字符串。
+
+
+**示例 1：**
+
+```
+输入： "()"
+输出： 1
+```
+
+### 解题思路
+
+
+
 ## 参考阅读
 
 1、[官方题解：删除无效的括号](https://leetcode-cn.com/problems/remove-invalid-parentheses/solution/shan-chu-wu-xiao-de-gua-hao-by-leetcode-9w8au/)
