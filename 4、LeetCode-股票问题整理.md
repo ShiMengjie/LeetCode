@@ -1,4 +1,4 @@
-# LeetCode-股票问题
+# LeetCode-股票问题整理
 
 LeetCode 上有6道股票相关的问题，都可以使用动态规划来求解。本文把这些问题整理起来，最后给出一个通用的求解模板。
 
@@ -132,7 +132,7 @@ class Solution {
 
 3、“base case”：$i == 0$ 时，$dp[0][0] = 0，dp[0][1] = -nums[0]$
 
-4、构造状态转移方程：
+4、状态转移方程：
 $$
 \begin{cases}
 dp[i][0]= Max\{dp[i-1][0],dp[i-1][1] + nums[i]\}
@@ -203,7 +203,7 @@ class Solution {
 
 3、“base case”：$dp[0][0][0] = dp[0][0][1] = 0, dp[0][1][0] = dp[0][1][1] = - nums[0]$
 
-4、构造状态转移方程：
+4、状态转移方程：
 $$
 \begin{cases}
 dp[i][1][0] = Max\{dp[i-1][1][0],-nums[i]\}
@@ -272,7 +272,7 @@ class Solution {
 * $dp[0][0][1] = -nums[0]、dp[0][0][0] = 0$;
 * 因为第0天时，除了买入，不能做任何事，所以用一个最小值来表示 $dp[0][k][0]、dp[0][k][1]$ 不合法：$dp[0][k][0] = dp[0][k][1] = Integer.MIN$; 
 
-4、构造状态转移方程：
+4、状态转移方程：
 $$
 \begin{cases}
 dp[i][k][0] = Max\{dp[i-1][k][0],dp[i-1][k-1][1]+nums[i]\}
@@ -314,6 +314,8 @@ class Solution {
 }
 ```
 
+时间复杂度：$O(N \times K)$，空间复杂度：$O(N \times K)$。
+
 ## [309. 最佳买卖股票时机含冷冻期](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
 
 ### 问题描述
@@ -335,97 +337,132 @@ class Solution {
 
 ### 解题思路
 
-这一题与《[122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)》相似，都没有限制交易笔数，只不过在每次卖出后多了一天的冷却期。
+这一题与《[122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)》类似，都没有限制交易笔数，只不过在每次卖出后多了一天的冷却期。
 
-同样我们可以使用“动态规划”来求解问题，求解过程如下：
+我们只需要在 “动态规划” 的 “状态转移方程” 中添加冷却期的影响即可，求解过程如下：
 
-1、“状态”：在第 i 天结束后，持有股票或不持有股票，所拥有的最大利润
+1、“状态”：在第 $i$ 天结束后，持有股票或不持有股票，所拥有的最大利润；
 
-2、“数组”：构造数组 $dp[i][2]$​，$dp[i][0]$​ 表示第 i 天结束后不持有股票的最大利润，dp[i][1] 表示第 i 天结束后持有股票的最大利润
+2、“数组”：构造数组 $dp[i][2]$，$dp[i][0]$ 表示第 $i$ 天结束后不持有股票时的最大利润，$dp[i][1]$ 表示第 $i$ 天结束后持有股票时的最大利润；
 
-3、“base case”：$i == 0$​ 时，dp[0][0] = 0，dp[0][1] = -nums[0]
+3、“base case”：$i == 0$ 时，$dp[0][0] = 0，dp[0][1] = -nums[0]$；
 
-4、构造状态转移方程（在买入的时候，要考虑冷却期）：
+4、状态转移方程：
+
+在买入时，要考虑冷却期，如果前一天卖出了，今天是不能买入的；只有在前两天卖出的，今天才能买入。
 $$
 \begin{cases}
 dp[i][0]= Max\{dp[i-1][0],dp[i-1][1] + nums[i]\}
 \\dp[i][1] = Max\{dp[i-1][1],dp[i-2][0] - nums[i]\}
 \end{cases}
 $$
-使用3个变量代替数组。
+可以使用3个变量来优化空间复杂度。
 
 ### 代码实现
 
 ```java
 class Solution {
     public int maxProfit(int[] prices) {
-        int n = prices.length;
-        // prev0 : i-1 天不持有股票的利润，prev1 : i-1 天持有股票的利润，prev2 : i-2 天不持有股票的利润
-        int prev0 = 0, prev1 = -prices[0],  prev2 = 0;
+        // pre0 : i-1 天不持有股票的利润，pre1 : i-1 天持有股票的利润，pre2 : i-2 天不持有股票的利润
+        int n = prices.length, pre0 = 0, pre1 = -prices[0], pre2 = 0;
+
+        int tmp;
         for (int i = 1; i < n; i++) {
-            prev1 = Math.max(prev1, prev2 - prices[i]);
-            // 更新 prev2 的值
-            prev2 = prev0;
-            prev0 = Math.max(prev0, prev1 + prices[i]);
+            tmp = pre1;
+            // 用旧的 pre2 值更新 pre1 值
+            pre1 = Math.max(pre1, pre2 - prices[i]);
+            // 在更新 pre0 值之前更新 pre2 的值
+            pre2 = pre0;
+            // 用旧的 pre1 值更新 pre0 值
+            pre0 = Math.max(pre0, tmp + prices[i]);
         }
-        return Math.max(prev1, prev0);
+        return Math.max(pre1, pre0);
     }
 }
 ```
+
+时间复杂度：$O(N)$，空间复杂度：$O(1)$。
 
 ## [714. 买卖股票的最佳时机含手续费](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/)
 
 ### 问题描述
 
-> 给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；整数 fee 代表了交易股票的手续费用。
-> 你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
-> 返回获得利润的最大值。
-> 注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+给定一个整数数组 prices，其中第 i 个元素代表了第 i 天的股票价格 ；整数 fee 代表了交易股票的手续费用。
+
+你可以无限次地完成交易，但是你每笔交易都需要付手续费。如果你已经购买了一个股票，在卖出它之前你就不能再继续购买股票了。
+
+返回获得利润的最大值。
+
+注意：这里的一笔交易指买入持有并卖出股票的整个过程，每笔交易你只需要为支付一次手续费。
+
+**示例 1：**
+
+```
+输入：prices = [1, 3, 2, 8, 4, 9], fee = 2
+输出：8
+解释：能够达到的最大利润:
+在此处买入 prices[0] = 1
+在此处卖出 prices[3] = 8
+在此处买入 prices[4] = 4
+在此处卖出 prices[5] = 9
+总利润: ((8 - 1) - 2) + ((9 - 4) - 2) = 8
+```
 
 ### 解题思路
 
-与”问题122“相似，只不过在卖的时候要额外支付手续费，同样我们使用“动态规划”来求解问题，求解过程如下：
+这一题与《[122. 买卖股票的最佳时机 II](https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/)》类似，都没有限制交易笔数，只不过在卖的时候要额外支付手续费。
 
-1、“状态”：在第 i 天结束后，持有股票或不持有股票，所拥有的最大利润
+我们只需要在 “动态规划” 的 “状态转移方程” 中添加手续费的影响，求解过程如下：
 
-2、“数组”：构造数组 $dp[i][2]$​，$dp[i][0]$​ 表示第 i 天结束后不持有股票的最大利润，dp[i][1] 表示第 i 天结束后持有股票的最大利润
+1、“状态”：在第 $i$ 天结束后，持有股票或不持有股票，所拥有的最大利润；
 
-3、“base case”：$i == 0$​ 时，dp[0][0] = 0，dp[0][1] = -nums[0]
+2、“数组”：构造数组 $dp[i][2]$，$dp[i][0]$ 表示第 $i$ 天结束后不持有股票时的最大利润，$dp[i][1]$ 表示第 $i$ 天结束后持有股票时的最大利润；
 
-4、构造状态转移方程（在卖出的时候，要减去手续费 fee）：
+3、“base case”：$i == 0$ 时，$dp[0][0] = 0，dp[0][1] = -nums[0]$；
+
+4、状态转移方程：
+
+在卖出的时候，要在利润中减去手续费 fee。
 $$
 \begin{cases}
 dp[i][0]= Max\{dp[i-1][0],dp[i-1][1] + nums[i] - fee\}
 \\dp[i][1] = Max\{dp[i-1][1],dp[i-2][0] - nums[i]\}
 \end{cases}
 $$
-使用2个变量代替数组。
+可以使用2个变量来优化空间复杂度。
 
 ### 代码实现
 
 ```java
 class Solution {
     public int maxProfit(int[] prices, int fee) {
-        int n = prices.length;
-        // prev0 : 不持有股票的利润，prev1 : 持有股票的利润
-        int prev0 = 0, prev1 = -prices[0];
+        // pre0 : 不持有股票的利润，pre1 : 持有股票的利润
+        int n = prices.length, pre0 = 0, pre1 = -prices[0];
+
         for (int i = 1; i < n; i++) {
-            prev1 = Math.max(prev1, prev0 - prices[i]);
-            // 卖出的时候，要减去手续费
-            prev0 = Math.max(prev0, prev1 + prices[i] - fee);
+            pre0 = Math.max(pre0, pre1 + prices[i] - fee);
+            pre1 = Math.max(pre1, pre0 - prices[i]);
         }
-        return Math.max(prev1, prev0);
+        return Math.max(pre0, pre1);
     }
 }
 ```
 
-## 通用模板
-
-
+时间复杂度：$O(N)$，空间复杂度：$O(1)$。
 
 ## 总结
 
+从前面的6个问题可以发现，股票问题都有三个共同的主要特征：
 
+- 当前的天数 $i$；
+- 允许的最大交易笔数 $K$；
+- 每天结束时股票的持有状态；
+
+因此，可以使用一个数组 $dp[N][K][2]$ 来保存动态规划求解过程中的 “状态”，如果 $K==1$ 或 $K = +\infty$，数组为 $dp[N][2]$。问题要求不能同时持有多只股票，所以每次买之前一定要现卖出（第一次除外），每次卖之前也要先买入。
+
+我们只需要遍历股票数组，在遍历过程中，更新数组 $dp$ 的状态值，就能计算出最大的利润值。
+
+更详细的的内容，可以浏览 ”参考阅读“ 中的 《[股票问题系列通解](https://leetcode-cn.com/circle/article/qiAgHn/)》。
 
 ## 参考阅读
 
