@@ -6,25 +6,29 @@ LeetCode 上与“括号”有关的问题整理。
 
 [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
 
-[22. 括号生成](https://leetcode-cn.com/problems/generate-parentheses/)
+[678. 有效的括号字符串](https://leetcode-cn.com/problems/valid-parenthesis-string/)
 
 [32. 最长有效括号](https://leetcode-cn.com/problems/longest-valid-parentheses/)
 
-[301. 删除无效的括号](https://leetcode-cn.com/problems/remove-invalid-parentheses/)
-
-[678. 有效的括号字符串](https://leetcode-cn.com/problems/valid-parenthesis-string/)
-
-[856. 括号的分数](https://leetcode-cn.com/problems/score-of-parentheses/)
-
-
+------
 
 [921. 使括号有效的最少添加](https://leetcode-cn.com/problems/minimum-add-to-make-parentheses-valid/)
 
-[1111. 有效括号的嵌套深度](https://leetcode-cn.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/)
+[301. 删除无效的括号](https://leetcode-cn.com/problems/remove-invalid-parentheses/)
 
 [1249. 移除无效的括号](https://leetcode-cn.com/problems/minimum-remove-to-make-valid-parentheses/)
 
+------
+
+[856. 括号的分数](https://leetcode-cn.com/problems/score-of-parentheses/)
+
+[1111. 有效括号的嵌套深度](https://leetcode-cn.com/problems/maximum-nesting-depth-of-two-valid-parentheses-strings/)
+
 [1614. 括号的最大嵌套深度](https://leetcode-cn.com/problems/maximum-nesting-depth-of-the-parentheses/)
+
+------
+
+[22. 括号生成](https://leetcode-cn.com/problems/generate-parentheses/)
 
 ## [20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)
 
@@ -778,6 +782,58 @@ class Solution {
 ```
 
 ### 解题思路
+
+
+
+
+
+## [921. 使括号有效的最少添加](https://leetcode-cn.com/problems/minimum-add-to-make-parentheses-valid/)
+
+### 问题描述
+
+给定一个由 '(' 和 ')' 括号组成的字符串 S，我们需要添加最少的括号（ '(' 或是 ')'，可以在任何位置），以使得到的括号字符串有效。
+
+从形式上讲，只有满足下面几点之一，括号字符串才是有效的：
+
+它是一个空字符串，或者
+它可以被写成 AB （A 与 B 连接）, 其中 A 和 B 都是有效字符串，或者
+它可以被写作 (A)，其中 A 是有效字符串。
+给定一个括号字符串，返回为使结果字符串有效而必须添加的最少括号数。
+
+**示例 1：**
+
+```
+输入："())"
+输出：1
+```
+
+### 解题思路
+
+这一题与《[20. 有效的括号](https://leetcode-cn.com/problems/valid-parentheses/)》 相似，判断左右括号是否相互匹配。
+
+遍历一遍字符串，遇到一个右括号就抵消掉前面的一个左括号，最后把未抵消掉左括号和右括号个数相加。
+
+### 代码实现
+
+```java
+class Solution {
+    public int minAddToMakeValid(String s) {
+        int left = 0, right = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else {
+                if (left > 0) {
+                    left--;
+                } else {
+                    right++;
+                }
+            }
+        }
+        return left + right;
+    }
+}
+```
 
 
 
